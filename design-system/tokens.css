@@ -1,0 +1,177 @@
+/* ============================================================
+   RoleCall — Design Tokens
+   Single source of truth for color, type, spacing, radius,
+   elevation, and z-index. Reference these variables everywhere;
+   never hardcode a hex, size, or spacing value in a component.
+
+   Concept: newsprint structure — ink on paper, with cyan and
+   magenta "process inks" used sparingly as spot color. Hierarchy
+   comes from scale and whitespace, not boxes and rules.
+   ============================================================ */
+
+:root {
+  /* ---------- Typeface ---------- */
+  --font-sans: 'Figtree', system-ui, -apple-system, sans-serif;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---------- Type scale (size / line-height / tracking) ---------- */
+  --text-display: 700 54px/1 var(--font-sans);      /* page display, tracking -.035em */
+  --text-hero: 700 64px/1.02 var(--font-sans);      /* marketing/hero only */
+  --text-h2: 700 36px/1.05 var(--font-sans);        /* section title, tracking -.025em */
+  --text-h3: 600 24px/1.15 var(--font-sans);        /* subsection, tracking -.015em */
+  --text-h4: 700 19px/1.1 var(--font-sans);         /* minor heading, tracking -.01em */
+  --text-lead: 400 20px/1.55 var(--font-sans);      /* intro paragraph */
+  --text-body: 400 16px/1.65 var(--font-sans);      /* default body */
+  --text-body-sm: 400 14px/1.5 var(--font-sans);
+  --text-meta: 400 13px/1.35 var(--font-sans);      /* secondary meta (dates, company) */
+
+  --tracking-display: -0.035em;
+  --tracking-h2: -0.025em;
+  --tracking-h3: -0.015em;
+  --tracking-label: 0.16em;   /* eyebrow caps */
+  --tracking-label-field: 0.12em; /* form-field caps label */
+
+  /* Eyebrow / field label recipe: font-weight 600, uppercase, use --tracking-label. */
+
+  /* ---------- Neutral ramp: ink & paper ---------- */
+  --neutral-0: #f8f4f4;   /* surface (cards, wells) */
+  --neutral-100: #eae7e7;
+  --neutral-200: #d7d3d3;
+  --neutral-300: #bab6b6;
+  --neutral-400: #9b9797;
+  --neutral-500: #7d7979;  /* DECORATIVE ONLY — fails AA as text */
+  --neutral-600: #605d5d;  /* smallest allowed text color */
+  --neutral-700: #444141;
+  --neutral-800: #2d2b2b;
+  --ink: #201e1d;          /* primary text / near-black */
+
+  --paper: #f3f2f2;        /* app background ("ground") */
+  --surface: #f8f4f4;      /* raised surface on paper */
+  --surface-alt: #faf9f9;  /* table / content-area fill */
+  --white: #ffffff;        /* input & elevated-card fill */
+
+  /* ---------- Cyan ramp — interactive / primary ink ---------- */
+  --cyan-50: #e9f8ff;
+  --cyan-100: #cbeeff;
+  --cyan-200: #99e0ff;
+  --cyan-300: #62c5ee;
+  --cyan-400: #38a6cf;
+  --cyan-500: #0088b0;   /* brand cyan — UI accents, NOT body text */
+  --cyan-600: #006786;   /* link + on-paper text-safe cyan (AA) */
+  --cyan-700: #004961;
+
+  /* ---------- Magenta ramp — second spot / "win" ---------- */
+  --magenta-50: #ffdee6;
+  --magenta-100: #ffc0d0;
+  --magenta-200: #ff90b1;
+  --magenta-300: #ff458e;
+  --magenta-500: #d6006c;  /* magenta — Offer / celebratory */
+  --magenta-600: #aa0b56;
+  --magenta-700: #790e3d;
+
+  /* ---------- Accent solids ---------- */
+  --press-yellow: #edbb00; /* warm pipeline step (Interviewing) */
+  --sage: #7a8a5e;         /* success / hired */
+  --danger: #c43e17;       /* destructive ONLY — distinct from magenta */
+  --danger-hover: #9a3110;
+  --danger-text: #9a3110;  /* danger as text/outline on paper (AA) */
+
+  /* ---------- Semantic aliases (reference these in components) ---------- */
+  --color-bg: var(--paper);
+  --color-surface: var(--surface);
+  --color-text: var(--ink);
+  --color-text-secondary: #3d3a38;
+  --color-text-muted: var(--neutral-600);   /* smallest text uses this, never neutral-500 */
+  --color-text-decorative: var(--neutral-500);
+
+  --color-primary: #007391;        /* primary button fill (AA with white label) */
+  --color-primary-hover: #006786;
+  --color-on-primary: var(--paper);
+  --color-link: var(--cyan-600);
+  --color-accent: var(--cyan-500);
+
+  --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+  --color-danger-text: var(--danger-text);
+
+  /* ---------- Borders & hairlines ---------- */
+  --hairline: rgba(32, 30, 29, 0.14);   /* section dividers, nav underline */
+  --border-card: rgba(0, 0, 0, 0.08);
+  --border-row: rgba(32, 30, 29, 0.09); /* table rows */
+  --border-input: rgba(32, 30, 29, 0.20);
+  --border-strong: rgba(32, 30, 29, 0.28); /* secondary button */
+
+  /* ---------- Focus ---------- */
+  --focus-ring: #007391;                 /* general :focus-visible outline color */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-input-border: var(--cyan-500);
+  --focus-input-glow: rgba(0, 136, 176, 0.25);
+
+  /* ---------- Overlay scrims ---------- */
+  --scrim-dialog: rgba(45, 43, 43, 0.45);
+  --scrim-drawer: rgba(45, 43, 43, 0.40);
+
+  /* ---------- Spacing — 4pt scale ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ---------- Radius ---------- */
+  --radius-control: 8px;   /* inputs, selects, textareas */
+  --radius-card: 12px;     /* cards */
+  --radius-container: 16px; /* panels, wells, table shell */
+  --radius-dialog: 18px;   /* modal cards */
+  --radius-pill: 999px;    /* buttons, badges, tags, toggles */
+
+  /* ---------- Elevation ---------- */
+  --shadow-sm: 0 1px 3px rgba(45, 43, 43, 0.10);   /* resting card */
+  --shadow-md: 0 3px 12px rgba(45, 43, 43, 0.14);  /* raised */
+  --shadow-lg: 0 14px 36px rgba(45, 43, 43, 0.22); /* overlay card */
+  --shadow-dialog: 0 24px 60px rgba(45, 43, 43, 0.32);
+  --shadow-drawer: -14px 0 40px rgba(45, 43, 43, 0.24);
+  --shadow-toast: 0 12px 32px rgba(45, 43, 43, 0.34);
+
+  /* ---------- Z-index ---------- */
+  --z-nav: 50;
+  --z-overlay: 60;   /* dialogs, drawer */
+  --z-toast: 70;
+}
+
+/* ---------- Base / reset ---------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Global keyboard focus — every interactive control gets a visible ring. */
+:where(button, a, select, textarea, input, [tabindex]):focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Tabular figures utility for dates / numeric columns. */
+.tabular-nums { font-variant-numeric: tabular-nums; }

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#f3f2f2;color:#201e1d;font-family:'Figtree',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  a{color:#006786;text-decoration:none;}
+  a:hover{text-decoration:underline;text-underline-offset:3px;}
+  button:focus-visible,a:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid #007391;outline-offset:2px;}
+</style>
+</helmet>
+<div style="max-width:1140px;margin:0 auto;padding:0 48px 64px;">
+
+  <!-- ══ HERO ══ -->
+  <header style="padding:64px 0 12px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
+      <span style="font:700 15px/1 'Figtree',sans-serif;">RoleCall</span>
+      <span style="width:5px;height:5px;border-radius:50%;background:#d6006c;"></span>
+      <span style="font:600 12px/1 'Figtree',sans-serif;text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Design System</span>
+    </div>
+    <h1 style="font:700 64px/1.02 'Figtree',sans-serif;margin:0;letter-spacing:-.035em;max-width:16ch;">The RoleCall design system</h1>
+    <p style="font:400 20px/1.55 'Figtree',sans-serif;color:#3d3a38;max-width:60ch;margin:24px 0 0;">Newsprint structure, clean Figtree type, and the process inks — cyan and magenta — used sparingly like spot color. Hierarchy comes from scale and whitespace, not boxes and rules.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:32px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(32,30,29,.14);">
+      <div><div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:8px;">Typeface</div><div style="font:500 15px/1.3 'Figtree';">Figtree · 400 / 500 / 600 / 700</div></div>
+      <div><div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:8px;">Ground</div><div style="font:500 15px/1.3 'Figtree';">Paper #f3f2f2</div></div>
+      <div><div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:8px;">Spot inks</div><div style="font:500 15px/1.3 'Figtree';">Cyan #0088b0 · Magenta #d6006c</div></div>
+      <div><div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:8px;">Version</div><div style="font:500 15px/1.3 'Figtree';">v1.0 · Jul 2026</div></div>
+    </div>
+  </header>
+
+  <!-- ══ 01 · COLOR ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">01</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Foundations</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Color</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">Ink on paper, plus tonal ramps for the two process inks. Cyan carries interaction; magenta is the rarer second voice; a muted press yellow and a sage green round out the pipeline. Body copy never runs in a raw ink — use the 700+ steps.</p>
+
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;"><span style="font:600 13px/1 'Figtree';">Neutral · ink &amp; paper</span><span style="font:400 12px/1 'Figtree';color:#605d5d;">#f8f4f4 → #201e1d</span></div>
+        <div style="display:flex;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.08);">
+          <div style="flex:1;height:56px;background:#f8f4f4;"></div><div style="flex:1;height:56px;background:#eae7e7;"></div><div style="flex:1;height:56px;background:#d7d3d3;"></div><div style="flex:1;height:56px;background:#bab6b6;"></div><div style="flex:1;height:56px;background:#9b9797;"></div><div style="flex:1;height:56px;background:#7d7979;"></div><div style="flex:1;height:56px;background:#605d5d;"></div><div style="flex:1;height:56px;background:#444141;"></div><div style="flex:1;height:56px;background:#2d2b2b;"></div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;"><span style="font:600 13px/1 'Figtree';color:#006786;">Cyan · interactive</span><span style="font:400 12px/1 'Figtree';color:#605d5d;">#e9f8ff → #0088b0 → #004961</span></div>
+        <div style="display:flex;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.08);">
+          <div style="flex:1;height:56px;background:#e9f8ff;"></div><div style="flex:1;height:56px;background:#cbeeff;"></div><div style="flex:1;height:56px;background:#99e0ff;"></div><div style="flex:1;height:56px;background:#62c5ee;"></div><div style="flex:1;height:56px;background:#38a6cf;"></div><div style="flex:1;height:56px;background:#0088b0;"></div><div style="flex:1;height:56px;background:#006786;"></div><div style="flex:1;height:56px;background:#004961;"></div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;"><span style="font:600 13px/1 'Figtree';color:#aa0b56;">Magenta · second spot</span><span style="font:400 12px/1 'Figtree';color:#605d5d;">#ffdee6 → #d6006c → #790e3d</span></div>
+        <div style="display:flex;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.08);">
+          <div style="flex:1;height:56px;background:#ffdee6;"></div><div style="flex:1;height:56px;background:#ffc0d0;"></div><div style="flex:1;height:56px;background:#ff90b1;"></div><div style="flex:1;height:56px;background:#ff458e;"></div><div style="flex:1;height:56px;background:#d6006c;"></div><div style="flex:1;height:56px;background:#aa0b56;"></div><div style="flex:1;height:56px;background:#790e3d;"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;display:flex;align-items:center;gap:12px;padding:16px 16px;border-radius:12px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);"><span style="width:40px;height:40px;border-radius:10px;background:#edbb00;flex:none;"></span><div><div style="font:600 14px/1.2 'Figtree';">Press yellow</div><div style="font:400 12px/1.3 'Figtree';color:#605d5d;">#edbb00 · warm pipeline step</div></div></div>
+        <div style="flex:1;min-width:200px;display:flex;align-items:center;gap:12px;padding:16px 16px;border-radius:12px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);"><span style="width:40px;height:40px;border-radius:10px;background:#7a8a5e;flex:none;"></span><div><div style="font:600 14px/1.2 'Figtree';">Sage</div><div style="font:400 12px/1.3 'Figtree';color:#605d5d;">#7a8a5e · success / hired</div></div></div><div style="flex:1;min-width:200px;display:flex;align-items:center;gap:12px;padding:16px 16px;border-radius:12px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);"><span style="width:40px;height:40px;border-radius:10px;background:#c43e17;flex:none;"></span><div><div style="font:600 14px/1.2 'Figtree';">Danger red</div><div style="font:400 12px/1.3 'Figtree';color:#605d5d;">#c43e17 · destructive only</div></div></div>
+      </div>
+    </div>
+
+    <h3 style="font:700 19px/1.1 'Figtree';margin:48px 0 16px;letter-spacing:-.01em;">Status palette</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;">
+      <sc-for list="{{ statuses }}" as="s" hint-placeholder-count="8">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px 12px 12px;border-radius:12px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);">
+          <span style="{{ s.dot }}"></span>
+          <div><div style="font:600 13px/1.2 'Figtree';">{{ s.label }}</div><div style="font:400 11px/1.2 'Figtree';color:#605d5d;font-variant-numeric:tabular-nums;">{{ s.hex }}</div></div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ══ 02 · TYPOGRAPHY ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">02</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Foundations</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Typography</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">One family, four weights. Tight tracking and heavy weight for display; generous line-height for reading. Uppercase 600 with wide tracking does the work of eyebrow labels.</p>
+    <div style="display:flex;flex-direction:column;">
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid rgba(32,30,29,.10);align-items:baseline;"><span style="font:400 12px/1.3 'Figtree';color:#605d5d;">Display · 700</span><span style="font:700 54px/1 'Figtree';letter-spacing:-.035em;">Application detail</span></div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid rgba(32,30,29,.10);align-items:baseline;"><span style="font:400 12px/1.3 'Figtree';color:#605d5d;">H2 · 700</span><span style="font:700 36px/1.05 'Figtree';letter-spacing:-.025em;">Active pipeline</span></div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid rgba(32,30,29,.10);align-items:baseline;"><span style="font:400 12px/1.3 'Figtree';color:#605d5d;">H3 · 600</span><span style="font:600 24px/1.15 'Figtree';letter-spacing:-.015em;">Blockers &amp; questions</span></div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid rgba(32,30,29,.10);align-items:baseline;"><span style="font:400 12px/1.3 'Figtree';color:#605d5d;">Body · 400</span><span style="font:400 16px/1.65 'Figtree';max-width:56ch;">Own the design vision for the bill-pay and procurement surfaces. Partner with PM and eng leads to ship high-leverage workflows.</span></div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid rgba(32,30,29,.10);align-items:baseline;"><span style="font:400 12px/1.3 'Figtree';color:#605d5d;">Emphasis · 400 italic</span><span style="font:400 italic 16px/1.65 'Figtree';color:#3d3a38;">Second round went well — they liked the audit of the approvals flow.</span></div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid rgba(32,30,29,.10);align-items:baseline;"><span style="font:400 12px/1.3 'Figtree';color:#605d5d;">Label · 600 caps</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Job description summary</span></div>
+    </div>
+  </section>
+
+  <!-- ══ 03 · BUTTONS ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">03</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Buttons</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">Pills throughout. Cyan fills the primary action; everything else is quieter. A distinct red is reserved for destructive intent and used at most once per view; magenta stays the rarer second spot.</p>
+
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div style="padding:24px 32px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:20px;">Variants</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+          <button style="display:inline-flex;align-items:center;gap:8px;background:#007391;color:#f3f2f2;border:0;padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:#006786;" style-active="background:#006786;">+ New application</button>
+          <button style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:#201e1d;border:1.5px solid rgba(32,30,29,.28);padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="border-color:#0088b0;color:#006786;">Secondary</button>
+          <button style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:#006786;border:0;padding:12px 12px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:rgba(0,136,176,.10);">Ghost</button>
+          <button style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:#9a3110;border:1.5px solid rgba(196,62,23,.42);padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:rgba(196,62,23,.09);border-color:#c43e17;">Delete</button>
+          <button style="display:inline-flex;align-items:center;gap:8px;background:#c43e17;color:#fff;border:0;padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:#9a3110;">Danger · solid</button>
+          <button disabled style="display:inline-flex;align-items:center;gap:8px;background:#007391;color:#f3f2f2;border:0;padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:not-allowed;opacity:.42;">Disabled</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:300px;padding:24px 32px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);">
+          <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:20px;">Sizes</div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+            <button style="background:#007391;color:#f3f2f2;border:0;padding:8px 16px;border-radius:999px;font:600 12px/1.2 'Figtree';cursor:pointer;" style-hover="background:#006786;">Small</button>
+            <button style="background:#007391;color:#f3f2f2;border:0;padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:#006786;">Medium</button>
+            <button style="background:#007391;color:#f3f2f2;border:0;padding:16px 32px;border-radius:999px;font:600 16px/1.2 'Figtree';cursor:pointer;" style-hover="background:#006786;">Large</button>
+          </div>
+        </div>
+        <div style="flex:1;min-width:300px;padding:24px 32px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);">
+          <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:20px;">Icon buttons</div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+            <button style="width:40px;height:40px;display:grid;place-items:center;background:#007391;color:#f3f2f2;border:0;border-radius:50%;font:600 20px/1 'Figtree';cursor:pointer;" style-hover="background:#006786;">+</button>
+            <button style="width:40px;height:40px;display:grid;place-items:center;background:transparent;color:#201e1d;border:1.5px solid rgba(32,30,29,.28);border-radius:50%;font:600 16px/1 'Figtree';cursor:pointer;" style-hover="border-color:#0088b0;color:#006786;">✎</button>
+            <button style="width:40px;height:40px;display:grid;place-items:center;background:transparent;color:#605d5d;border:1.5px solid rgba(32,30,29,.28);border-radius:50%;font:700 18px/1 'Figtree';cursor:pointer;" style-hover="border-color:#0088b0;color:#006786;">⋯</button>
+            <button style="width:40px;height:40px;display:grid;place-items:center;background:transparent;color:#9a3110;border:1.5px solid rgba(196,62,23,.42);border-radius:50%;font:600 17px/1 'Figtree';cursor:pointer;" style-hover="background:rgba(196,62,23,.09);">🗑</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 04 · BADGES & TAGS ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">04</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Badges &amp; tags</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">Status badges are soft-tinted pills with a solid dot in the same hue — legible at card scale and colour-coded across the pipeline. Tags are the lighter, general-purpose label.</p>
+
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div style="padding:24px 32px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:20px;">Status badges</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;">
+          <sc-for list="{{ statuses }}" as="s" hint-placeholder-count="8">
+            <span style="{{ s.badge }}"><span style="{{ s.dot }}"></span>{{ s.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="padding:24px 32px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:20px;">Tags</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+          <span style="display:inline-flex;align-items:center;font:600 12px/1 'Figtree';padding:4px 12px;border-radius:999px;background:#cbeeff;color:#004961;">Remote</span>
+          <span style="display:inline-flex;align-items:center;font:600 12px/1 'Figtree';padding:4px 12px;border-radius:999px;background:#eae7e7;color:#444141;">Full-time</span>
+          <span style="display:inline-flex;align-items:center;font:600 12px/1 'Figtree';padding:4px 12px;border-radius:999px;background:#ffdee6;color:#790e3d;">Referral</span>
+          <span style="display:inline-flex;align-items:center;font:600 12px/1 'Figtree';padding:4px 12px;border-radius:999px;border:1.5px solid rgba(32,30,29,.24);color:#605d5d;">Outline</span>
+          <span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'Figtree';padding:4px 12px 4px 12px;border-radius:999px;background:#e1eecc;color:#3d472b;"><span style="width:7px;height:7px;border-radius:50%;background:#7a8a5e;"></span>3 contacts</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 05 · FORM CONTROLS ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">05</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Form controls</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">Fields sit on a soft surface with an 8px radius and a cyan focus ring. Labels are 600 caps. The segmented control below is live — click through it.</p>
+
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
+      <div style="flex:1;min-width:320px;padding:32px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column;gap:20px;">
+        <div>
+          <label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Role name</label>
+          <input value="Principal Designer" style="width:100%;padding:12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.3 'Figtree';color:#201e1d;" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;" />
+        </div>
+        <div>
+          <label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Posting URL</label>
+          <input value="https://ramp.com/careers/principal-designer" style="width:100%;padding:12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.3 'Figtree';color:#006786;" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;" />
+        </div>
+        <div>
+          <label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Notes</label>
+          <textarea rows="3" style="width:100%;padding:12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.5 'Figtree';color:#201e1d;resize:vertical;" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;">Second round went well. Take-home focuses on the reconciliation screen.</textarea>
+        </div>
+        <div>
+          <label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Status</label>
+          <div style="position:relative;">
+            <select style="width:100%;appearance:none;padding:12px 32px 12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.3 'Figtree';color:#201e1d;cursor:pointer;" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;">
+              <option>Researching</option><option>Applied</option><option>Intro</option><option selected>Interviewing</option><option>Offer</option>
+            </select>
+            <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:#605d5d;font-size:12px;">▼</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1;min-width:320px;padding:32px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column;gap:24px;">
+        <div>
+          <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Segmented control · live</div>
+          <div style="display:inline-flex;padding:4px;border-radius:999px;background:#eae7e7;">
+            <button data-value="Board" onClick="{{ onSeg }}" style="{{ segBoard }}">Board</button>
+            <button data-value="Table" onClick="{{ onSeg }}" style="{{ segTable }}">Table</button>
+            <button data-value="Archive" onClick="{{ onSeg }}" style="{{ segArchive }}">Archive</button>
+          </div>
+        </div>
+        <div>
+          <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Radio</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;"><span style="width:18px;height:18px;border-radius:50%;border:5px solid #0088b0;background:#fff;flex:none;"></span>Applied directly</span>
+            <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;color:#3d3a38;"><span style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(32,30,29,.3);flex:none;"></span>Via referral</span>
+            <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;color:#3d3a38;"><span style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(32,30,29,.3);flex:none;"></span>Recruiter reached out</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:48px;flex-wrap:wrap;">
+          <div>
+            <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Checkbox</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;"><span style="width:18px;height:18px;border-radius:6px;background:#0088b0;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;flex:none;">✓</span>Remote OK</span>
+              <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;color:#3d3a38;"><span style="width:18px;height:18px;border-radius:6px;border:1.5px solid rgba(32,30,29,.3);flex:none;"></span>Needs sponsorship</span>
+            </div>
+          </div>
+          <div>
+            <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Toggle</div>
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;"><span style="width:38px;height:22px;border-radius:999px;background:#0088b0;position:relative;flex:none;"><span style="position:absolute;top:2px;left:18px;width:18px;height:18px;border-radius:50%;background:#fff;"></span></span>Notify me</span>
+              <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;color:#3d3a38;"><span style="width:38px;height:22px;border-radius:999px;background:#d7d3d3;position:relative;flex:none;"><span style="position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;"></span></span>Archive quietly</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 06 · CARDS ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">06</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Cards</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">The one boxed element in the system — 12px corners, a hairline border and a whisper of shadow. Used for genuinely discrete items: pipeline cards and contacts, never for page layout.</p>
+
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
+      <div style="width:264px;">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Application card</div>
+        <div style="border:1px solid rgba(32,30,29,.14);border-radius:12px;background:#f8f4f4;box-shadow:0 1px 3px rgba(45,43,43,.10);padding:16px 16px;">
+          <a href="https://ramp.com/careers" target="_blank" style="display:block;font:600 16px/1.3 'Figtree';color:#201e1d;margin-bottom:4px;" style-hover="color:#006786;">Principal Designer</a>
+          <div style="font:400 13px/1.35 'Figtree';color:#605d5d;margin-bottom:12px;">Ramp</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'Figtree';padding:4px 12px 4px 12px;border-radius:999px;background:#faeec2;color:#6e5300;"><span style="width:8px;height:8px;border-radius:50%;background:#edbb00;"></span>Interviewing</span>
+            <span style="font:400 12px/1 'Figtree';color:#605d5d;">Jun 15</span>
+          </div>
+        </div>
+      </div>
+      <div style="width:264px;">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Contact card</div>
+        <div style="border:1px solid rgba(32,30,29,.14);border-radius:12px;background:#f8f4f4;box-shadow:0 1px 3px rgba(45,43,43,.10);padding:16px 16px;">
+          <div style="font:600 16px/1.25 'Figtree';">Dana Whitfield</div>
+          <div style="font:400 13px/1.3 'Figtree';font-style:italic;color:#605d5d;margin-bottom:8px;">Hiring Manager</div>
+          <div style="display:flex;flex-direction:column;gap:4px;font:400 13.5px/1.45 'Figtree';">
+            <a href="#" style="color:#006786;">dana@ramp.com</a>
+            <span style="color:#605d5d;">(415) 555-0142</span>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1;min-width:280px;">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Elevation</div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="border-radius:12px;background:#f8f4f4;border:1px solid rgba(32,30,29,.10);box-shadow:0 1px 3px rgba(45,43,43,.10);padding:16px 16px;font:500 14px/1.3 'Figtree';">Resting · sm</div>
+          <div style="border-radius:12px;background:#fff;box-shadow:0 3px 12px rgba(45,43,43,.14);padding:16px 16px;font:500 14px/1.3 'Figtree';">Raised · md</div>
+          <div style="border-radius:12px;background:#fff;box-shadow:0 14px 36px rgba(45,43,43,.22);padding:16px 16px;font:500 14px/1.3 'Figtree';">Overlay · lg</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 07 · NAVIGATION ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">07</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Navigation</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">A single hairline under the header separates chrome from content. The current view is marked in cyan; the primary action anchors the right.</p>
+    <div style="border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.08);">
+      <div style="display:flex;align-items:center;gap:24px;padding:16px 24px;background:#f3f2f2;border-bottom:1px solid rgba(32,30,29,.14);">
+        <span style="font:700 20px/1 'Figtree';letter-spacing:-.02em;">RoleCall</span>
+        <span style="font:600 15px/1 'Figtree';color:#006786;">Board</span>
+        <span style="font:400 15px/1 'Figtree';color:#605d5d;">Archive</span>
+        <span style="font:400 15px/1 'Figtree';color:#605d5d;">Contacts</span>
+        <button style="margin-left:auto;display:inline-flex;align-items:center;gap:8px;background:#007391;color:#f3f2f2;border:0;padding:8px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:#006786;">+ New application</button>
+      </div>
+      <div style="padding:24px 24px;background:#faf9f9;font:400 14px/1.5 'Figtree';color:#605d5d;">Content area</div>
+    </div>
+  </section>
+
+  <!-- ══ 08 · TABLE ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">08</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Data table</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">The list view of the pipeline. Caps labels in the header, hairline row rules, tabular figures for dates, and the row highlights on hover.</p>
+    <div style="border:1px solid rgba(0,0,0,.08);border-radius:16px;overflow:hidden;background:#faf9f9;">
+      <table style="width:100%;border-collapse:collapse;font:400 14.5px/1.4 'Figtree';">
+        <thead><tr>
+          <th style="text-align:left;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.14);">Role</th>
+          <th style="text-align:left;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.14);">Company</th>
+          <th style="text-align:left;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.14);">Status</th>
+          <th style="text-align:right;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.14);">Applied</th>
+        </tr></thead>
+        <tbody>
+          <tr style-hover="background:rgba(0,136,176,.05);"><td style="padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.09);"><a href="#">Product Designer</a></td><td style="padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.09);color:#3d3a38;">Notion</td><td style="padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.09);"><span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'Figtree';padding:4px 12px 4px 12px;border-radius:999px;background:#dbe6ef;color:#2b4761;"><span style="width:8px;height:8px;border-radius:50%;background:#6486a1;"></span>Applied</span></td><td style="padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.09);text-align:right;color:#605d5d;font-variant-numeric:tabular-nums;">Jun 28</td></tr>
+          <tr style-hover="background:rgba(0,136,176,.05);"><td style="padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.09);"><a href="#">Principal Designer</a></td><td style="padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.09);color:#3d3a38;">Ramp</td><td style="padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.09);"><span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'Figtree';padding:4px 12px 4px 12px;border-radius:999px;background:#faeec2;color:#6e5300;"><span style="width:8px;height:8px;border-radius:50%;background:#edbb00;"></span>Interviewing</span></td><td style="padding:16px 20px;border-bottom:1px solid rgba(32,30,29,.09);text-align:right;color:#605d5d;font-variant-numeric:tabular-nums;">Jun 15</td></tr>
+          <tr style-hover="background:rgba(0,136,176,.05);"><td style="padding:16px 20px;"><a href="#">Senior Designer</a></td><td style="padding:16px 20px;color:#3d3a38;">Cron</td><td style="padding:16px 20px;"><span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'Figtree';padding:4px 12px 4px 12px;border-radius:999px;background:#ffdee6;color:#790e3d;"><span style="width:8px;height:8px;border-radius:50%;background:#d6006c;"></span>Offer</span></td><td style="padding:16px 20px;text-align:right;color:#605d5d;font-variant-numeric:tabular-nums;">Jun 05</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ 09 · DIALOGS ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">09</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Patterns</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Dialogs</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">Modals float on an overlay-elevation card over a dimmed sheet. A form dialog for creating, a confirm dialog for destructive intent. Click a button to open one.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;">
+      <button onClick="{{ openNew }}" style="display:inline-flex;align-items:center;gap:8px;background:#007391;color:#f3f2f2;border:0;padding:12px 24px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:#006786;">+ New application</button>
+      <button onClick="{{ openDelete }}" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:#9a3110;border:1.5px solid rgba(196,62,23,.42);padding:12px 24px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:rgba(196,62,23,.09);border-color:#c43e17;">Delete application…</button>
+    </div>
+  </section>
+
+  <!-- ══ 10 · PULL-OUT DRAWER ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">10</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Patterns</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Pull-out drawer</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">A right-docked panel for quick tasks that shouldn't steal the whole page — adding an application, editing contacts, filtering the board. Slides in over a dimmed sheet; dismiss with the sheet, the ✕, or Cancel.</p>
+    <button onClick="{{ openDrawer }}" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:#201e1d;border:1.5px solid rgba(32,30,29,.28);padding:12px 24px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="border-color:#0088b0;color:#006786;">Quick add →</button>
+  </section>
+
+  <!-- ══ 11 · FEEDBACK ══ -->
+  <section style="padding:64px 0 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">11</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Patterns</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Feedback &amp; empty states</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">A transient toast confirms actions; the empty state invites the first entry rather than showing a blank board.</p>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:stretch;">
+      <div style="flex:1;min-width:300px;padding:32px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column;gap:20px;">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;">Toast</div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:#201e1d;color:#f3f2f2;box-shadow:0 8px 24px rgba(45,43,43,.28);width:max-content;max-width:100%;">
+          <span style="width:9px;height:9px;border-radius:50%;background:#edbb00;flex:none;"></span>
+          <span style="font:500 14px/1.3 'Figtree';">Application moved to Interviewing</span>
+        </div>
+        <button onClick="{{ fireToast }}" style="width:max-content;display:inline-flex;align-items:center;gap:8px;background:transparent;color:#006786;border:0;padding:8px 4px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="text-decoration:underline;text-underline-offset:3px;">Trigger a live toast →</button>
+      </div>
+      <div style="flex:1;min-width:300px;padding:32px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:20px;">Empty state</div>
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 20px;gap:12px;">
+          <div style="width:52px;height:52px;border-radius:14px;background:#cbeeff;display:grid;place-items:center;font:700 26px/1 'Figtree';color:#006786;">+</div>
+          <div style="font:700 19px/1.2 'Figtree';letter-spacing:-.01em;">No applications yet</div>
+          <div style="font:400 14.5px/1.5 'Figtree';color:#605d5d;max-width:34ch;">Add the first role you're chasing and it'll show up on your board.</div>
+          <button style="margin-top:8px;background:#007391;color:#f3f2f2;border:0;padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:#006786;">+ New application</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══ OVERLAYS ══ -->
+<sc-if value="{{ showNew }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeDialog }}" style="position:fixed;inset:0;z-index:60;background:rgba(45,43,43,.45);display:grid;place-items:center;padding:24px;">
+    <div onClick="{{ stop }}" style="width:min(480px,100%);background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(45,43,43,.32);padding:32px 32px 24px;">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;">
+        <h3 style="font:700 24px/1.1 'Figtree';margin:0;letter-spacing:-.02em;">New application</h3>
+        <button onClick="{{ closeDialog }}" style="background:transparent;border:0;font:400 20px/1 'Figtree';color:#605d5d;cursor:pointer;">✕</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div><label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Role name</label><input placeholder="e.g. Product Designer" style="width:100%;padding:12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.3 'Figtree';" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;" /></div>
+        <div style="display:flex;gap:16px;">
+          <div style="flex:1;"><label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Company</label><input placeholder="e.g. Ramp" style="width:100%;padding:12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.3 'Figtree';" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;" /></div>
+          <div style="flex:1;"><label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Status</label>
+            <div style="position:relative;"><select style="width:100%;appearance:none;padding:12px 32px 12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.3 'Figtree';cursor:pointer;" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;"><option>Researching</option><option selected>Applied</option><option>Intro</option><option>Interviewing</option><option>Offer</option></select><span style="position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:#605d5d;font-size:11px;">▼</span></div>
+          </div>
+        </div>
+        <div><label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Posting URL</label><input placeholder="https://" style="width:100%;padding:12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.3 'Figtree';" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;" /></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px;">
+        <button onClick="{{ closeDialog }}" style="background:transparent;color:#201e1d;border:1.5px solid rgba(32,30,29,.28);padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="border-color:#0088b0;color:#006786;">Cancel</button>
+        <button onClick="{{ closeDialog }}" style="background:#007391;color:#f3f2f2;border:0;padding:12px 24px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:#006786;">Add application</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showDelete }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeDialog }}" style="position:fixed;inset:0;z-index:60;background:rgba(45,43,43,.45);display:grid;place-items:center;padding:24px;">
+    <div onClick="{{ stop }}" style="width:min(420px,100%);background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(45,43,43,.32);padding:32px;">
+      <h3 style="font:700 22px/1.15 'Figtree';margin:0 0 12px;letter-spacing:-.02em;">Delete this application?</h3>
+      <p style="font:400 15px/1.55 'Figtree';color:#3d3a38;margin:0;">Principal Designer at Ramp and its 3 contacts will be permanently removed. This can't be undone.</p>
+      <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px;">
+        <button onClick="{{ closeDialog }}" style="background:transparent;color:#201e1d;border:1.5px solid rgba(32,30,29,.28);padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="border-color:#0088b0;color:#006786;">Cancel</button>
+        <button onClick="{{ closeDialog }}" style="background:#c43e17;color:#fff;border:0;padding:12px 24px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:#9a3110;">Delete</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ drawer }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;z-index:60;background:rgba(45,43,43,.4);display:flex;justify-content:flex-end;">
+    <div onClick="{{ stop }}" style="width:min(440px,100%);height:100%;background:#f3f2f2;box-shadow:-14px 0 40px rgba(45,43,43,.24);padding:32px;overflow-y:auto;">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;">
+        <h3 style="font:700 26px/1.1 'Figtree';margin:0;letter-spacing:-.02em;">Quick add</h3>
+        <button onClick="{{ closeDrawer }}" style="background:transparent;border:0;font:400 22px/1 'Figtree';color:#605d5d;cursor:pointer;">✕</button>
+      </div>
+      <p style="font:400 14.5px/1.5 'Figtree';color:#605d5d;margin:0 0 24px;">Drop in the essentials now — flesh out the detail page later.</p>
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div><label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Role name</label><input placeholder="e.g. Staff Designer" style="width:100%;padding:12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.3 'Figtree';" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;" /></div>
+        <div><label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Company</label><input placeholder="e.g. Stripe" style="width:100%;padding:12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.3 'Figtree';" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;" /></div>
+        <div>
+          <label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Status</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'Figtree';padding:8px 12px 8px 12px;border-radius:999px;background:#eae7e7;color:#444141;cursor:pointer;"><span style="width:8px;height:8px;border-radius:50%;background:#9b9797;"></span>Researching</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'Figtree';padding:8px 12px 8px 12px;border-radius:999px;background:#0088b0;color:#fff;cursor:pointer;"><span style="width:8px;height:8px;border-radius:50%;background:#cbeeff;"></span>Applied</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;font:600 12px/1 'Figtree';padding:8px 12px 8px 12px;border-radius:999px;background:#99e0ff;color:#00404f;cursor:pointer;"><span style="width:8px;height:8px;border-radius:50%;background:#006786;"></span>Intro</span>
+          </div>
+        </div>
+        <div><label style="display:block;font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:8px;">Posting URL</label><input placeholder="https://" style="width:100%;padding:12px 12px;border-radius:8px;border:1.5px solid rgba(32,30,29,.20);background:#fff;font:400 15px/1.3 'Figtree';" style-focus="border-color:#0088b0;outline:2px solid rgba(0,136,176,.25);outline-offset:0;" /></div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:32px;">
+        <button onClick="{{ closeDrawer }}" style="flex:1;background:#007391;color:#f3f2f2;border:0;padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="background:#006786;">Add to board</button>
+        <button onClick="{{ closeDrawer }}" style="background:transparent;color:#201e1d;border:1.5px solid rgba(32,30,29,.28);padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="border-color:#0088b0;color:#006786;">Cancel</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:12px;padding:12px 16px 12px 16px;border-radius:12px;background:#201e1d;color:#f3f2f2;box-shadow:0 12px 32px rgba(45,43,43,.34);">
+    <span style="width:9px;height:9px;border-radius:50%;background:#edbb00;flex:none;"></span>
+    <span style="font:500 14px/1.3 'Figtree';">Application moved to Interviewing</span>
+    <button onClick="{{ hideToast }}" style="background:transparent;border:0;color:#9b9797;font:400 16px/1 'Figtree';cursor:pointer;margin-left:8px;" style-hover="color:#f3f2f2;">✕</button>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { seg:'Board', dialog:null, drawer:false, toast:false };
+
+  onSeg = (e) => this.setState({ seg: e.currentTarget.dataset.value });
+  openDelete = () => this.setState({ dialog:'delete' });
+  openNew = () => this.setState({ dialog:'new' });
+  closeDialog = () => this.setState({ dialog:null });
+  openDrawer = () => this.setState({ drawer:true });
+  closeDrawer = () => this.setState({ drawer:false });
+  fireToast = () => { this.setState({ toast:true }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast:false }), 3400); };
+  hideToast = () => this.setState({ toast:false });
+  stop = (e) => e.stopPropagation();
+
+  RAW = [
+    { label:'Researching',        hex:'#9b9797', d:'#9b9797', b:'#eae7e7', f:'#444141' },
+    { label:'Applied',            hex:'#6486a1', d:'#6486a1', b:'#dbe6ef', f:'#2b4761' },
+    { label:'Intro',              hex:'#004961', d:'#004961', b:'#62c5ee', f:'#00303f' },
+    { label:'Interviewing',       hex:'#edbb00', d:'#edbb00', b:'#faeec2', f:'#6e5300' },
+    { label:'Offer',              hex:'#d6006c', d:'#d6006c', b:'#ffdee6', f:'#790e3d' },
+    { label:'Closed · Rejected',  hex:'#bab6b6', d:'#bab6b6', b:'#eae7e7', f:'#605d5d' },
+    { label:'Closed · Hired',     hex:'#7a8a5e', d:'#7a8a5e', b:'#e1eecc', f:'#3d472b' },
+    { label:'Closed · Try Again', hex:'#8ec3d8', d:'#8ec3d8', b:'#eaf4f9', f:'#00506b' },
+  ];
+
+  statusList(){
+    if (this._sl) return this._sl;
+    this._sl = this.RAW.map(s => ({ ...s,
+      dot:{ width:'10px', height:'10px', borderRadius:'50%', background:s.d, flex:'none', display:'inline-block' },
+      badge:{ display:'inline-flex', alignItems:'center', gap:'6px', fontFamily:"'Figtree',sans-serif",
+        fontSize:'12px', fontWeight:600, padding:'5px 12px 5px 10px', borderRadius:'999px', background:s.b, color:s.f, whiteSpace:'nowrap' } }));
+    return this._sl;
+  }
+  segStyle(v){
+    const a = this.state.seg === v;
+    return { display:'inline-flex', alignItems:'center', gap:'6px', padding:'8px 18px', border:'0', cursor:'pointer',
+      fontFamily:"'Figtree',sans-serif", fontSize:'14px', fontWeight:600, borderRadius:'999px',
+      background:a ? '#007391' : 'transparent', color:a ? '#f3f2f2' : '#605d5d' };
+  }
+
+  renderVals(){
+    return {
+      statuses:this.statusList(),
+      onSeg:this.onSeg, segBoard:this.segStyle('Board'), segTable:this.segStyle('Table'), segArchive:this.segStyle('Archive'),
+      openDelete:this.openDelete, openNew:this.openNew, closeDialog:this.closeDialog, stop:this.stop,
+      showDelete:this.state.dialog==='delete', showNew:this.state.dialog==='new', anyDialog:!!this.state.dialog,
+      openDrawer:this.openDrawer, closeDrawer:this.closeDrawer, drawer:this.state.drawer,
+      fireToast:this.fireToast, hideToast:this.hideToast, toast:this.state.toast,
+    };
+  }
+}
+</script>
+</body>
+</html>

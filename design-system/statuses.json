@@ -1,0 +1,70 @@
+{
+  "$comment": "RoleCall pipeline status — single source of truth. Drives kanban columns, status badges, filters, and the DB status enum. `id` is the stable machine value (use in the database); `label` is display text. `dot` = solid indicator color; `badgeBg`/`badgeFg` = soft-tinted pill. `group` splits active pipeline from closed outcomes.",
+  "$storage": "Store a job's status as its `id` in a database ENUM column whose allowed values are exactly the `id`s below. Do NOT store `label`, colors, or `group` — resolve those in the UI from this file at render time. Changing the pipeline (adding/removing/renaming a status) means editing this file AND running a DB enum migration.",
+  "statuses": [
+    {
+      "id": "researching",
+      "label": "Researching",
+      "group": "active",
+      "dot": "#9b9797",
+      "badgeBg": "#eae7e7",
+      "badgeFg": "#444141"
+    },
+    {
+      "id": "applied",
+      "label": "Applied",
+      "group": "active",
+      "dot": "#6486a1",
+      "badgeBg": "#dbe6ef",
+      "badgeFg": "#2b4761"
+    },
+    {
+      "id": "intro",
+      "label": "Intro",
+      "group": "active",
+      "dot": "#004961",
+      "badgeBg": "#62c5ee",
+      "badgeFg": "#00303f"
+    },
+    {
+      "id": "interviewing",
+      "label": "Interviewing",
+      "group": "active",
+      "dot": "#edbb00",
+      "badgeBg": "#faeec2",
+      "badgeFg": "#6e5300"
+    },
+    {
+      "id": "offer",
+      "label": "Offer",
+      "group": "active",
+      "dot": "#d6006c",
+      "badgeBg": "#ffdee6",
+      "badgeFg": "#790e3d"
+    },
+    {
+      "id": "closed_rejected",
+      "label": "Closed · Rejected",
+      "group": "closed",
+      "dot": "#bab6b6",
+      "badgeBg": "#eae7e7",
+      "badgeFg": "#605d5d"
+    },
+    {
+      "id": "closed_hired",
+      "label": "Closed · Hired",
+      "group": "closed",
+      "dot": "#7a8a5e",
+      "badgeBg": "#e1eecc",
+      "badgeFg": "#3d472b"
+    },
+    {
+      "id": "closed_try_again",
+      "label": "Closed · Try Again",
+      "group": "closed",
+      "dot": "#8ec3d8",
+      "badgeBg": "#eaf4f9",
+      "badgeFg": "#00506b"
+    }
+  ]
+}
