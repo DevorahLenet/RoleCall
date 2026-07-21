@@ -1,6 +1,6 @@
 # RoleCall — Build Instructions
 
-RoleCall is a job-application tracker. This file governs how the app is built so it stays visually and structurally consistent. See `../apps.md` for product context (why, user stories, features).
+RoleCall is a job-application tracker. This file governs how the app is built so it stays visually and structurally consistent. See `../rolecall_plan.md` for product context (why, user stories, features).
 
 ## Design system — follow it strictly
 The design system lives in `design-system/`. Before building or restyling any UI, read `design-system/design-system.md`.

@@ -1,6 +1,6 @@
 # RoleCall Design System — Design Review
 
-Review of `RoleCall Design System.dc.html` (v1.0, Jul 2026), as a UI/UX critique for aesthetic quality and market fit (audience: job seekers). See [apps.md](../apps.md) for RoleCall's why, user stories, and design/UX notes.
+Review of `RoleCall Design System.dc.html` (v1.0, Jul 2026), as a UI/UX critique for aesthetic quality and market fit (audience: job seekers). See [rolecall_plan.md](../rolecall_plan.md) for RoleCall's why, user stories, and design/UX notes.
 
 ---
 
