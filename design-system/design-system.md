@@ -66,11 +66,26 @@ Use `.tabular-nums` (or `font-variant-numeric: tabular-nums`) for dates and nume
 - **Input/select/textarea:** `--white` bg, `1.5px` `--border-input`, `--radius-control`, `--space-3` pad, 15px text. **Focus:** border `--focus-input-border` + `2px` glow `--focus-input-glow`.
 - **Labels:** 600 caps, `--color-text-muted`, `--space-2` below.
 - **Segmented control:** `--neutral-100` track, pill; active segment bg `--color-primary`, white text; inactive `--color-text-muted`.
-- **Radio / checkbox / toggle:** 18px controls; selected/checked/on state uses `--cyan-500`; off toggle `--neutral-200`.
+- **Radio / checkbox / toggle:** 18px controls, `--radius-check`, `1.5px` `--border-strong`; selected/checked/on state uses `--cyan-500`; off toggle `--neutral-200`.
+- **Checkbox hover / pressed:** hover borders `--cyan-500` and takes a `--wash-cyan-hover` inset wash; pressed deepens to `--wash-cyan-active`. A checked box takes the **same** wash — the cyan fill never changes hue, only value. Remember the 44×44px hit area around the 18px control.
 - **In real code use native `<input>`/`<select>` elements** with associated `<label>`s — the export's styled `<span>`s are visual only.
 
+### Priority control
+**Priority is a rank, not a status** — it stays in the neutral greys of the `--priority-*` tokens and **never borrows a pipeline color.** Weight alone carries the hierarchy: High is the heaviest neutral fill, Med the light one, Low an outline.
+
+The pill *is* the control — clicking it opens a three-item menu in place, at raised elevation, which closes on choice. Hover takes a `--wash-ink-hover` wash and a `--cyan-500` border; while the menu is open the border stays cyan. Pill is 600/12px, `--space-1`/`--space-3` pad, `--radius-pill`. **One per row, right-aligned.**
+
+### Pipeline band
+A one-line summary of the whole board: chevrons in pipeline order, each **weighted by how many applications sit in that stage**, tinted with the status `badgeBg`/`badgeFg` and carrying the same solid dot. It reads as a bar chart you can also read as words.
+
+One per screen, directly under the header. Container `--radius-container`, `--border-card`, `--surface` fill. Segments overlap by 1px with an 8px chevron notch; each links to its filtered board, with a trailing link to the full job board.
+
+**It is chrome, never content** — hold it to a single line of label plus company names. Active statuses only; closed statuses are filtered out of the band and reachable under **Jobs**.
+
 ### Cards
-The only boxed element. `--radius-card`, `1px` `--hairline` border, `--surface` bg, `--shadow-sm`, `--space-4` pad. Use for discrete items (pipeline cards, contacts) — **never for page layout.** Elevation tiers: resting (sm on `--surface`) → raised (md on `--white`) → overlay (lg on `--white`).
+The only boxed element. `--radius-card`, `1px` `--hairline` border, `--surface` bg, `--shadow-sm`, `--space-4` pad. Use for discrete items (pipeline cards, contacts, **task rows**) — **never for page layout.** Elevation tiers: resting (sm on `--surface`) → raised (md on `--white`) → overlay (lg on `--white`).
+
+**Clickable cards:** when the whole card is a target, the border goes `--cyan-500` on hover over a `.12s` transition — the shadow and fill stay put.
 
 ### Navigation
 Top bar on `--paper` with a single `--hairline` bottom border. Wordmark 700/20px; current view `--cyan-600` 600, others `--color-text-muted` 400; primary action anchored right.
@@ -96,8 +111,12 @@ Right-docked panel over `--scrim-drawer` for quick tasks that shouldn't take the
 - **Responsive:** design board, detail, and drawers to reflow on mobile — users often job-hunt on a phone. (Screens themselves are TBD; keep this constraint in mind when they're built.)
 
 ## 7. Conventions to lock before building screens
-- **Nav vocabulary: TBD — define with the screens.** The export is self-inconsistent (segmented control said *Board / Table / Archive*; nav bar said *Board / Archive / Contacts*). Don't carry that contradiction forward — settle on one set of labels when the screens are designed, and match routes to it then.
+- **Nav vocabulary: settled — Today · Jobs · Writing Library.** Structure set by the Today screen design (`../RoleCall Today.dc.html`), which still shows the superseded *Archive* label in its third slot. Current view renders `--cyan-600`/600, the others `--color-text-muted`/400, with **+ New application** as the primary action anchored right. Routes should match these labels.
+- **There is no Archive destination.** Closed jobs are a filter under **Jobs**. *Writing Library* is a separate surface — the reusable pool of cover letters, blurbs and impact statements from story 3.
 - **Status list is fixed by [statuses.json](statuses.json)** — changing the pipeline means editing that one file (it feeds columns, badges, filters, and the DB enum together).
+- **Task status is fixed by [task-statuses.json](task-statuses.json)**, **priority by [priorities.json](priorities.json)**, and **non-job task category by [task-categories.json](task-categories.json)** — same discipline, same enum-migration rule.
 
 ## 8. Not in this system yet (deferred by choice)
-Core screens (kanban board, detail page, dashboard/todos), priority + reminder components, error/loading states, and a logo mark are intentionally **not** designed here — this is the reusable foundation only. See [../design-review.md](../design-review.md) for the full punch-list.
+Core screens (kanban board, detail page, dashboard/todos), the task row and its status treatment, reminder components, error/loading states, and a logo mark are intentionally **not** designed here — this is the reusable foundation only. See [../design-review.md](../design-review.md) for the full punch-list.
+
+**Task status has no source of truth.** Job status has [statuses.json](statuses.json) and a DB enum; task status (to do / in progress / waiting on / done) has no equivalent yet. Note that color is already carrying job stage on a task row, so task status likely needs to work in **shape and form** rather than hue. Priority is now designed (above) but likewise has no enum file — if it becomes a DB column, it needs one on the `statuses.json` pattern.

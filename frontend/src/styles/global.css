@@ -1,0 +1,11 @@
+/* App-level globals. Base resets, body background, and the focus ring already
+   come from tokens.css — keep this file for app-wide layout only. */
+
+#root {
+  min-height: 100vh;
+}
+
+/* The app ground is paper; tokens.css sets body background/colour/font. */
+body {
+  min-height: 100vh;
+}

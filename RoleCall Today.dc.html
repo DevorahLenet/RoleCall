@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#e7e5e1;}
+  a{color:#006786;text-decoration:none;}
+  a:hover{text-decoration:underline;text-underline-offset:3px;}
+  button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #007391;outline-offset:2px;}
+</style>
+</helmet>
+
+<div style="font-family:'Figtree',sans-serif;background:#f3f2f2;color:#201e1d;min-height:100vh;">
+  <div style="display:flex;align-items:baseline;gap:24px;padding:16px 24px;border-bottom:1px solid rgba(32,30,29,.14);">
+    <span style="font:700 20px/1 'Figtree',sans-serif;letter-spacing:-.02em;">RoleCall</span>
+    <a href="#" style="font:600 15px/1 'Figtree',sans-serif;color:#006786;">Today</a>
+    <a href="#" style="font:400 15px/1 'Figtree',sans-serif;color:#605d5d;">Jobs</a>
+    <a href="#" style="font:400 15px/1 'Figtree',sans-serif;color:#605d5d;">Archive</a>
+    <button style="margin-left:auto;background:#007391;color:#f3f2f2;border:0;padding:8px 20px;border-radius:999px;font:600 14px/1.2 'Figtree',sans-serif;cursor:pointer;transition:background .12s;" style-hover="background:#006786;" style-active="background:#005a75;">+ New application</button>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:16px;padding:8px 24px;background:#f8f4f4;border-bottom:1px solid rgba(32,30,29,.14);">
+    <div style="flex:1;min-width:0;display:flex;gap:0;align-items:stretch;">
+      <sc-for list="{{ stages2 }}" as="s" hint-placeholder-count="5">
+        <a href="#" style="{{ s.band }}">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:1px;min-width:0;">
+            <span style="{{ s.dot }}"></span>
+            <span style="{{ s.labelStyle }}">{{ s.label }}</span>
+          </div>
+          <div style="{{ s.nameStyle }}">{{ s.list }}</div>
+        </a>
+      </sc-for>
+    </div>
+    <a href="#" style="font:400 13px/1 'Figtree',sans-serif;white-space:nowrap;">Job board →</a>
+  </div>
+
+  <div style="padding:24px 32px 32px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <h2 style="font:700 36px/1.05 'Figtree',sans-serif;margin:0;letter-spacing:-.025em;">What to do today</h2>
+      <button style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:#201e1d;border:1.5px solid rgba(32,30,29,.28);padding:12px 20px;border-radius:999px;font:600 14px/1.2 'Figtree',sans-serif;cursor:pointer;transition:background .12s,border-color .12s,color .12s;" style-hover="border-color:#0088b0;color:#006786;" style-active="border-color:#006786;color:#00566f;background:rgba(0,136,176,.12);">+ New task</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:40px;">
+      <sc-for list="{{ groups2 }}" as="g" hint-placeholder-count="3">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px;">
+            <h3 style="font:600 24px/1.15 'Figtree',sans-serif;margin:0;letter-spacing:-.015em;">{{ g.label }}</h3>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ g.items }}" as="t" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:24px 1fr 240px 96px;gap:20px;align-items:center;padding:14px 20px;border:1px solid rgba(32,30,29,.14);border-radius:12px;background:#f8f4f4;box-shadow:0 1px 3px rgba(45,43,43,.10);" style-hover="border-color:#0088b0;">
+                <button style="{{ t.box }}" onClick="{{ t.toggleDone }}" style-hover="border-color:#0088b0;box-shadow:inset 0 0 0 999px rgba(0,136,176,.10);" style-active="box-shadow:inset 0 0 0 999px rgba(0,103,134,.22);">{{ t.check }}</button>
+                <span style="{{ t.title }}">{{ t.title_ }}</span>
+                <sc-if value="{{ t.hasJob }}" hint-placeholder-val="{{ true }}">
+                  <a href="#" style="{{ t.chip }}"><span style="{{ t.dot }}"></span>{{ t.chipText }}</a>
+                </sc-if>
+                <sc-if value="{{ t.noJob }}" hint-placeholder-val="{{ false }}">
+                  <span style="justify-self:start;font:400 13px/1 'Figtree',sans-serif;font-style:italic;color:#605d5d;">No job attached</span>
+                </sc-if>
+                <div style="position:relative;justify-self:end;">
+                  <button style="{{ t.pri }}" onClick="{{ t.toggle }}" style-hover="box-shadow:inset 0 0 0 999px rgba(32,30,29,.07);border-color:#0088b0;color:#006786;">{{ t.priText }}</button>
+                  <sc-if value="{{ t.open }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;top:calc(100% + 8px);right:0;z-index:30;min-width:104px;padding:8px;background:#fff;border-radius:12px;box-shadow:0 3px 12px rgba(45,43,43,.14);display:flex;flex-direction:column;gap:4px;">
+                      <sc-for list="{{ t.opts }}" as="o" hint-placeholder-count="3">
+                        <button style="{{ o.style }}" onClick="{{ o.choose }}" style-hover="background:#eae7e7;">{{ o.label }}</button>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1160,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { pri:{}, openPri:null, done:{} };
+  toggleDone(key){ this.setState(s => ({ done:{ ...s.done, [key]:!s.done[key] } })); }
+  box(done){
+    return { width:'18px', height:'18px', padding:0, borderRadius:'6px', display:'inline-flex',
+      alignItems:'center', justifyContent:'center', cursor:'pointer',
+      border:'1.5px solid ' + (done ? '#0088b0' : 'rgba(32,30,29,.3)'),
+      background:done ? '#0088b0' : 'transparent', color:'#fff',
+      font:"700 12px/1 'Figtree',sans-serif" };
+  }
+  C = {
+    Researching:{ d:'#9b9797', b:'#eae7e7', f:'#444141' },
+    Applied:{ d:'#6486a1', b:'#dbe6ef', f:'#2b4761' },
+    Intro:{ d:'#004961', b:'#62c5ee', f:'#00303f' },
+    Interviewing:{ d:'#edbb00', b:'#faeec2', f:'#6e5300' },
+    Offer:{ d:'#d6006c', b:'#ffdee6', f:'#790e3d' },
+  };
+  STAGES = [
+    { label:'Researching', cos:['Figma','Linear'] },
+    { label:'Applied', cos:['Notion','Vercel'] },
+    { label:'Intro', cos:['Stripe'] },
+    { label:'Interviewing', cos:['Ramp','Retool'] },
+    { label:'Offer', cos:['Cron'] },
+  ];
+  GROUPS = [
+    { label:'To do', items:[
+      { t:'Reply to the Cron offer with comp questions', job:'Cron', stage:'Offer', due:'Today', p:1 },
+      { t:'Chase the take-home prompt from Marcus', job:'Ramp', stage:'Interviewing', due:'Today', p:1 },
+      { t:'Confirm comp band before the exec chat', job:'Ramp', stage:'Interviewing', due:'Jul 31', p:1 },
+      { t:'Tailor résumé for procurement scope', job:'Stripe', stage:'Intro', due:'Aug 1', p:2 },
+      { t:'Coffee with Priya about design orgs', job:'', stage:'', due:'Aug 3', p:3 },
+      { t:'Finish variables course, module 4', job:'', stage:'', due:'—', p:3 },
+    ]},
+    { label:'In progress', items:[
+      { t:'Draft the approvals walkthrough deck', job:'Ramp', stage:'Interviewing', due:'Aug 1', p:1 },
+      { t:'Write the cover blurb', job:'Vercel', stage:'Applied', due:'Aug 2', p:2 },
+      { t:'Portfolio case study: reconciliation', job:'', stage:'', due:'Aug 8', p:2 },
+    ]},
+    { label:'Waiting', items:[
+      { t:'Take-home prompt from recruiter', job:'Ramp', stage:'Interviewing', due:'12d', p:1 },
+      { t:'Screen scheduling confirmation', job:'Retool', stage:'Interviewing', due:'6d', p:2 },
+      { t:'Referral intro from Marcus', job:'Notion', stage:'Applied', due:'9d', p:3 },
+    ]},
+  ];
+  dot(stage, size){
+    const c = this.C[stage];
+    return { width:size+'px', height:size+'px', borderRadius:'50%', background:c ? c.d : '#bab6b6', flex:'none', display:'inline-block' };
+  }
+  PRI3 = {
+    1:{ t:'High', b:'#d7d3d3', c:'#2d2b2b', w:600, bd:'0' },
+    2:{ t:'Med',  b:'#eae7e7', c:'#444141', w:600, bd:'0' },
+    3:{ t:'Low',  b:'transparent', c:'#605d5d', w:600, bd:'1.5px solid rgba(32,30,29,.24)' },
+  };
+  priTag(p, active){
+    const s = this.PRI3[p];
+    return { display:'inline-flex', alignItems:'center', gap:'6px', font:s.w + " 12px/1 'Figtree',sans-serif",
+      padding:'4px 12px', borderRadius:'999px', background:s.b, color:s.c,
+      border:active ? '1.5px solid #0088b0' : s.bd, whiteSpace:'nowrap', cursor:'pointer' };
+  }
+  setPri(key, p){ this.setState(s => ({ pri:{ ...s.pri, [key]:p }, openPri:null })); }
+  togglePri(key){ this.setState(s => ({ openPri:s.openPri === key ? null : key })); }
+  task2(t, key){
+    const c = this.C[t.stage], has = !!t.job;
+    const st = this.state || {};
+    const cur = (st.pri && st.pri[key]) || t.p;
+    const open = st.openPri === key;
+    const done = !!(st.done && st.done[key]);
+    return {
+      ...t, title_:t.t, hasJob:has, noJob:!has, open,
+      priText:this.PRI3[cur].t, pri:this.priTag(cur, open),
+      toggle:() => this.togglePri(key),
+      opts:[1, 2, 3].map(p => ({ label:this.PRI3[p].t, on:p === cur,
+        style:{ display:'block', width:'100%', textAlign:'left', border:0, cursor:'pointer', borderRadius:'999px',
+          padding:'8px 12px', background:p === cur ? '#eae7e7' : 'transparent',
+          font:"600 12px/1 'Figtree',sans-serif", color:this.PRI3[p].c },
+        choose:() => this.setPri(key, p) })),
+      chipText:has ? t.job + ' · ' + t.stage : '',
+      dot:this.dot(t.stage, 8),
+      chip:{ display:'inline-flex', alignItems:'center', justifySelf:'start', gap:'8px', font:"600 12px/1 'Figtree',sans-serif",
+        padding:'4px 12px', borderRadius:'999px', background:c ? c.b : '#eae7e7', color:c ? c.f : '#444141',
+        textDecoration:'none', whiteSpace:'nowrap' },
+      done, check:done ? '✓' : '', box:this.box(done),
+      toggleDone:() => this.toggleDone(key),
+      title:{ font:"400 16px/1.4 'Figtree',sans-serif", color:done ? '#605d5d' : (has ? '#201e1d' : '#605d5d'),
+        textDecoration:done ? 'line-through' : 'none' },
+    };
+  }
+  renderVals(){
+    if (!this._stages2) {
+      const N = this.STAGES.length;
+      this._stages2 = this.STAGES.map((s, i) => {
+        const n = s.cos.length, c = this.C[s.label];
+        const fi = n ? { bg:c.b, fg:c.f } : { bg:'#eae7e7', fg:'#605d5d' };
+        return { ...s, count:n, list:n ? s.cos.join(', ') : 'None',
+          band:{ display:'block', flexGrow:n ? n * 3 : 1, flexBasis:0, flexShrink:1, minWidth:0,
+            padding:'4px 10px 4px ' + (i === 0 ? '10px' : '18px'), marginRight:i === N - 1 ? 0 : '-1px', textDecoration:'none',
+            clipPath:i === N - 1
+              ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 8px 50%)'
+              : (i === 0
+                ? 'polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%)'
+                : 'polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%, 8px 50%)'),
+            background:fi.bg, color:fi.fg },
+          dot:this.dot(s.label, 7),
+          labelStyle:{ font:"600 11px/1 'Figtree',sans-serif", letterSpacing:'0',
+            overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' },
+          nameStyle:{ font:"400 12px/1.25 'Figtree',sans-serif", overflow:'hidden', textOverflow:'ellipsis',
+            whiteSpace:'nowrap', fontStyle:n ? 'normal' : 'italic' } };
+      });
+    }
+    const groups2 = this.GROUPS.map(g => ({ label:g.label, count:g.items.length,
+      items:g.items.map((t, i) => this.task2(t, g.label + i)) }));
+    return { stages2:this._stages2, groups2 };
+  }
+}
+</script>
+</body>
+</html>

@@ -37,7 +37,10 @@ import { Plus, PencilSimple, Trash } from "@phosphor-icons/react";
 |---|---|
 | Board (kanban) view | `Kanban` |
 | Table / list view | `Rows` |
-| Archive | `Archive` |
+| Writing Library | `Books` |
+| Closed jobs (filter under Jobs) | `Archive` |
+| Networking task | `UsersThree` |
+| Professional development task | `GraduationCap` |
 | Contacts / person | `User` / `UserCircle` |
 | Email | `EnvelopeSimple` |
 | Phone | `Phone` |

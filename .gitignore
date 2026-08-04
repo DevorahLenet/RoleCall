@@ -38,6 +38,20 @@ build/
 # Vite's dev cache — generated and machine-local.
 .vite/
 
+# ── Python / Django ────────────────────────────────────────────
+# The project virtual environment — machine-local, regenerated from
+# requirements.txt. Never commit (it's large and platform-specific).
+.venv/
+# Python bytecode caches — generated from source on every run.
+__pycache__/
+*.py[cod]
+# SQLite dev database — generated at runtime and holds real data (privacy).
+# Recreate with migrations + the seed command instead of committing it.
+*.sqlite3
+db.sqlite3
+# Django collected static files (generated for deployment).
+staticfiles/
+
 # ── Logs ───────────────────────────────────────────────────────
 # Log files: noise, machine-specific, not part of the source.
 *.log

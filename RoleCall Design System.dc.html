@@ -219,6 +219,11 @@
               <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;"><span style="width:18px;height:18px;border-radius:6px;background:#0088b0;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;flex:none;">✓</span>Remote OK</span>
               <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;color:#3d3a38;"><span style="width:18px;height:18px;border-radius:6px;border:1.5px solid rgba(32,30,29,.3);flex:none;"></span>Needs sponsorship</span>
             </div>
+            <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin:20px 0 12px;">Hover &amp; pressed</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;color:#3d3a38;"><button style="width:18px;height:18px;padding:0;border-radius:6px;border:1.5px solid rgba(32,30,29,.3);background:transparent;flex:none;cursor:pointer;" style-hover="border-color:#0088b0;box-shadow:inset 0 0 0 999px rgba(0,136,176,.10);" style-active="box-shadow:inset 0 0 0 999px rgba(0,103,134,.22);"></button>Hover me — the box borders cyan and takes a 10% cyan wash</span>
+              <span style="display:inline-flex;align-items:center;gap:12px;font:400 15px/1 'Figtree';cursor:pointer;"><button style="width:18px;height:18px;padding:0;border-radius:6px;border:1.5px solid #0088b0;background:#0088b0;color:#fff;display:grid;place-items:center;font:700 12px/1 'Figtree';flex:none;cursor:pointer;" style-hover="box-shadow:inset 0 0 0 999px rgba(0,136,176,.10);" style-active="box-shadow:inset 0 0 0 999px rgba(0,103,134,.22);">✓</button>Checked boxes take the same wash — the fill never changes hue</span>
+            </div>
           </div>
           <div>
             <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Toggle</div>
@@ -232,11 +237,66 @@
     </div>
   </section>
 
-  <!-- ══ 06 · CARDS ══ -->
+  <!-- ══ 05b · PRIORITY CONTROL ══ -->
   <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
     <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">06</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Priority control</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">Priority is a rank, not a status — so it stays in neutral greys and never borrows a pipeline colour. The pill is the control: click it to open a three-item menu in place. High is the heaviest neutral fill, Med the light one, Low an outline. Use one per row, right-aligned; the menu is raised elevation and closes on choice.</p>
+
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
+      <div style="flex:1;min-width:300px;padding:24px 32px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:20px;">Levels</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+          <span style="display:inline-flex;align-items:center;font:600 12px/1 'Figtree';padding:4px 12px;border-radius:999px;background:#d7d3d3;color:#2d2b2b;">High</span>
+          <span style="display:inline-flex;align-items:center;font:600 12px/1 'Figtree';padding:4px 12px;border-radius:999px;background:#eae7e7;color:#444141;">Med</span>
+          <span style="display:inline-flex;align-items:center;font:600 12px/1 'Figtree';padding:4px 12px;border-radius:999px;border:1.5px solid rgba(32,30,29,.24);color:#605d5d;">Low</span>
+        </div>
+        <div style="font:400 13px/1.5 'Figtree';color:#605d5d;margin-top:16px;">On hover the pill takes a 7% ink wash and a cyan border; while its menu is open the border stays cyan.</div>
+      </div>
+      <div style="flex:1;min-width:300px;padding:24px 32px 48px;border-radius:16px;background:#f8f4f4;border:1px solid rgba(0,0,0,.08);">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.14em;color:#605d5d;margin-bottom:20px;">Live · click to change</div>
+        <div style="position:relative;width:max-content;">
+          <button onClick="{{ togglePri }}" style="{{ priPill }}" style-hover="box-shadow:inset 0 0 0 999px rgba(32,30,29,.07);border-color:#0088b0;color:#006786;">{{ priLabel }}</button>
+          <sc-if value="{{ priOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:calc(100% + 8px);left:0;z-index:30;min-width:104px;padding:8px;background:#fff;border-radius:12px;box-shadow:0 3px 12px rgba(45,43,43,.14);display:flex;flex-direction:column;gap:4px;">
+              <sc-for list="{{ priOpts }}" as="o" hint-placeholder-count="3">
+                <button style="{{ o.style }}" onClick="{{ o.choose }}" style-hover="background:#eae7e7;">{{ o.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 05c · PIPELINE BAND ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">07</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
+    <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Pipeline band</h2>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">A one-line summary of the whole board: chevrons in pipeline order, each weighted by how many applications sit in that stage, tinted with the status badge fill and carrying the same solid dot. It reads as a bar chart you can also read as words. One per screen, directly under the header; it is chrome, never content — keep it to a single line of label plus company names, and link each segment to its filtered board.</p>
+    <div style="border:1px solid rgba(0,0,0,.08);border-radius:16px;overflow:hidden;">
+      <div style="display:flex;align-items:center;gap:16px;padding:8px 24px;background:#f8f4f4;">
+        <div style="flex:1;min-width:0;display:flex;align-items:stretch;">
+          <sc-for list="{{ band }}" as="s" hint-placeholder-count="5">
+            <a href="#" style="{{ s.band }}">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:1px;min-width:0;">
+                <span style="{{ s.dot }}"></span>
+                <span style="{{ s.labelStyle }}">{{ s.label }}</span>
+              </div>
+              <div style="{{ s.nameStyle }}">{{ s.list }}</div>
+            </a>
+          </sc-for>
+        </div>
+        <a href="#" style="font:400 13px/1 'Figtree';white-space:nowrap;">Job board →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 06 · CARDS ══ -->
+  <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">08</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
     <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Cards</h2>
-    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">The one boxed element in the system — 12px corners, a hairline border and a whisper of shadow. Used for genuinely discrete items: pipeline cards and contacts, never for page layout.</p>
+    <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">The one boxed element in the system — 12px corners, a hairline border and a whisper of shadow. Used for genuinely discrete items: pipeline cards, contacts and task rows, never for page layout. When the whole card is clickable, its border goes cyan on hover — the shadow and fill stay put.</p>
 
     <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
       <div style="width:264px;">
@@ -261,6 +321,12 @@
           </div>
         </div>
       </div>
+      <div style="width:264px;">
+        <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Clickable · hover</div>
+        <div style="border:1px solid rgba(32,30,29,.14);border-radius:12px;background:#f8f4f4;box-shadow:0 1px 3px rgba(45,43,43,.10);padding:16px 16px;cursor:pointer;transition:border-color .12s;" style-hover="border-color:#0088b0;">
+          <div style="font:400 16px/1.4 'Figtree';">Hover this card — the border takes the cyan</div>
+        </div>
+      </div>
       <div style="flex:1;min-width:280px;">
         <div style="font:600 11px/1 'Figtree';text-transform:uppercase;letter-spacing:.12em;color:#605d5d;margin-bottom:12px;">Elevation</div>
         <div style="display:flex;flex-direction:column;gap:16px;">
@@ -274,7 +340,7 @@
 
   <!-- ══ 07 · NAVIGATION ══ -->
   <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
-    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">07</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">09</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
     <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Navigation</h2>
     <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">A single hairline under the header separates chrome from content. The current view is marked in cyan; the primary action anchors the right.</p>
     <div style="border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.08);">
@@ -291,7 +357,7 @@
 
   <!-- ══ 08 · TABLE ══ -->
   <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
-    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">08</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">10</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Components</span></div>
     <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Data table</h2>
     <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">The list view of the pipeline. Caps labels in the header, hairline row rules, tabular figures for dates, and the row highlights on hover.</p>
     <div style="border:1px solid rgba(0,0,0,.08);border-radius:16px;overflow:hidden;background:#faf9f9;">
@@ -313,7 +379,7 @@
 
   <!-- ══ 09 · DIALOGS ══ -->
   <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
-    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">09</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Patterns</span></div>
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">11</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Patterns</span></div>
     <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Dialogs</h2>
     <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">Modals float on an overlay-elevation card over a dimmed sheet. A form dialog for creating, a confirm dialog for destructive intent. Click a button to open one.</p>
     <div style="display:flex;flex-wrap:wrap;gap:12px;">
@@ -324,7 +390,7 @@
 
   <!-- ══ 10 · PULL-OUT DRAWER ══ -->
   <section style="padding:64px 0;border-top:1px solid rgba(32,30,29,.14);">
-    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">10</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Patterns</span></div>
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">12</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Patterns</span></div>
     <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Pull-out drawer</h2>
     <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">A right-docked panel for quick tasks that shouldn't steal the whole page — adding an application, editing contacts, filtering the board. Slides in over a dimmed sheet; dismiss with the sheet, the ✕, or Cancel.</p>
     <button onClick="{{ openDrawer }}" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:#201e1d;border:1.5px solid rgba(32,30,29,.28);padding:12px 24px;border-radius:999px;font:600 14px/1.2 'Figtree';cursor:pointer;" style-hover="border-color:#0088b0;color:#006786;">Quick add →</button>
@@ -332,7 +398,7 @@
 
   <!-- ══ 11 · FEEDBACK ══ -->
   <section style="padding:64px 0 0;border-top:1px solid rgba(32,30,29,.14);">
-    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">11</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Patterns</span></div>
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px;"><span style="font:600 13px/1 'Figtree';color:#0088b0;font-variant-numeric:tabular-nums;">13</span><span style="font:600 12px/1 'Figtree';text-transform:uppercase;letter-spacing:.16em;color:#605d5d;">Patterns</span></div>
     <h2 style="font:700 36px/1.05 'Figtree';margin:0 0 8px;letter-spacing:-.025em;">Feedback &amp; empty states</h2>
     <p style="font:400 16px/1.6 'Figtree';color:#3d3a38;max-width:62ch;margin:0 0 32px;">A transient toast confirms actions; the empty state invites the first entry rather than showing a blank board.</p>
     <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:stretch;">
@@ -436,7 +502,48 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { seg:'Board', dialog:null, drawer:false, toast:false };
+  state = { seg:'Board', dialog:null, drawer:false, toast:false, pri:2, priOpen:false };
+
+  PRI = {
+    1:{ t:'High', b:'#d7d3d3', c:'#2d2b2b', bd:'0' },
+    2:{ t:'Med',  b:'#eae7e7', c:'#444141', bd:'0' },
+    3:{ t:'Low',  b:'transparent', c:'#605d5d', bd:'1.5px solid rgba(32,30,29,.24)' },
+  };
+  togglePri = () => this.setState(s => ({ priOpen:!s.priOpen }));
+  choosePri = (p) => this.setState({ pri:p, priOpen:false });
+  priPill(p, open){
+    const s = this.PRI[p];
+    return { display:'inline-flex', alignItems:'center', font:"600 12px/1 'Figtree',sans-serif",
+      padding:'4px 12px', borderRadius:'999px', background:s.b, color:s.c,
+      border:open ? '1.5px solid #0088b0' : s.bd, whiteSpace:'nowrap', cursor:'pointer' };
+  }
+  bandStages = [
+    { label:'Researching', cos:['Figma','Linear'] },
+    { label:'Applied', cos:['Notion','Vercel'] },
+    { label:'Intro', cos:['Stripe'] },
+    { label:'Interviewing', cos:['Ramp','Retool'] },
+    { label:'Offer', cos:['Cron'] },
+  ];
+  bandList(){
+    if (this._band) return this._band;
+    const N = this.bandStages.length;
+    this._band = this.bandStages.map((s, i) => {
+      const raw = this.RAW.find(r => r.label === s.label), n = s.cos.length;
+      return { label:s.label, list:s.cos.join(', '),
+        band:{ display:'block', flexGrow:n * 3, flexBasis:0, flexShrink:1, minWidth:0, textDecoration:'none',
+          padding:'4px 10px 4px ' + (i === 0 ? '10px' : '18px'), marginRight:i === N - 1 ? 0 : '-1px',
+          clipPath:i === N - 1
+            ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 8px 50%)'
+            : (i === 0
+              ? 'polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%)'
+              : 'polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%, 8px 50%)'),
+          background:raw.b, color:raw.f },
+        dot:{ width:'7px', height:'7px', borderRadius:'50%', background:raw.d, flex:'none', display:'inline-block' },
+        labelStyle:{ font:"600 11px/1 'Figtree',sans-serif", overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' },
+        nameStyle:{ font:"400 12px/1.25 'Figtree',sans-serif", overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' } };
+    });
+    return this._band;
+  }
 
   onSeg = (e) => this.setState({ seg: e.currentTarget.dataset.value });
   openDelete = () => this.setState({ dialog:'delete' });
@@ -482,6 +589,14 @@ class Component extends DCLogic {
       showDelete:this.state.dialog==='delete', showNew:this.state.dialog==='new', anyDialog:!!this.state.dialog,
       openDrawer:this.openDrawer, closeDrawer:this.closeDrawer, drawer:this.state.drawer,
       fireToast:this.fireToast, hideToast:this.hideToast, toast:this.state.toast,
+      band:this.bandList(),
+      priLabel:this.PRI[this.state.pri].t, priOpen:this.state.priOpen,
+      priPill:this.priPill(this.state.pri, this.state.priOpen), togglePri:this.togglePri,
+      priOpts:[1, 2, 3].map(p => ({ label:this.PRI[p].t,
+        style:{ display:'block', width:'100%', textAlign:'left', border:0, cursor:'pointer', borderRadius:'999px',
+          padding:'8px 12px', background:p === this.state.pri ? '#eae7e7' : 'transparent',
+          font:"600 12px/1 'Figtree',sans-serif", color:this.PRI[p].c },
+        choose:() => this.choosePri(p) })),
     };
   }
 }

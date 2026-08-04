@@ -1,0 +1,19 @@
+{
+  "$comment": "RoleCall task category — single source of truth for tasks that are NOT attached to a job. On a task row, the chip slot shows either the job (company · pipeline stage) or, when there is no job, the task's category. `id` is the stable machine value; `label` is display text.",
+  "$storage": "Store as the `id` in a database ENUM column whose allowed values are exactly the `id`s below. Changing this list means editing this file AND running an enum migration.",
+  "$appliesWhen": "Category is required when `job_id` is null and ignored when a job is attached — the job chip takes the slot. If a job-attached task ever needs a category too, that is a model change, not a display change.",
+  "$style": "Rendered as an outline pill in the same slot and size as the job chip — no fill, no dot, `--priority-low-border` weight. The lighter treatment is deliberate: it reflects lower urgency without hiding the task. Never tint these with a pipeline color; they have no pipeline stage.",
+  "categories": [
+    {
+      "id": "networking",
+      "label": "Networking",
+      "description": "Coffee chats, referrals, intros, community — relationship work not tied to a specific application."
+    },
+    {
+      "id": "professional_development",
+      "label": "Professional development",
+      "description": "Courses, portfolio work, skills practice, writing — capability building not tied to a specific application."
+    }
+  ],
+  "$visibility": "These tasks lose on raw priority to job tasks almost every time, which buries them while appearing to include them. See rolecall_plan.md — the layout may need to guarantee them a floor."
+}

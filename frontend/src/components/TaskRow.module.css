@@ -1,0 +1,184 @@
+.row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto auto auto;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.rowDone .chip,
+.rowDone .categoryChip {
+  opacity: 0.55;
+}
+
+/* Checkbox: 44px hit area, 18px visual box centred inside. */
+.check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-check);
+  border: 1.5px solid var(--border-strong);
+  color: var(--white);
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+.check:hover .box {
+  border-color: var(--cyan-500);
+  box-shadow: inset 0 0 0 999px var(--wash-cyan-hover);
+}
+.check:active .box {
+  box-shadow: inset 0 0 0 999px var(--wash-cyan-active);
+}
+.boxDone {
+  background: var(--cyan-500);
+  border-color: var(--cyan-500);
+}
+
+.title {
+  font: var(--weight-regular) 16px/1.4 var(--font-sans);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rowDone .title {
+  text-decoration: line-through;
+}
+
+/* Inline title editor: sits in the title column, matching the row's type. */
+.titleInput {
+  width: 100%;
+  font: var(--weight-regular) 16px/1.4 var(--font-sans);
+  color: var(--color-text);
+  padding: var(--space-1) var(--space-2);
+  background: var(--white);
+  border: 1.5px solid var(--border-input);
+  border-radius: var(--radius-control);
+}
+.titleInput:focus {
+  outline: none;
+  border-color: var(--focus-input-border);
+  box-shadow: 0 0 0 3px var(--focus-input-glow);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-self: start;
+  max-width: 260px;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font: var(--weight-semibold) 12px/1 var(--font-sans);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chip:hover {
+  text-decoration: none;
+}
+
+.chipDot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  flex: none;
+}
+
+/* Category chip: lighter, outline-only pill — no fill, no pipeline colour. */
+.categoryChip {
+  justify-self: start;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--priority-low-border);
+  color: var(--color-text-muted);
+  font: var(--weight-semibold) 12px/1 var(--font-sans);
+  white-space: nowrap;
+}
+
+.noJob {
+  justify-self: start;
+  font: var(--weight-regular) 13px/1 var(--font-sans);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+/* Row overflow menu: transparent 44px trigger, menu at raised elevation
+   (mirrors the PriorityPill control's interaction pattern). */
+.menuWrap {
+  position: relative;
+  justify-self: end;
+}
+
+.menuTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.menuTrigger:hover {
+  background: var(--wash-ink-hover);
+  color: var(--color-text);
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: var(--z-overlay);
+  min-width: 160px;
+  padding: var(--space-2);
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 40px;
+  text-align: left;
+  border: 0;
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  color: var(--color-text);
+  font: var(--weight-semibold) 13px/1 var(--font-sans);
+}
+.menuItem:hover {
+  background: var(--neutral-100);
+}
+.menuItemDanger {
+  color: var(--color-danger-text);
+}

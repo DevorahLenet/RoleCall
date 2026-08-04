@@ -1,0 +1,66 @@
+.band {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-6);
+  background: var(--surface-alt);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.track {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+.segment {
+  display: block;
+  min-width: 0;
+  padding-top: var(--space-1);
+  padding-bottom: var(--space-1);
+  padding-right: var(--space-3);
+  text-decoration: none;
+  overflow: hidden;
+}
+.segment:hover {
+  text-decoration: none;
+  filter: brightness(0.97);
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+  margin-bottom: 1px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-pill);
+  flex: none;
+}
+
+.label {
+  font: var(--weight-semibold) 11px/1 var(--font-sans);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.names {
+  display: block;
+  font: var(--weight-regular) 12px/1.25 var(--font-sans);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.boardLink {
+  flex: none;
+  font: var(--weight-regular) 13px/1 var(--font-sans);
+  white-space: nowrap;
+  color: var(--color-link);
+}

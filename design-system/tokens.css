@@ -79,6 +79,17 @@
   --danger-hover: #9a3110;
   --danger-text: #9a3110;  /* danger as text/outline on paper (AA) */
 
+  /* ---------- Priority ramp ----------
+     Priority is a RANK, not a status. It stays in neutral greys and never
+     borrows a pipeline color — weight alone carries the hierarchy. */
+  --priority-high-bg: var(--neutral-200);
+  --priority-high-text: var(--neutral-800);
+  --priority-med-bg: var(--neutral-100);
+  --priority-med-text: var(--neutral-700);
+  --priority-low-bg: transparent;
+  --priority-low-text: var(--neutral-600);
+  --priority-low-border: rgba(32, 30, 29, 0.24);
+
   /* ---------- Semantic aliases (reference these in components) ---------- */
   --color-bg: var(--paper);
   --color-surface: var(--surface);
@@ -111,6 +122,13 @@
   --focus-input-border: var(--cyan-500);
   --focus-input-glow: rgba(0, 136, 176, 0.25);
 
+  /* ---------- Interaction washes ----------
+     Applied as an inset box-shadow so a control's own fill keeps its hue —
+     hover and press change value, never color. */
+  --wash-cyan-hover: rgba(0, 136, 176, 0.10);   /* checkbox / radio / toggle hover */
+  --wash-cyan-active: rgba(0, 103, 134, 0.22);  /* same, pressed */
+  --wash-ink-hover: rgba(32, 30, 29, 0.07);     /* neutral pill hover (priority) */
+
   /* ---------- Overlay scrims ---------- */
   --scrim-dialog: rgba(45, 43, 43, 0.45);
   --scrim-drawer: rgba(45, 43, 43, 0.40);
@@ -128,6 +146,7 @@
 
   /* ---------- Radius ---------- */
   --radius-control: 8px;   /* inputs, selects, textareas */
+  --radius-check: 6px;     /* 18px checkbox */
   --radius-card: 12px;     /* cards */
   --radius-container: 16px; /* panels, wells, table shell */
   --radius-dialog: 18px;   /* modal cards */

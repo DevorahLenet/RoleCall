@@ -1,0 +1,24 @@
+{
+  "$comment": "RoleCall task status — single source of truth. Drives the task-group headers on Today, filters, and the DB status enum. `id` is the stable machine value; `label` is display text. Deliberately has NO colors: color on a task row is already carrying the job's pipeline stage (see statuses.json), so task status is expressed through grouping and position instead of hue.",
+  "$storage": "Store a task's status as its `id` in a database ENUM column whose allowed values are exactly the `id`s below. Changing this list means editing this file AND running an enum migration.",
+  "$order": "Groups render on Today in the order listed — the sequence is an implicit instruction: finish what's started, then start what's queued, and Waiting is information rather than work.",
+  "statuses": [
+    {
+      "id": "todo",
+      "label": "To do",
+      "description": "Queued and actionable."
+    },
+    {
+      "id": "in_progress",
+      "label": "In progress",
+      "description": "Started but unfinished."
+    },
+    {
+      "id": "waiting",
+      "label": "Waiting",
+      "description": "Blocked on someone else. Not actionable — carries a day count since it started waiting."
+    }
+  ],
+  "$done": "Completion is a separate boolean field on the task, NOT a fourth status. A completed task strikes through and mutes in place rather than moving groups. How long it lingers before clearing is still undecided.",
+  "$waitingSince": "`waiting` needs a timestamp to render its day count ('12d'). Store `waiting_since` alongside status."
+}

@@ -1,0 +1,7 @@
+.message {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: var(--space-8);
+  font: var(--text-lead);
+  color: var(--color-text-muted);
+}

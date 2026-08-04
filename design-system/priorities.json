@@ -1,0 +1,32 @@
+{
+  "$comment": "RoleCall task priority — single source of truth. Drives the priority control, the sort order within each task-status group, and the DB priority enum. `rank` is the sort key (1 sorts first).",
+  "$storage": "Store a task's priority as its `id` in a database ENUM column whose allowed values are exactly the `id`s below. Changing this list means editing this file AND running an enum migration.",
+  "$color": "Priority is a RANK, not a status — it never borrows a pipeline color. Each level maps to a --priority-* token in tokens.css; those tokens are the source of truth for the actual values, so resolve them at render time rather than duplicating hexes here.",
+  "priorities": [
+    {
+      "id": "high",
+      "label": "High",
+      "rank": 1,
+      "bg": "--priority-high-bg",
+      "text": "--priority-high-text",
+      "border": null
+    },
+    {
+      "id": "med",
+      "label": "Med",
+      "rank": 2,
+      "bg": "--priority-med-bg",
+      "text": "--priority-med-text",
+      "border": null
+    },
+    {
+      "id": "low",
+      "label": "Low",
+      "rank": 3,
+      "bg": "--priority-low-bg",
+      "text": "--priority-low-text",
+      "border": "--priority-low-border"
+    }
+  ],
+  "$sort": "Within each task-status group, tasks sort by `rank` ascending. Priority is set by the user through the pill control; deriving part of it from the job's pipeline stage is a planned enhancement (see rolecall_plan.md)."
+}
