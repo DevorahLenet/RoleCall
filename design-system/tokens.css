@@ -37,7 +37,7 @@
   /* Eyebrow / field label recipe: font-weight 600, uppercase, use --tracking-label. */
 
   /* ---------- Neutral ramp: ink & paper ---------- */
-  --neutral-0: #f8f4f4;   /* surface (cards, wells) */
+  --neutral-0: #f8f4f4;   /* lightest warm tint — wells, hover fills */
   --neutral-100: #eae7e7;
   --neutral-200: #d7d3d3;
   --neutral-300: #bab6b6;
@@ -48,8 +48,8 @@
   --neutral-800: #2d2b2b;
   --ink: #201e1d;          /* primary text / near-black */
 
-  --paper: #f3f2f2;        /* app background ("ground") */
-  --surface: #f8f4f4;      /* raised surface on paper */
+  --paper: #ffffff;        /* app background ("ground") */
+  --surface: #ffffff;      /* card surface — same value as paper; the hairline + shadow separate it */
   --surface-alt: #faf9f9;  /* table / content-area fill */
   --white: #ffffff;        /* input & elevated-card fill */
 
@@ -153,7 +153,9 @@
   --radius-pill: 999px;    /* buttons, badges, tags, toggles */
 
   /* ---------- Elevation ---------- */
-  --shadow-sm: 0 1px 3px rgba(45, 43, 43, 0.10);   /* resting card */
+  /* Resting cards sit white-on-white, so the resting shadow carries the whole
+     lift — two layers (tight contact + soft spread) keep it readable but quiet. */
+  --shadow-sm: 0 1px 2px rgba(45, 43, 43, 0.07), 0 2px 8px rgba(45, 43, 43, 0.07);
   --shadow-md: 0 3px 12px rgba(45, 43, 43, 0.14);  /* raised */
   --shadow-lg: 0 14px 36px rgba(45, 43, 43, 0.22); /* overlay card */
   --shadow-dialog: 0 24px 60px rgba(45, 43, 43, 0.32);

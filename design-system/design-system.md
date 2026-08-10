@@ -78,12 +78,14 @@ The pill *is* the control — clicking it opens a three-item menu in place, at r
 ### Pipeline band
 A one-line summary of the whole board: chevrons in pipeline order, each **weighted by how many applications sit in that stage**, tinted with the status `badgeBg`/`badgeFg` and carrying the same solid dot. It reads as a bar chart you can also read as words.
 
-One per screen, directly under the header. Container `--radius-container`, `--border-card`, `--surface` fill. Segments overlap by 1px with an 8px chevron notch; each links to its filtered board, with a trailing link to the full job board.
+One per screen, directly under the header. Container `--radius-container`, `--border-card`, `--surface-alt` fill (a tint that sits *back* from the white ground — it is chrome, not a card). Segments overlap by 1px with an 8px chevron notch; each links to its filtered board, with a trailing link to the full job board.
 
 **It is chrome, never content** — hold it to a single line of label plus company names. Active statuses only; closed statuses are filtered out of the band and reachable under **Jobs**.
 
 ### Cards
-The only boxed element. `--radius-card`, `1px` `--hairline` border, `--surface` bg, `--shadow-sm`, `--space-4` pad. Use for discrete items (pipeline cards, contacts, **task rows**) — **never for page layout.** Elevation tiers: resting (sm on `--surface`) → raised (md on `--white`) → overlay (lg on `--white`).
+The only boxed element. `--radius-card`, `1px` `--hairline` border, `--surface` bg, `--shadow-sm`, `--space-4` pad. Use for discrete items (pipeline cards, contacts, **task rows**) — **never for page layout.** Elevation tiers: resting (sm) → raised (md) → overlay (lg).
+
+**Ground and surface are both white.** A card no longer separates from the page by fill — the hairline border and `--shadow-sm` do all of that work, so neither is optional on a resting card. Elevation is read purely as shadow depth. When something needs to sit *back* from the page rather than forward (wells, filled table shells), use `--surface-alt` or `--neutral-0` as a tint, not `--surface`.
 
 **Clickable cards:** when the whole card is a target, the border goes `--cyan-500` on hover over a `.12s` transition — the shadow and fill stay put.
 
