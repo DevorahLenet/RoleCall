@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { BookOpen, Briefcase, Sun, X } from '@phosphor-icons/react'
 import type { Job } from '../types'
 import { activeJobStatuses } from '../design-system/statuses'
+import { TruncatedText } from './TruncatedText'
 import styles from './Sidebar.module.css'
 
 // Nav vocabulary is settled: Today · Jobs · Writing Library. Closed jobs are a
@@ -74,7 +75,7 @@ export function Sidebar({ jobs, open, onClose }: Props) {
                 className={styles.stage}
               >
                 <span className={styles.dot} style={{ background: status.dot }} aria-hidden />
-                <span className={styles.stageLabel}>{status.label}</span>
+                <TruncatedText text={status.label} className={styles.stageLabel} />
                 <span className={count ? styles.count : styles.countZero}>{count}</span>
               </NavLink>
             )

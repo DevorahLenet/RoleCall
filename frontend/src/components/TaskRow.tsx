@@ -5,6 +5,7 @@ import type { Task } from '../types'
 import { getJobStatus } from '../design-system/statuses'
 import { getCategory } from '../design-system/categories'
 import { PriorityPill } from './PriorityPill'
+import { TruncatedText } from './TruncatedText'
 import styles from './TaskRow.module.css'
 
 interface Props {
@@ -135,7 +136,10 @@ export function TaskRow({
           }
         >
           <span className={styles.chipDot} style={{ background: jobStatus.dot }} aria-hidden />
-          {task.job_company} · {jobStatus.label}
+          <TruncatedText
+            text={`${task.job_company} · ${jobStatus.label}`}
+            className={styles.chipText}
+          />
         </a>
       ) : category ? (
         <span className={styles.categoryChip}>{category.label}</span>

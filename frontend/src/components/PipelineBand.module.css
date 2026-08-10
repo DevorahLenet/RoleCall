@@ -1,9 +1,10 @@
 /* Inset into the content pane rather than full-bleed chrome — it's a glance at
-   the board's shape, so it sits with the content it summarises. */
+   the board's shape, so it sits with the content it summarises. Fill matches the
+   page; the border alone holds the shape. */
 .band {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: var(--color-bg-sunken);
+  background: var(--color-bg);
   padding: var(--space-1);
 }
 
@@ -15,11 +16,13 @@
   overflow: hidden;
 }
 
+/* Every stage stays legible: the flex weighting distributes the SPARE space, but
+   no segment drops below the floor, so an empty stage keeps its dot and label. */
 .segment {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  min-width: 0;
+  min-width: var(--pipeline-segment-min);
   height: 32px;
   padding-right: var(--space-3);
   text-decoration: none;
@@ -61,6 +64,7 @@
   }
   .segment {
     justify-content: center;
+    min-width: var(--pipeline-segment-min-compact);
     padding-right: var(--space-2);
   }
   .count {

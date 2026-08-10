@@ -72,6 +72,15 @@ Use `.tabular-nums` (or `font-variant-numeric: tabular-nums`) for dates and nume
 - **Status badge:** soft-tinted chip + solid dot in the same hue. Pull `badgeBg`/`badgeFg`/`dot` from [statuses.json](statuses.json) — do not re-pick colors. Font 600/11px, `--radius-xs`, dot 6px. **Squared, not pill** — this is a data label, not a button.
 - **Tags:** lighter general-purpose labels (outline `1px --color-border`, `--color-text-muted`). e.g. Remote, Full-time, Referral.
 
+### Tooltip (truncated text)
+`--color-text` fill, `--color-bg` label, `--text-meta`, `--radius-sm`, `--shadow-md`, `--z-tooltip`. Anchored above the text it explains, fading in over `.1s`.
+
+**It only exists to recover clipped text** — `TruncatedText.tsx` measures `scrollWidth` against `clientWidth` on hover and shows nothing when the label already fits, so tooltips never appear on text you can read. Don't repurpose it for help text or descriptions; that's a different component with different rules.
+
+Two constraints are baked in: it **portals to `<body>`**, because the pipeline band clips its segments (`clip-path` + `overflow: hidden`) and would otherwise swallow a tooltip rendered in place even at `position: fixed`; and it is **`pointer-events: none`**, so it can't steal the hover that spawned it. Escape and scroll dismiss it (WCAG 1.4.13).
+
+Truncation is **visual only** — the full string stays in the DOM, so screen readers and find-in-page are unaffected and the tooltip is a pointer affordance rather than the sole source of the text.
+
 ### Menus & popovers
 `--color-surface` fill, `1px --color-border`, `--radius-md`, `--shadow-md`, `--space-1` pad. Items are `--text-body-sm` at `--radius-sm`, `--control-height-sm` tall, hover `--color-surface-hover`. Dismiss on outside click and Escape. Anchor with `position: absolute` from the trigger's wrapper.
 
@@ -91,9 +100,11 @@ The tag *is* the control — clicking it opens a three-item menu in place, which
 ### Pipeline band
 A one-line summary of the whole board: chevrons in pipeline order, each **weighted by how many applications sit in that stage**, tinted with the status `badgeBg`/`badgeFg` and carrying the same solid dot plus its count. It reads as a bar chart you can also read as words.
 
-One per screen, **inset into the content pane** — `--radius-md`, `1px --color-border`, `--color-bg-sunken` fill, with the chevron track clipped inside. Segments overlap by 1px with an 8px chevron notch; each links to `/jobs?status=<id>`. Empty stages stay narrow and drop to 55% opacity. Active statuses only; closed statuses are reachable under **Jobs**.
+One per screen, **inset into the content pane** — `--radius-md`, `1px --color-border`, **`--color-bg` fill (the same white as the page; the border alone holds the shape)**, with the chevron track clipped inside. Segments overlap by 1px with an 8px chevron notch; each links to `/jobs?status=<id>`. Active statuses only; closed statuses are reachable under **Jobs**.
 
-Below 600px the labels drop and the segments keep dot + count. Stage *navigation* also lives in the sidebar; the band is the at-a-glance shape.
+**Every stage stays fully legible.** The band is a fixed legend, so no stage is faded out and none collapses to a sliver: `--pipeline-segment-min` is a hard floor on segment width, and the count-based `flexGrow` only decides how the *spare* width is shared. Emptiness is carried by the stage's `0`, never by dimming.
+
+Below 600px the labels drop, the floor relaxes to `--pipeline-segment-min-compact`, and segments keep dot + count. Stage *navigation* also lives in the sidebar; the band is the at-a-glance shape.
 
 ### Cards
 `--radius-md`, `1px --color-border`, `--color-surface` bg, `--shadow-sm`, `--space-4`–`--space-5` pad. Use for genuinely discrete, floating items — **never for page layout, and never for list rows.**

@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import type { Job } from '../types'
 import { activeJobStatuses } from '../design-system/statuses'
+import { TruncatedText } from './TruncatedText'
 import styles from './PipelineBand.module.css'
 
 // A one-line summary of the whole board: a chevron per active stage, each
@@ -33,8 +34,10 @@ export function PipelineBand({ jobs }: { jobs: Job[] }) {
           const isFirst = i === 0
           const isLast = i === lastIndex
 
-          // Every stage wears its own status colour; empty ones fade back (they
-          // also stay narrow, since flexGrow only expands with the count).
+          // Every stage wears its own status colour at full strength — the band is
+          // a fixed legend, so an empty stage must still be readable. Weighting
+          // only decides how the SPARE width is shared; --pipeline-segment-min
+          // holds the floor. Emptiness is carried by the count, not by fading.
           const segStyle: CSSProperties = {
             flexGrow: count ? count * 3 : 1,
             flexBasis: 0,
@@ -43,7 +46,6 @@ export function PipelineBand({ jobs }: { jobs: Job[] }) {
             clipPath: clipPath(isFirst, isLast),
             background: status.badgeBg,
             color: status.badgeFg,
-            opacity: count ? 1 : 0.55,
           }
 
           return (
@@ -55,7 +57,7 @@ export function PipelineBand({ jobs }: { jobs: Job[] }) {
               aria-label={`${status.label}: ${count} ${count === 1 ? 'job' : 'jobs'}`}
             >
               <span className={styles.dot} style={{ background: status.dot }} aria-hidden />
-              <span className={styles.label}>{status.label}</span>
+              <TruncatedText text={status.label} className={styles.label} />
               <span className={styles.count} aria-hidden>
                 {count}
               </span>
