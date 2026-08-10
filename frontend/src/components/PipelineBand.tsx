@@ -5,7 +5,8 @@ import styles from './PipelineBand.module.css'
 
 // A one-line summary of the whole board: a chevron per active stage, each
 // weighted by how many jobs sit in it and tinted with the status colours from
-// statuses.json. Chrome, never content — closed statuses are excluded.
+// statuses.json. Every active stage carries its own colour so the band reads as
+// a fixed legend; empty stages just fade back. Closed statuses are excluded.
 
 // Chevron outline for one segment: point on the right, notch on the left, except
 // the first (flat left) and last (flat right) so the band reads as one arrow.
@@ -33,14 +34,17 @@ export function PipelineBand({ jobs }: { jobs: Job[] }) {
           const isFirst = i === 0
           const isLast = i === lastIndex
 
+          // Every stage wears its own status colour; empty ones fade back (they
+          // also stay narrow, since flexGrow only expands with the count).
           const segStyle: CSSProperties = {
             flexGrow: count ? count * 3 : 1,
             flexBasis: 0,
             marginRight: isLast ? 0 : '-1px',
             paddingLeft: isFirst ? 'var(--space-3)' : 'var(--space-5)',
             clipPath: clipPath(isFirst, isLast),
-            background: count ? status.badgeBg : 'var(--neutral-100)',
-            color: count ? status.badgeFg : 'var(--color-text-muted)',
+            background: status.badgeBg,
+            color: status.badgeFg,
+            opacity: count ? 1 : 0.5,
           }
 
           return (
@@ -48,7 +52,7 @@ export function PipelineBand({ jobs }: { jobs: Job[] }) {
               <span className={styles.labelRow}>
                 <span
                   className={styles.dot}
-                  style={{ background: count ? status.dot : 'var(--neutral-300)' }}
+                  style={{ background: status.dot }}
                   aria-hidden
                 />
                 <span className={styles.label}>{status.label}</span>
