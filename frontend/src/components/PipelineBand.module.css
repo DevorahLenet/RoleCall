@@ -1,45 +1,39 @@
+/* Inset into the content pane rather than full-bleed chrome — it's a glance at
+   the board's shape, so it sits with the content it summarises. */
 .band {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-2) var(--space-6);
-  background: var(--surface-alt);
-  border-bottom: 1px solid var(--hairline);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+  padding: var(--space-1);
 }
 
+/* overflow:hidden keeps the chevron clip-paths inside the rounded container. */
 .track {
-  flex: 1;
-  min-width: 0;
   display: flex;
   align-items: stretch;
+  border-radius: var(--radius-xs);
+  overflow: hidden;
 }
 
 .segment {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   min-width: 0;
-  padding-top: var(--space-1);
-  padding-bottom: var(--space-1);
+  height: 32px;
   padding-right: var(--space-3);
   text-decoration: none;
-  overflow: hidden;
+  transition: filter 0.12s ease;
 }
 .segment:hover {
   text-decoration: none;
-  filter: brightness(0.97);
-}
-
-.labelRow {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  min-width: 0;
-  margin-bottom: 1px;
+  filter: brightness(0.96);
 }
 
 .dot {
-  width: 7px;
-  height: 7px;
-  border-radius: var(--radius-pill);
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
   flex: none;
 }
 
@@ -50,17 +44,27 @@
   white-space: nowrap;
 }
 
-.names {
-  display: block;
-  font: var(--weight-regular) 12px/1.25 var(--font-sans);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.count {
+  margin-left: auto;
+  padding-left: var(--space-2);
+  font: var(--weight-semibold) 11px/1 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+  flex: none;
 }
 
-.boardLink {
-  flex: none;
-  font: var(--weight-regular) 13px/1 var(--font-sans);
-  white-space: nowrap;
-  color: var(--color-link);
+/* Narrow screens can't fit five labelled chevrons — keep the dot and the count,
+   and let the tooltip-grade detail live on the Jobs screen. */
+@media (max-width: 600px) {
+  .label {
+    display: none;
+  }
+  .segment {
+    justify-content: center;
+    padding-right: var(--space-2);
+  }
+  .count {
+    margin-left: 0;
+    padding-left: 0;
+  }
 }

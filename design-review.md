@@ -19,6 +19,21 @@ Fixes accepted and applied to the design system:
 
 **Next up:** a design concept (not the core screens yet — deliberately deferred). Still open from the punch-list below: emoji → real icon set, core surfaces (kanban board, detail page, dashboard, priority, reminders — deferred by choice), error/loading states, responsive/mobile, touch targets, native form semantics, logo mark, IA naming drift.
 
+## Addressed in the Aug 2026 app redesign
+
+The editorial "newsprint" register was retired for an application register (see `design-system/design-system.md` §1). That closed several items below:
+
+- ✅ **#7 real icon set** — Phosphor throughout, no emoji.
+- ✅ **#9 error & loading states** — skeleton rows on load; an error card with a working retry.
+- ✅ **#10 responsive** — 900px (sidebar → drawer) and 600px (row/band reflow) breakpoints.
+- ✅ **#13 surface separation** — the root cause is gone: ground and surface are both white, and separation now comes from dividers, borders and a re-tuned shadow scale rather than from two near-identical off-whites.
+- ✅ **§8 touch targets** — 44px floor on touch, with compact controls only on fine pointers.
+- ✅ **§8 native semantics** — real `<input>`/`<button>` elements with labels and `aria-label`s.
+- ✅ **§4 type scale** — formalized and sized for an application (20/15/14/13/12/11).
+- ✅ **§1 "restraint tips into flat"** — density and a real shell replace the long stretches of near-identical cards.
+
+Still open: the kanban board, job detail page, dashboard/momentum stats (#8, #12), a celebratory Offer moment (#12), and a logo mark (#11).
+
 ---
 
 ## Overall verdict — 7 / 10

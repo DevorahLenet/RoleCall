@@ -1,0 +1,51 @@
+.list {
+  margin-top: var(--space-8);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.heading {
+  margin: 0;
+  font: var(--text-section);
+  color: var(--color-text);
+}
+
+.group {
+  margin-bottom: var(--space-6);
+}
+
+/* Eyebrow header + count. Sticks under the toolbar so the group you're scrolling
+   through stays named. */
+.groupTitle {
+  position: sticky;
+  top: var(--toolbar-height);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-2) 0;
+  background: var(--color-bg);
+  font: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-disabled);
+  letter-spacing: 0;
+}
+
+/* Rows are flat and divided — no gap, no card. The top border closes the list
+   against the group header. */
+.rows {
+  border-top: 1px solid var(--color-border-subtle);
+}

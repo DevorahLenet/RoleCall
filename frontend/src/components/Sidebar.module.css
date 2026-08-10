@@ -1,0 +1,197 @@
+/* The rail sits BACK from the page: sunken fill + a right hairline, against the
+   white content pane. It never uses --color-surface (that reads as "forward"). */
+.sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: var(--sidebar-width);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  padding: var(--space-5) var(--space-3);
+  background: var(--color-bg-sunken);
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-2);
+}
+
+.wordmark {
+  font: var(--weight-bold) 16px/1 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+/* Drawer dismiss — only rendered on small screens (see the media query). */
+.close {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: calc(var(--space-2) * -1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+.close:hover {
+  background: var(--color-surface-active);
+  color: var(--color-text);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 34px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font: var(--weight-medium) 13px/1 var(--font-sans);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.navItem:hover {
+  background: var(--color-surface-active);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+/* Active view reads by weight + fill, not by colour alone. */
+.navItemActive {
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-xs);
+}
+.navItemActive:hover {
+  background: var(--color-surface);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sectionTitle {
+  margin: 0 0 var(--space-1);
+  padding: 0 var(--space-2);
+  font: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.stages {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 30px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font: var(--text-body-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+.stage:hover {
+  background: var(--color-surface-active);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+}
+
+.stageLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.count {
+  font: var(--text-meta);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+/* An empty stage still shows its number, just recedes. */
+.countZero {
+  composes: count;
+  color: var(--color-text-disabled);
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding: var(--space-2);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-4);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font: var(--weight-semibold) 12px/1 var(--font-sans);
+}
+
+.accountName {
+  font: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Mobile: the rail becomes an overlay drawer ---------- */
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-overlay);
+    transform: translateX(-100%);
+    transition: transform 0.18s ease;
+    box-shadow: var(--shadow-drawer);
+  }
+  .open {
+    transform: translateX(0);
+  }
+  .close {
+    display: inline-flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+  }
+}

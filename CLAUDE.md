@@ -7,9 +7,12 @@ The design system lives in `design-system/`. Before building or restyling any UI
 
 - **Import `design-system/tokens.css` once, globally.** Reference its CSS variables for every color, font, spacing, radius, shadow, and z-index.
 - **Never hardcode** a hex color, font size, spacing value, or radius. If a value you need isn't a token, add it to `tokens.css` first, then use it.
+- **`tokens.css` has two layers, and components may only use the semantic one.** The raw palette (`--neutral-*`, `--cyan-*`, `--magenta-*`) exists to define the semantic layer (`--color-*`); a component referencing `--neutral-200` directly is a bug even though it renders fine today. This split is what keeps a dark theme a token addition rather than a rewrite.
 - **Spacing is the 4pt scale only** (`--space-*`). No arbitrary pixel values.
-- **Text color** uses `--color-text` / `--color-text-secondary` / `--color-text-muted`. Never put text in `--neutral-500` or raw `--cyan-500` (fails contrast).
-- **Reuse components** before building new ones. Keep the "hierarchy from scale & whitespace, not boxes" principle — the card is the only boxed element.
+- **Text color** uses `--color-text` / `--color-text-secondary` / `--color-text-muted` (the floor for text). `--color-text-placeholder` is placeholders only; `--color-text-disabled` is non-text.
+- **Radius:** `--radius-xs` chips · `--radius-sm` buttons/inputs · `--radius-md` cards/menus · `--radius-lg` dialogs. **`--radius-full` is avatars, dots and count badges only** — a fully-rounded button reads consumer, not professional.
+- **Reuse components** before building new ones — especially `Button.tsx`; don't re-declare button CSS in a screen's module.
+- **Collections are flat list rows, not cards:** divider + hover fill, no border/radius/shadow, 44px tall. Cards are for genuinely discrete floating items, never for page layout or list rows.
 - **Priority is a rank, not a status.** Use the `--priority-*` neutrals — never a pipeline color. Status colors belong to `statuses.json` and nothing else.
 
 ## Status / pipeline
@@ -24,9 +27,10 @@ The design system lives in `design-system/`. Before building or restyling any UI
 
 ## Accessibility (non-negotiable)
 - Keep the global `:focus-visible` ring on every interactive control — don't strip outlines.
-- Minimum 44×44px touch targets.
+- **44×44px is the floor on touch.** Controls with a transparent hit-area wrapper (checkbox, kebab, priority tag) stay 44px at every size. Buttons and menu items size from `--control-height` (36px on a fine pointer), which rises to 44px automatically under `@media (pointer: coarse)` — the one relaxation, and only where a mouse is driving.
 - Native form elements (`<input>`, `<select>`, `<button>`) with associated labels.
-- Design responsive — users are often on a phone.
+- Design responsive — users are often on a phone. Two breakpoints carry the app: **900px** (sidebar → drawer) and **600px** (row/band reflow).
+- Wrap animation in `@media (prefers-reduced-motion: reduce)`.
 
 ## Conventions
 - **Comment every functional unit.** In all code files, put a concise comment above each function, component, class, or self-contained block explaining what it does, so the code reads top-to-bottom without deciphering it. Say what and why, not a restatement of the syntax; keep it to a line or two.
@@ -46,9 +50,16 @@ The design system lives in `design-system/`. Before building or restyling any UI
 - **Task job/category is "never both"** (not "exactly one"): a task may briefly have neither after its job is deleted (`SET_NULL`). Completion is the `is_done` boolean, never a status.
 - **Auth is deferred:** no `user` FK yet; adding it later is an additive migration. DRF runs open (no auth class, `AllowAny`) for the single-user MVP — lock down when auth lands.
 
+## App shell (built)
+- **Left sidebar** (`components/Sidebar.tsx`, 240px, `--color-bg-sunken`): wordmark · nav (Today · Jobs · Writing Library) · a `Pipeline` section of active stages with live counts linking to `/jobs?status=<id>` · account slot. Collapses to an overlay drawer below 900px.
+- **`components/AppShell.tsx`** owns the frame and mounts `useTracker()` — one fetch feeds both the sidebar counts and the Today list. Screens render into its `Outlet` and read data via `useTrackerContext()`.
+- **`components/Toolbar.tsx`** is the sticky per-screen header and **owns the page title** — screens don't render their own `<h1>`.
+- **Routes:** `/` Today · `/jobs` · `/writing` (react-router). Jobs and Writing Library are empty-state stubs; the board and detail page aren't designed yet.
+
 ## Today screen (built)
-- Renders **checkbox · title · chip · priority · row menu** — the design export shows no dates on rows, so `due_on` is stored but not displayed, and there is no waiting day-count. Done tasks strike through and mute in place at the tail of their group. The row menu (kebab) holds **Edit title** (inline rename) and **Delete task**; both edits are optimistic with revert-on-failure. Delete is behind the menu (no separate confirm dialog yet).
-- Groups by task-status order; sorts unfinished-first then by priority rank.
+- Pipeline band (inset, not full-bleed chrome) over the grouped task list. Rows render **checkbox · title · chip · priority · row menu** as a **flat 44px list row** — no dates (`due_on` is stored but not displayed), no waiting day-count. Done tasks strike through and mute in place at the tail of their group. The row menu (kebab) holds **Edit title** (inline rename) and **Delete task**; both edits are optimistic with revert-on-failure. Delete is behind the menu (no separate confirm dialog yet).
+- Groups by task-status order under an eyebrow header carrying a count; sorts unfinished-first then by priority rank.
+- Loading renders skeleton rows; the error state is a card with a working **Try again** wired to `reload()`.
 
 ## Running the app
 - **Seed** (real data, gitignored): `.venv/Scripts/python.exe backend/manage.py seed_local` (reads `seed.local.json`; wipe-and-reload).

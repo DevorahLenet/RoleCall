@@ -1,0 +1,48 @@
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: center;
+  height: 44px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.check,
+.title,
+.chip {
+  display: block;
+  height: 12px;
+  border-radius: var(--radius-xs);
+  background: var(--color-surface-active);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.check {
+  width: 16px;
+  height: 16px;
+  justify-self: center;
+  border-radius: var(--radius-sm);
+}
+
+/* Staggered widths so the block reads as text, not as a progress bar. */
+.title { width: 40%; }
+.row:nth-child(2n) .title { width: 55%; }
+.chip { width: 96px; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .check,
+  .title,
+  .chip {
+    animation: none;
+  }
+}

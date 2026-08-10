@@ -1,0 +1,58 @@
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--toolbar-height);
+  padding: 0 var(--space-6);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.title {
+  margin: 0;
+  font: var(--text-title);
+  letter-spacing: var(--tracking-title);
+  color: var(--color-text);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+/* Hamburger only exists once the sidebar has collapsed to a drawer. */
+.navToggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: calc(var(--space-3) * -1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.navToggle:hover {
+  background: var(--color-surface-active);
+  color: var(--color-text);
+}
+
+@media (max-width: 900px) {
+  .navToggle {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 600px) {
+  .bar {
+    padding: 0 var(--space-4);
+  }
+}

@@ -6,9 +6,9 @@
       "id": "researching",
       "label": "Researching",
       "group": "active",
-      "dot": "#9b9797",
-      "badgeBg": "#eae7e7",
-      "badgeFg": "#444141"
+      "dot": "#a1a1aa",
+      "badgeBg": "#f4f4f5",
+      "badgeFg": "#3f3f46"
     },
     {
       "id": "applied",
@@ -46,9 +46,9 @@
       "id": "closed_rejected",
       "label": "Closed · Rejected",
       "group": "closed",
-      "dot": "#bab6b6",
-      "badgeBg": "#eae7e7",
-      "badgeFg": "#605d5d"
+      "dot": "#d4d4d8",
+      "badgeBg": "#f4f4f5",
+      "badgeFg": "#52525b"
     },
     {
       "id": "closed_hired",

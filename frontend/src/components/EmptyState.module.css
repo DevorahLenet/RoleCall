@@ -1,0 +1,36 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-16) var(--space-6);
+}
+
+/* Soft-tinted circle behind the icon — the one place --radius-full is right. */
+.badge {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-active);
+  color: var(--color-text-muted);
+}
+
+.title {
+  margin: 0 0 var(--space-2);
+  font: var(--text-section);
+  color: var(--color-text);
+}
+
+.message {
+  margin: 0;
+  max-width: 42ch;
+  font: var(--text-body-sm);
+  color: var(--color-text-muted);
+}
+
+.action {
+  margin-top: var(--space-5);
+}

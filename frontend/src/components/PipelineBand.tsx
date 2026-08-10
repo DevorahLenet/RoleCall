@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import { Link } from 'react-router-dom'
 import type { Job } from '../types'
 import { activeJobStatuses } from '../design-system/statuses'
 import styles from './PipelineBand.module.css'
@@ -28,9 +29,7 @@ export function PipelineBand({ jobs }: { jobs: Job[] }) {
     <div className={styles.band}>
       <div className={styles.track}>
         {activeJobStatuses.map((status, i) => {
-          const inStage = jobs.filter((j) => j.status === status.id)
-          const count = inStage.length
-          const names = count ? inStage.map((j) => j.company).join(', ') : 'None'
+          const count = jobs.filter((j) => j.status === status.id).length
           const isFirst = i === 0
           const isLast = i === lastIndex
 
@@ -40,36 +39,30 @@ export function PipelineBand({ jobs }: { jobs: Job[] }) {
             flexGrow: count ? count * 3 : 1,
             flexBasis: 0,
             marginRight: isLast ? 0 : '-1px',
-            paddingLeft: isFirst ? 'var(--space-3)' : 'var(--space-5)',
+            paddingLeft: isFirst ? 'var(--space-3)' : 'var(--space-4)',
             clipPath: clipPath(isFirst, isLast),
             background: status.badgeBg,
             color: status.badgeFg,
-            opacity: count ? 1 : 0.5,
+            opacity: count ? 1 : 0.55,
           }
 
           return (
-            <a key={status.id} href="#" className={styles.segment} style={segStyle}>
-              <span className={styles.labelRow}>
-                <span
-                  className={styles.dot}
-                  style={{ background: status.dot }}
-                  aria-hidden
-                />
-                <span className={styles.label}>{status.label}</span>
+            <Link
+              key={status.id}
+              to={`/jobs?status=${status.id}`}
+              className={styles.segment}
+              style={segStyle}
+              aria-label={`${status.label}: ${count} ${count === 1 ? 'job' : 'jobs'}`}
+            >
+              <span className={styles.dot} style={{ background: status.dot }} aria-hidden />
+              <span className={styles.label}>{status.label}</span>
+              <span className={styles.count} aria-hidden>
+                {count}
               </span>
-              <span
-                className={styles.names}
-                style={{ fontStyle: count ? 'normal' : 'italic' }}
-              >
-                {names}
-              </span>
-            </a>
+            </Link>
           )
         })}
       </div>
-      <a href="#" className={styles.boardLink}>
-        Job board →
-      </a>
     </div>
   )
 }

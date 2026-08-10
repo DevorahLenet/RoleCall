@@ -39,7 +39,7 @@ export function PriorityPill({ priorityId, onChange }: Props) {
   const pillStyle: CSSProperties = {
     background: current.bg,
     color: current.text,
-    border: current.border ? `1.5px solid ${current.border}` : '1.5px solid transparent',
+    border: current.border ? `1px solid ${current.border}` : '1px solid transparent',
   }
 
   // Commit a menu selection (only firing onChange when it actually changed).

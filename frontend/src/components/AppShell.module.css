@@ -1,0 +1,32 @@
+.shell {
+  display: grid;
+  grid-template-areas: 'sidebar pane';
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.pane {
+  grid-area: pane;
+  min-width: 0;
+  background: var(--color-bg);
+}
+
+.scrim {
+  display: none;
+}
+
+/* Below 900px the rail leaves the grid and overlays as a drawer. */
+@media (max-width: 900px) {
+  .shell {
+    grid-template-areas: 'pane';
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-overlay) - 1);
+    background: var(--scrim-drawer);
+  }
+}

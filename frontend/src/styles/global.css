@@ -1,11 +1,14 @@
-/* App-level globals. Base resets, body background, and the focus ring already
+/* App-level globals. Base resets, body background, type and the focus ring all
    come from tokens.css — keep this file for app-wide layout only. */
 
+html,
+body,
 #root {
   min-height: 100vh;
 }
 
-/* The app ground is paper; tokens.css sets body background/colour/font. */
+/* The shell owns page scrolling; this stops the sticky sidebar from double-
+   scrolling on browsers that give body its own scroll container. */
 body {
-  min-height: 100vh;
+  overflow-x: hidden;
 }

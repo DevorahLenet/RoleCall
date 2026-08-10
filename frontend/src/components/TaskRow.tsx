@@ -94,7 +94,7 @@ export function TaskRow({
         onClick={() => onToggleDone(task)}
       >
         <span className={done ? `${styles.box} ${styles.boxDone}` : styles.box}>
-          {done && <Check size={12} weight="bold" aria-hidden />}
+          {done && <Check size={11} weight="bold" aria-hidden />}
         </span>
       </button>
 
@@ -118,10 +118,7 @@ export function TaskRow({
           }}
         />
       ) : (
-        <span
-          className={styles.title}
-          style={{ color: done || !hasJob ? 'var(--color-text-muted)' : 'var(--color-text)' }}
-        >
+        <span className={done || !hasJob ? styles.titleMuted : styles.title}>
           {task.title}
         </span>
       )}
@@ -161,7 +158,7 @@ export function TaskRow({
           aria-label={`Actions for "${task.title}"`}
           onClick={() => setMenuOpen((v) => !v)}
         >
-          <DotsThreeVertical size={20} weight="bold" aria-hidden />
+          <DotsThreeVertical size={18} weight="bold" aria-hidden />
         </button>
 
         {menuOpen && (
@@ -172,7 +169,7 @@ export function TaskRow({
               className={styles.menuItem}
               onClick={startEditing}
             >
-              <PencilSimple size={16} aria-hidden />
+              <PencilSimple size={15} aria-hidden />
               Edit title
             </button>
             <button
@@ -184,7 +181,7 @@ export function TaskRow({
                 onDeleteTask(task)
               }}
             >
-              <Trash size={16} aria-hidden />
+              <Trash size={15} aria-hidden />
               Delete task
             </button>
           </div>
