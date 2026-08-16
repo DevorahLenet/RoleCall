@@ -106,6 +106,26 @@ One per screen, **inset into the content pane** — `--radius-md`, `1px --color-
 
 Below 600px the labels drop, the floor relaxes to `--pipeline-segment-min-compact`, and segments keep dot + count. Stage *navigation* also lives in the sidebar; the band is the at-a-glance shape.
 
+### Jobs board (kanban)
+The **Jobs** screen. One column per stage in [statuses.json](statuses.json), in pipeline order — the same source that drives the band, the badges and the DB enum, so adding a stage adds a column.
+
+**The board never scrolls sideways.** All five active stages are on screen at once: columns are `flex: 1 1 0` so they share the pane equally whatever the stage counts, and `--board-column-min` (200px) is only the floor at which they *wrap* instead of shrinking further. A column is a **well** — `--color-bg-sunken`, `--radius-md`, `--space-3` pad — which is what lets the white cards inside read as *forward* on an all-white ground. Header is an eyebrow: status dot · label · count (`--color-text-disabled` at zero, matching the sidebar). **An empty stage keeps its full column** and reads "Nothing yet in this stage"; the board is a fixed legend of the pipeline, same rule as the band.
+
+**Active stages only** — the board is the live pipeline. Closed statuses have no column and, for now, no surface here at all.
+
+**`?status=<id>` focuses a column, it does not filter to one.** On a board, hiding the other stages throws away the thing you came to look at — so the linked stage takes an `inset 0 0 0 1.5px --color-accent` ring. It also scrolls itself into view, which only bites once the columns have stacked (`behavior: auto` under `prefers-reduced-motion`). Both the sidebar Pipeline links and the pipeline band land here.
+
+**Below 900px** columns wrap onto a second row at the floor; **below 600px** one stage per row. Neither reflow introduces a horizontal scroller.
+
+### Job card
+The board's unit, and one of the few places a card is correct: role (`--text-body` at `--weight-semibold`) · company (`--text-meta` muted, ellipsised with a tooltip when clipped) · a footer carrying the **status chip** (dot + label, `badgeBg`/`badgeFg`) and the **applied date**. Footer is `space-between` and wraps rather than crushing.
+
+**The role is the card's one link** — it opens `posting_url` in a new tab (`rel="noopener noreferrer"`). It stays `--color-text` at rest, because a column of cyan headings would shout; **hover and `:focus-visible` are what declare it a link**, taking `--color-link` plus an underline. With no URL it renders as plain text, so nothing suggests a target that isn't there.
+
+**Date shows only when there is one** — short month + day (`Mar 12`), `--text-meta`, `.tabular-nums`; an un-applied job shows nothing rather than a placeholder. Dates render by splitting the `YYYY-MM-DD` string, never `new Date(iso)` — the constructor reads a bare date as UTC midnight and shows the previous day west of Greenwich.
+
+The stage appears on the card *as well as* the column header because the columns stack on a phone, where the header scrolls away. A visually-hidden span carries what the visual design drops — "Applied" before the bare date, and the new-tab warning on the link.
+
 ### Cards
 `--radius-md`, `1px --color-border`, `--color-surface` bg, `--shadow-sm`, `--space-4`–`--space-5` pad. Use for genuinely discrete, floating items — **never for page layout, and never for list rows.**
 
@@ -158,6 +178,6 @@ Right-docked panel over `--scrim-drawer` for quick tasks that shouldn't take the
 - **Task status is fixed by [task-statuses.json](task-statuses.json)**, **priority by [priorities.json](priorities.json)**, and **non-job task category by [task-categories.json](task-categories.json)** — same discipline, same enum-migration rule.
 
 ## 8. Not in this system yet (deferred by choice)
-The **kanban board**, the **job detail page**, and **reminder components** are intentionally not designed. Jobs and Writing Library exist as routes with empty states only. A **logo mark** is still open. See [../design-review.md](../design-review.md) for the full punch-list.
+The **job detail page** and **reminder components** are intentionally not designed. The board has no **drag-to-move-stage**, so a job's stage isn't editable from it, and **closed jobs have no surface yet** — they're stored and counted but the board shows active stages only, so a closed-jobs filter is still owed. Writing Library exists as a route with an empty state only. A **logo mark** is still open. See [../design-review.md](../design-review.md) for the full punch-list.
 
 **Dark mode is structured for but not built.** The raw/semantic split in `tokens.css` exists so a dark theme is a `[data-theme="dark"]` block overriding the semantic layer — no component changes. The open work is dark variants for the eight `statuses.json` colours, which would need a shape change to that file (e.g. a `badgeBgDark` alongside each `badgeBg`).

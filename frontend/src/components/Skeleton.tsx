@@ -16,3 +16,20 @@ export function SkeletonRows({ count = 5 }: { count?: number }) {
     </div>
   )
 }
+
+// Placeholder columns matching the Jobs board's rhythm — same column width, same
+// card stack — so the board doesn't jump when the applications land.
+export function SkeletonBoard({ columns = 5, cards = 3 }: { columns?: number; cards?: number }) {
+  return (
+    <div className={styles.board} aria-hidden>
+      {Array.from({ length: columns }, (_, c) => (
+        <div key={c} className={styles.column}>
+          <span className={styles.columnHead} />
+          {Array.from({ length: cards }, (_, i) => (
+            <span key={i} className={styles.card} />
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}

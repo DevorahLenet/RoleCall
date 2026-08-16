@@ -1,0 +1,27 @@
+/* The board pane deliberately skips --content-max: the columns run as wide as
+   the pipeline needs and scroll sideways, so clamping would only add dead space
+   on the right of a wide screen. */
+.pane {
+  padding: var(--space-6);
+}
+
+/* Loading and error presentation is the same on every screen — composed from the
+   shared pane styles rather than restated here. */
+.error {
+  composes: error from './Pane.module.css';
+}
+.errorTitle {
+  composes: errorTitle from './Pane.module.css';
+}
+.errorBody {
+  composes: errorBody from './Pane.module.css';
+}
+.srOnly {
+  composes: srOnly from './Pane.module.css';
+}
+
+@media (max-width: 600px) {
+  .pane {
+    padding: var(--space-4);
+  }
+}

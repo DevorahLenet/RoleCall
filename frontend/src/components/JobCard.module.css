@@ -1,0 +1,96 @@
+/* Ground and surface are both white, so a card separates by border + shadow —
+   and it reads forward here because the column behind it is sunken. Padding is
+   even, since the columns now share the pane and inner width is scarce. */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Role is the card's name, set at list-row size so "the thing's name" is one
+   size everywhere in the app; weight, not scale, carries the emphasis. */
+.role {
+  margin: 0;
+  font: var(--text-body);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+/* The title link resists reading as a link at rest — a column of cyan headings
+   would shout. Hover and keyboard focus are what declare it: it takes the link
+   colour and underlines, matching links everywhere else in the app. */
+.roleLink {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.12s ease;
+}
+.roleLink:hover,
+.roleLink:focus-visible {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.company {
+  display: block;
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Stage left, date right; they drop onto separate lines rather than crushing
+   when a long stage label meets a date in a narrow column. */
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-xs);
+  font: var(--weight-semibold) 11px/1.35 var(--font-sans);
+  white-space: nowrap;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex: none;
+}
+
+.applied {
+  font: var(--text-meta);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* Visually hidden, still announced — carries the context the visual design
+   deliberately drops ("Applied", "opens in a new tab"). */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

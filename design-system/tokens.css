@@ -190,6 +190,10 @@
      rather than collapsing to a sliver when a busy stage takes the space. */
   --pipeline-segment-min: 92px;
   --pipeline-segment-min-compact: 44px;
+  /* Kanban column floor on the Jobs board. Columns flex to share the pane so all
+     five active stages fit on screen at once with no sideways scroller — this is
+     only the width below which they wrap rather than shrink any further. */
+  --board-column-min: 200px;
 
   /* ---------- Control heights ----------
      Buttons and menu items run compact on a mouse and grow to the 44px

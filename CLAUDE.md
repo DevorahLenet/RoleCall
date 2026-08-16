@@ -54,12 +54,19 @@ The design system lives in `design-system/`. Before building or restyling any UI
 - **Left sidebar** (`components/Sidebar.tsx`, 240px, `--color-bg-sunken`): wordmark · nav (Today · Jobs · Writing Library) · a `Pipeline` section of active stages with live counts linking to `/jobs?status=<id>` · account slot. Collapses to an overlay drawer below 900px.
 - **`components/AppShell.tsx`** owns the frame and mounts `useTracker()` — one fetch feeds both the sidebar counts and the Today list. Screens render into its `Outlet` and read data via `useTrackerContext()`.
 - **`components/Toolbar.tsx`** is the sticky per-screen header and **owns the page title** — screens don't render their own `<h1>`.
-- **Routes:** `/` Today · `/jobs` · `/writing` (react-router). Jobs and Writing Library are empty-state stubs; the board and detail page aren't designed yet.
+- **Routes:** `/` Today · `/jobs` · `/writing` (react-router). Writing Library is still an empty-state stub; the job detail page isn't designed yet.
 
 ## Today screen (built)
 - Pipeline band (inset, not full-bleed chrome) over the grouped task list. Rows render **checkbox · title · chip · priority · row menu** as a **flat 44px list row** — no dates (`due_on` is stored but not displayed), no waiting day-count. **Every task title uses `--color-text`** — done and job-less tasks are not differentiated by text colour. Done tasks strike through in place (chips mute) at the tail of their group. The row menu (kebab) holds **Edit title** (inline rename) and **Delete task**; both edits are optimistic with revert-on-failure. Delete is behind the menu (no separate confirm dialog yet).
 - Groups by task-status order under an eyebrow header carrying a count; sorts unfinished-first then by priority rank.
 - Loading renders skeleton rows; the error state is a card with a working **Try again** wired to `reload()`.
+
+## Jobs screen (built)
+- **A kanban board** (`components/JobBoard.tsx` + `JobCard.tsx`): one column per **active** stage in `statuses.json`, all five on screen at once. **No horizontal scroll ever** — columns are `flex: 1 1 0` and share the pane; `--board-column-min` is only the wrap floor. Columns are `--color-bg-sunken` wells so the white cards read forward.
+- Cards carry **role · company · status chip · applied date**. The **role links to `posting_url`** in a new tab, declaring itself on hover/focus (`--color-link` + underline) rather than at rest; plain text when there's no URL. The date renders only when set, as short month + day (`Mar 12`).
+- **`?status=<id>` focuses a column** (accent ring), it does not filter to one — hiding the other stages would defeat the board. Both the sidebar Pipeline links and the pipeline band land here.
+- **Closed stages have no column and no surface yet** — a closed-jobs filter is still owed. Stage isn't editable from the board (no drag-and-drop).
+- Wraps below 900px, stacks below 600px. Loading uses `SkeletonBoard`; the error state and `.srOnly` compose from `routes/Pane.module.css` rather than being restated.
 
 ## Running the app
 - **Seed** (real data, gitignored): `.venv/Scripts/python.exe backend/manage.py seed_local` (reads `seed.local.json`; wipe-and-reload).

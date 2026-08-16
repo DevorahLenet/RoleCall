@@ -1,0 +1,102 @@
+/* Every active stage is on screen at once — columns flex to share the pane
+   rather than holding a fixed width, so the board never scrolls sideways. The
+   flex basis of 0 is what makes them equal regardless of how full each one is. */
+.board {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+/* A column is a well — it sits BACK from the page (--color-bg-sunken), which is
+   what lets the white cards inside read as forward on an all-white ground. */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex: 1 1 0;
+  min-width: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+}
+
+/* The stage a ?status= link pointed at. Inset ring so the highlight can't shift
+   layout or nudge the columns out of their shared width. */
+.columnFocused {
+  box-shadow: inset 0 0 0 1.5px var(--color-accent);
+}
+
+.columnHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-1) var(--space-1) 0;
+  font: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex: none;
+}
+
+.columnLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Zero reads as non-text grey, matching the sidebar's empty stage counts. */
+.count,
+.countZero {
+  margin-left: auto;
+  padding-left: var(--space-1);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  flex: none;
+}
+.count {
+  color: var(--color-text-muted);
+}
+.countZero {
+  color: var(--color-text-disabled);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* An empty stage keeps its full column rather than collapsing — the board is a
+   fixed legend of the pipeline, same rule as the band. */
+.empty {
+  margin: 0;
+  padding: var(--space-4) var(--space-1);
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+}
+
+/* Below the sidebar breakpoint there isn't width for five readable columns, so
+   they wrap onto a second row at --board-column-min instead of shrinking past
+   legibility. Still no sideways scroll. */
+@media (max-width: 900px) {
+  .board {
+    flex-wrap: wrap;
+  }
+  .column {
+    flex: 1 1 var(--board-column-min);
+  }
+}
+
+/* On a phone, one stage per row — the page scroll reaches the whole board. */
+@media (max-width: 600px) {
+  .column {
+    flex: 1 1 100%;
+  }
+}
