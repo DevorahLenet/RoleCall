@@ -57,7 +57,7 @@ The design system lives in `design-system/`. Before building or restyling any UI
 - **Routes:** `/` Today · `/jobs` · `/writing` (react-router). Jobs and Writing Library are empty-state stubs; the board and detail page aren't designed yet.
 
 ## Today screen (built)
-- Pipeline band (inset, not full-bleed chrome) over the grouped task list. Rows render **checkbox · title · chip · priority · row menu** as a **flat 44px list row** — no dates (`due_on` is stored but not displayed), no waiting day-count. Done tasks strike through and mute in place at the tail of their group. The row menu (kebab) holds **Edit title** (inline rename) and **Delete task**; both edits are optimistic with revert-on-failure. Delete is behind the menu (no separate confirm dialog yet).
+- Pipeline band (inset, not full-bleed chrome) over the grouped task list. Rows render **checkbox · title · chip · priority · row menu** as a **flat 44px list row** — no dates (`due_on` is stored but not displayed), no waiting day-count. **Every task title uses `--color-text`** — done and job-less tasks are not differentiated by text colour. Done tasks strike through in place (chips mute) at the tail of their group. The row menu (kebab) holds **Edit title** (inline rename) and **Delete task**; both edits are optimistic with revert-on-failure. Delete is behind the menu (no separate confirm dialog yet).
 - Groups by task-status order under an eyebrow header carrying a count; sorts unfinished-first then by priority rank.
 - Loading renders skeleton rows; the error state is a card with a working **Try again** wired to `reload()`.
 

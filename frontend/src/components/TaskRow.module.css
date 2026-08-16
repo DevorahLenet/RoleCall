@@ -62,13 +62,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* Done rows and unattached tasks recede without changing the row's structure. */
-.titleMuted {
-  composes: title;
-  color: var(--color-text-muted);
-}
-.rowDone .title,
-.rowDone .titleMuted {
+/* Done rows read as done from the strikethrough alone — every title keeps the
+   primary text colour so the list scans as one column of type. */
+.rowDone .title {
   text-decoration: line-through;
 }
 

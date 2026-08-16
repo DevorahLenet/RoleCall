@@ -119,7 +119,7 @@ export function TaskRow({
           }}
         />
       ) : (
-        <span className={done || !hasJob ? styles.titleMuted : styles.title}>
+        <span className={styles.title}>
           {task.title}
         </span>
       )}
