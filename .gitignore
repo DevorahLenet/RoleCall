@@ -49,6 +49,8 @@ __pycache__/
 # Recreate with migrations + the seed command instead of committing it.
 *.sqlite3
 db.sqlite3
+# Timestamped copies taken before a wipe-and-reload seed — real data, same rule.
+*.sqlite3.bak-*
 # Django collected static files (generated for deployment).
 staticfiles/
 

@@ -25,8 +25,22 @@
   color: var(--color-text);
 }
 
+/* The horizontal padding is always present, not added on hover: it gives the
+   drop-target ring room to sit outside the rows without the group changing
+   width mid-drag. The negative margins pull the rows back to the pane's edge,
+   so at rest the list looks exactly as it did before. */
 .group {
-  margin-bottom: var(--space-6);
+  margin: 0 calc(-1 * var(--space-3)) var(--space-6);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+/* The group a dragged row is currently over. Answers "will it land here?", so
+   it reads louder than anything else on the list — a tint plus an inset ring,
+   inset so the highlight can never shift the rows underneath it. */
+.groupDropTarget {
+  background: var(--color-drop-target);
+  box-shadow: inset 0 0 0 2px var(--color-accent);
 }
 
 /* Eyebrow header + count. Sticks under the toolbar so the group you're scrolling
@@ -45,6 +59,19 @@
   letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   color: var(--color-text-muted);
+}
+
+/* Only ever seen mid-drag: a status with no rows still has to be somewhere you
+   can let go, so the empty group says what dropping there would do. */
+.groupEmpty {
+  margin: 0;
+  padding: var(--space-3) 0 var(--space-4);
+  font: var(--text-body-sm);
+  color: var(--color-text-muted);
+}
+
+.groupDropTarget .groupTitle {
+  background: var(--color-drop-target);
 }
 
 .count {

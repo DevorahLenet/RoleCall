@@ -1,35 +1,47 @@
 import { useId, useState } from 'react'
 import type { FormEvent } from 'react'
 import type { Job, NewTask, Task } from '../types'
-import { taskStatuses } from '../design-system/taskStatuses'
+import { defaultTaskStatusId, taskStatuses } from '../design-system/taskStatuses'
 import { taskCategories } from '../design-system/categories'
-import { priorities } from '../design-system/priorities'
+import { defaultPriorityId, priorities } from '../design-system/priorities'
 import { Button } from './Button'
 import { Dialog } from './Dialog'
+import { Toggle } from './Toggle'
 import styles from './Form.module.css'
 
 interface Props {
   jobs: Job[]
-  onCreate: (input: NewTask) => Promise<Task>
+  /** The task being edited. Omit to create a new one. */
+  task?: Task
+  /** Job a NEW task is created against, so a task added from a job page is born
+   *  attached to it. Ignored when editing, which starts from the task's own job. */
+  initialJobId?: number
+  /** Persists the form. Create POSTs, edit PATCHes; either way a rejection keeps
+   *  the dialog open with the typing intact. */
+  onSave: (input: NewTask) => Promise<unknown>
   onClose: () => void
 }
 
-// Defaults mirror the model's, derived from the design-system files rather than
-// hardcoded: the first task status, and the middle priority rank.
-const defaultStatus = taskStatuses[0].id
-const defaultPriority = priorities[Math.floor(priorities.length / 2)].id
-
-// The New task form, in a dialog. Covers every field a task is born with —
-// completion is deliberately absent, since a task you're creating isn't done.
+// The one form for a task's own fields — title, the job or category it belongs
+// to, status, priority and a due date. It both creates (from Today's header or
+// its empty state) and edits (from a row's menu), because the fields and their
+// rules are the same either way; only the verb differs.
+//
 // Job and category are mutually exclusive (the model's "never both"), so picking
 // a job disables and clears the category select.
-export function TaskForm({ jobs, onCreate, onClose }: Props) {
-  const [title, setTitle] = useState('')
-  const [jobId, setJobId] = useState('')
-  const [category, setCategory] = useState('')
-  const [status, setStatus] = useState(defaultStatus)
-  const [priority, setPriority] = useState(defaultPriority)
-  const [dueOn, setDueOn] = useState('')
+//
+// Completion appears only when editing. A task you are creating isn't done, so
+// there is nothing to switch; an existing one has a state worth correcting from
+// here as well as from the row's checkbox.
+export function TaskForm({ jobs, task, initialJobId, onSave, onClose }: Props) {
+  const editing = task !== undefined
+  const [title, setTitle] = useState(task?.title ?? '')
+  const [jobId, setJobId] = useState(String(task?.job ?? initialJobId ?? ''))
+  const [category, setCategory] = useState(task?.category ?? '')
+  const [status, setStatus] = useState(task?.status ?? defaultTaskStatusId)
+  const [priority, setPriority] = useState(task?.priority ?? defaultPriorityId)
+  const [dueOn, setDueOn] = useState(task?.due_on ?? '')
+  const [isDone, setIsDone] = useState(task?.is_done ?? false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -40,15 +52,15 @@ export function TaskForm({ jobs, onCreate, onClose }: Props) {
   const hasJob = jobId !== ''
   const canSave = title.trim() !== '' && !saving
 
-  // POST the task and close on success; on failure keep the dialog (and the
-  // user's typing) up and explain what happened.
+  // Save and close on success; on failure keep the dialog (and the user's
+  // typing) up and explain what happened.
   async function onSubmit(e: FormEvent) {
     e.preventDefault()
     if (!canSave) return
     setSaving(true)
     setError(null)
     try {
-      await onCreate({
+      await onSave({
         title: title.trim(),
         status,
         priority,
@@ -56,6 +68,8 @@ export function TaskForm({ jobs, onCreate, onClose }: Props) {
         // Never both: a job-attached task sends an empty category.
         category: hasJob ? '' : category,
         due_on: dueOn || null,
+        // Only an edit carries completion — see the note on the component.
+        ...(editing ? { is_done: isDone } : {}),
       })
       onClose()
     } catch {
@@ -65,7 +79,7 @@ export function TaskForm({ jobs, onCreate, onClose }: Props) {
   }
 
   return (
-    <Dialog title="New task" onClose={onClose}>
+    <Dialog title={editing ? 'Edit task' : 'New task'} onClose={onClose}>
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.field}>
           <label className={styles.label} htmlFor={fieldId('title')}>
@@ -181,6 +195,13 @@ export function TaskForm({ jobs, onCreate, onClose }: Props) {
           />
         </div>
 
+        {editing && (
+          <div className={styles.field}>
+            <span className={styles.label}>Completion</span>
+            <Toggle checked={isDone} onChange={setIsDone} label="Task is done" />
+          </div>
+        )}
+
         {error && (
           <p className={styles.error} role="alert">
             {error}
@@ -192,7 +213,7 @@ export function TaskForm({ jobs, onCreate, onClose }: Props) {
             Cancel
           </Button>
           <Button type="submit" variant="primary" disabled={!canSave}>
-            {saving ? 'Saving…' : 'Add task'}
+            {saving ? 'Saving…' : editing ? 'Save changes' : 'Add task'}
           </Button>
         </div>
       </form>

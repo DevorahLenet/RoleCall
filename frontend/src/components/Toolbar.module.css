@@ -11,11 +11,36 @@
   border-bottom: 1px solid var(--color-border);
 }
 
+/* A drilled-into screen's title is data (a job's role), so it can be long:
+   it ellipsises rather than pushing the actions off the bar. */
 .title {
+  min-width: 0;
   margin: 0;
   font: var(--text-title);
   letter-spacing: var(--tracking-title);
   color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Same 44px icon-button shape as the hamburger, but always present — it is the
+   way back out of a detail screen, at every width. */
+.back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin-left: calc(var(--space-3) * -1);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+}
+.back:hover {
+  background: var(--color-surface-active);
+  color: var(--color-text);
+  text-decoration: none;
 }
 
 .actions {

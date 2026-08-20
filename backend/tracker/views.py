@@ -27,16 +27,20 @@ class JobViewSet(viewsets.ModelViewSet):
     queryset = Job.objects.all()
     serializer_class = JobSerializer
 
+    # The job page reads and writes the detail payload (contacts, notes,
+    # questions, long-form fields); the board's list stays slim so a JD summary
+    # never rides along with every card.
+    DETAIL_ACTIONS = ("retrieve", "update", "partial_update")
+
     def get_serializer_class(self):
-        # Single-job detail embeds contacts; the list/board stays slim.
-        if self.action == "retrieve":
+        if self.action in self.DETAIL_ACTIONS:
             return JobDetailSerializer
         return JobSerializer
 
     def get_queryset(self):
         qs = super().get_queryset()
-        if self.action == "retrieve":
-            qs = qs.prefetch_related("contacts")
+        if self.action in self.DETAIL_ACTIONS:
+            qs = qs.prefetch_related("contacts", "notes", "questions")
         return qs
 
 

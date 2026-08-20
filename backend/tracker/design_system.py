@@ -45,8 +45,13 @@ JOB_STATUS_CHOICES = _choices("statuses.json", "statuses")
 JOB_STATUS_IDS = ids("statuses.json", "statuses")
 
 # --- Task status: task-statuses.json (no colour by design) ---------------
+# The list order is Today's group order (In progress -> Waiting -> To do), which
+# is presentation and NOT the default a new task starts in — that is `$default`,
+# stated explicitly in the file so re-ordering the groups can never silently
+# change what a new task is born as.
 TASK_STATUS_CHOICES = _choices("task-statuses.json", "statuses")
 TASK_STATUS_IDS = ids("task-statuses.json", "statuses")
+TASK_STATUS_DEFAULT = _load("task-statuses.json")["$default"]
 
 # --- Task priority: priorities.json (ordered by rank) --------------------
 _PRIORITIES = sorted(_load("priorities.json")["priorities"], key=lambda p: p["rank"])

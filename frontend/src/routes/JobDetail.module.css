@@ -1,0 +1,59 @@
+.content {
+  composes: content from './Pane.module.css';
+}
+
+/* Work on the left, reference on the right. The split is the page's whole
+   organising idea: lists you act on never sit next to facts you only read, so
+   the eye can tell in one glance which kind of thing it is looking at.
+   The main column still gets ~800px inside --content-max, so the lists keep
+   the width the flat-row treatment needs. */
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--detail-rail-width);
+  gap: var(--space-8);
+  margin-top: var(--space-6);
+}
+
+.main {
+  min-width: 0;
+}
+
+/* Sticks under the toolbar, so the facts and the people stay put while a long
+   log scrolls beside them. `align-self: start` is what stops the grid stretching
+   the rail to the row height and defeating the stickiness. */
+.rail {
+  min-width: 0;
+  align-self: start;
+  position: sticky;
+  top: calc(var(--toolbar-height) + var(--space-6));
+}
+
+.error {
+  composes: error from './Pane.module.css';
+}
+.errorTitle {
+  composes: errorTitle from './Pane.module.css';
+}
+.errorBody {
+  composes: errorBody from './Pane.module.css';
+}
+
+/* Skeleton rhythm for the header block, so the page doesn't jump when the job
+   lands: a company line, then the meta row. */
+.skeletonHead {
+  padding-bottom: var(--space-5);
+  margin-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* One column below the sidebar breakpoint, rail after the work. DOM order is
+   main-then-rail at every width, so tab order always matches reading order. */
+@media (max-width: 900px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  .rail {
+    position: static;
+  }
+}

@@ -17,9 +17,10 @@ export function Today() {
     onOpenNav,
     onNewApplication,
     onCreateTask,
+    onUpdateTask,
     onToggleDone,
     onChangePriority,
-    onEditTitle,
+    onChangeTaskStatus,
     onDeleteTask,
   } = useTrackerContext()
 
@@ -66,9 +67,10 @@ export function Today() {
               jobs={jobs}
               tasks={tasks}
               onCreateTask={onCreateTask}
+              onUpdateTask={onUpdateTask}
               onToggleDone={onToggleDone}
               onChangePriority={onChangePriority}
-              onEditTitle={onEditTitle}
+              onChangeTaskStatus={onChangeTaskStatus}
               onDeleteTask={onDeleteTask}
             />
           </>

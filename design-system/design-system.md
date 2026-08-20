@@ -122,11 +122,30 @@ The **Jobs** screen. One column per stage in [statuses.json](statuses.json), in 
 ### Job card
 The board's unit, and one of the few places a card is correct: role (`--text-body` at `--weight-semibold`) · company (`--text-meta` muted, ellipsised with a tooltip when clipped) · a footer carrying the **status chip** (dot + label, `badgeBg`/`badgeFg`) and the **applied date**. Footer is `space-between` and wraps rather than crushing.
 
-**The role is the card's one link** — it opens `posting_url` in a new tab (`rel="noopener noreferrer"`). It stays `--color-text` at rest, because a column of cyan headings would shout; **hover and `:focus-visible` are what declare it a link**, taking `--color-link` plus an underline. With no URL it renders as plain text, so nothing suggests a target that isn't there.
+**The whole card opens the job page** (`/jobs/:id`) — the card is a summary of that page. It is a link *stretched* across the card (`position: absolute; inset: 0`), not a click handler on the article, so it keeps a real href for middle-click, copy-link and the keyboard; the card's border takes `--color-accent` on hover and `:focus-within`. **The role is its own link to `posting_url`**, and it plus the status pill are raised above the stretched layer so both stay clickable; the role stays `--color-text` at rest, because a column of cyan headings would shout, and **hover and `:focus-visible` declare it**. With no URL the role is plain text. The card is still the drag handle, so the stretched link is `draggable={false}` and a click synthesised at the end of a drag is swallowed.
 
 **Date shows only when there is one** — short month + day (`Mar 12`), `--text-meta`, `.tabular-nums`; an un-applied job shows nothing rather than a placeholder. Dates render by splitting the `YYYY-MM-DD` string, never `new Date(iso)` — the constructor reads a bare date as UTC midnight and shows the previous day west of Greenwich.
 
 The stage appears on the card *as well as* the column header because the columns stack on a phone, where the header scrolls away. A visually-hidden span carries what the visual design drops — "Applied" before the bare date, and the new-tab warning on the link.
+
+### Job detail page
+The per-job workspace at `/jobs/:id`. **Split by kind of information**: a main column of work you act on, and a sticky rail (`--detail-rail-width`) of reference you only read. The first version was a single column of four identically-styled sections and read as scattered — separating the *kinds* physically is what made it legible, not restyling the parts.
+
+Order is **header → Tasks → Notes → Questions**, with the facts and the people in the rail. Tasks are the work; the log is where the traffic goes once a job is live, and a question is usually raised by something just logged. **Section headers carry no counts** — they are labels, not a dashboard — and each empty state is one quiet line where the rows would be, because a young job legitimately has no tasks, notes or questions and the page must look deliberate rather than broken.
+
+**Hierarchy comes from three header sizes, not from boxes:** 20px Toolbar title (the role) · 15px `--text-section` for the main sections · 11px `--text-eyebrow` for rail blocks. Rail blocks sit on `--color-bg-sunken` — the same "sits back" surface as the sidebar and the board's columns. They are **not cards**: cards are never page layout.
+
+**Each list keeps its own left gutter**, which is what lets the eye sort the page at a glance: tasks lead with the 44px checkbox, notes with a date column, questions with a `?` or `✓` mark in that same column. Rows stay the flat list treatment (divider + hover fill, 44px floor) and wrap rather than truncate — 44px is a minimum here, not a height. Destructive row actions stay at `opacity: 0` until hover or `:focus-visible`, and are always visible under `@media (pointer: coarse)`.
+
+**The header is two facts**: company and stage. Stage is the page's most frequent edit by a distance, so it is inline via the same `StatusPill` the board uses; everything rarer sits behind **Edit details** in the Toolbar. A missing applied date reads **"Not applied yet"** and a missing score **"Not rated"** — real states, not gaps.
+
+**Fit is a rank, not a status**, so it stays neutral and never borrows a pipeline colour — the same rule that governs priority.
+
+**Contacts are a rail block**: initials avatar, name, and what the person is. The avatar is one of the three correct uses of `--radius-full`, and it stays neutral — a palette of avatar colours would compete with the pipeline hues, which are the only colours in this app allowed to carry meaning.
+
+**Adding is a button, not a standing field.** Each section header carries **+ Add**; the composer opens beneath it and closes on Escape or Cancel. Three permanently-open fields made the page read as a form to fill in rather than a record to read. A textarea keeps Enter for newlines and takes ⌘/Ctrl+Enter as "done".
+
+**Below 900px** the rail stacks under the main column. DOM order is main→rail at every width, so tab order always matches reading order — never an `order:` / DOM mismatch.
 
 ### Cards
 `--radius-md`, `1px --color-border`, `--color-surface` bg, `--shadow-sm`, `--space-4`–`--space-5` pad. Use for genuinely discrete, floating items — **never for page layout, and never for list rows.**
@@ -182,6 +201,6 @@ Right-docked panel over `--scrim-drawer` for quick tasks that shouldn't take the
 - **Task status is fixed by [task-statuses.json](task-statuses.json)**, **priority by [priorities.json](priorities.json)**, and **non-job task category by [task-categories.json](task-categories.json)** — same discipline, same enum-migration rule.
 
 ## 8. Not in this system yet (deferred by choice)
-The **job detail page** and **reminder components** are intentionally not designed. The board has no **drag-to-move-stage**, so a job's stage isn't editable from it, and **closed jobs have no surface yet** — they're stored and counted but the board shows active stages only, so a closed-jobs filter is still owed. Writing Library exists as a route with an empty state only. A **logo mark** is still open. See [../design-review.md](../design-review.md) for the full punch-list.
+**Reminder components** are intentionally not designed, and the job page's **writing drawer** waits on `writing_piece`. **Closed jobs have no surface yet** — they're stored and counted but the board shows active stages only, so a closed-jobs filter is still owed. Writing Library exists as a route with an empty state only. A **logo mark** is still open. See [../design-review.md](../design-review.md) for the full punch-list.
 
 **Dark mode is structured for but not built.** The raw/semantic split in `tokens.css` exists so a dark theme is a `[data-theme="dark"]` block overriding the semantic layer — no component changes. The open work is dark variants for the eight `statuses.json` colours, which would need a shape change to that file (e.g. a `badgeBgDark` alongside each `badgeBg`).

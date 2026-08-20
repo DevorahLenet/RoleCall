@@ -42,6 +42,11 @@ const byId: Record<string, Priority> = Object.fromEntries(
   priorities.map((p) => [p.id, p]),
 )
 
+/** The rank a new task takes: the middle one, matching the model's default.
+ *  Derived from the file so adding a rank doesn't leave this pointing at the
+ *  wrong end of the scale. */
+export const defaultPriorityId = priorities[Math.floor(priorities.length / 2)].id
+
 // Resolve a priority id to its record, tolerating unknown ids.
 export function getPriority(id: string): Priority {
   // Fall back to the middle rank so an unknown id never crashes a sort.

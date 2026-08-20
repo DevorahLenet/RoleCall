@@ -1,13 +1,9 @@
 {
   "$comment": "RoleCall task status — single source of truth. Drives the task-group headers on Today, filters, and the DB status enum. `id` is the stable machine value; `label` is display text. Deliberately has NO colors: color on a task row is already carrying the job's pipeline stage (see statuses.json), so task status is expressed through grouping and position instead of hue.",
   "$storage": "Store a task's status as its `id` in a database ENUM column whose allowed values are exactly the `id`s below. Changing this list means editing this file AND running an enum migration.",
-  "$order": "Groups render on Today in the order listed — the sequence is an implicit instruction: finish what's started, then start what's queued, and Waiting is information rather than work.",
+  "$order": "Groups render on Today in the order listed, top to bottom: In progress · Waiting · To do. The sequence is an implicit instruction — what you have already started is what you should finish, what is blocked is the standing reminder to chase it, and the queue sits at the bottom because it is the only group you are free to ignore today. Order here is presentation only; it is NOT the default, which is `$default` below.",
+  "$default": "todo",
   "statuses": [
-    {
-      "id": "todo",
-      "label": "To do",
-      "description": "Queued and actionable."
-    },
     {
       "id": "in_progress",
       "label": "In progress",
@@ -17,8 +13,13 @@
       "id": "waiting",
       "label": "Waiting",
       "description": "Blocked on someone else. Not actionable — carries a day count since it started waiting."
+    },
+    {
+      "id": "todo",
+      "label": "To do",
+      "description": "Queued and actionable."
     }
   ],
-  "$done": "Completion is a separate boolean field on the task, NOT a fourth status. A completed task strikes through and mutes IN PLACE — it does not move groups and does not move within its group, because a row that jumps the moment you check it pulls itself out from under the cursor. Completed tasks are never auto-cleared; the Today list header carries a `Show completed` toggle that hides them on demand.",
+  "$done": "Completion is a separate boolean field on the task, NOT a fourth status. A completed task strikes through and mutes IN PLACE — it does not move groups and does not move within its group, because a row that jumps the moment you check it pulls itself out from under the cursor. Completed tasks are never auto-cleared; the Today list header carries a `Show completed` toggle that hides them on demand and remembers the choice across sessions.",
   "$waitingSince": "`waiting` needs a timestamp to render its day count ('12d'). Store `waiting_since` alongside status."
 }

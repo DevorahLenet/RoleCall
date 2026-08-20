@@ -1,0 +1,174 @@
+/* Mark gutter, body, actions. The gutter lines up with the notes list's date
+   column, so the two lists share a rhythm while staying tellable apart. */
+.row {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background 0.1s ease;
+}
+.row:hover {
+  background: var(--color-surface-hover);
+}
+
+/* The mark is the type signal: open question, or answered. It carries no
+   pipeline colour — status colour belongs to the job's stage alone. */
+.mark {
+  display: inline-flex;
+  justify-content: flex-end;
+  padding-top: 2px;
+  color: var(--color-text-muted);
+}
+.rowResolved .mark {
+  color: var(--color-text-disabled);
+}
+
+.body {
+  min-width: 0;
+}
+
+.text {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+/* The answer hangs under its question, labelled so a resolved pair reads as
+   Q-then-A rather than as two sentences. */
+.answer {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--color-border);
+  font: var(--text-body-sm);
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.answerLabel {
+  display: block;
+  margin-bottom: var(--space-1);
+  font: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.stamp {
+  display: block;
+  margin-top: var(--space-1);
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Row actions sit together at the trailing edge and never wrap under the text. */
+.actions {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: var(--space-1);
+}
+
+/* Two controls in the section header (Show resolved · Add question). */
+.headActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* Destructive, so it stays quiet until hover or focus — and is always there on
+   touch, where there is no hover. */
+.remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease, color 0.12s ease, background 0.12s ease;
+}
+.row:hover .remove,
+.remove:focus-visible {
+  opacity: 1;
+}
+.remove:hover {
+  background: var(--color-surface-active);
+  color: var(--color-danger-text);
+}
+
+/* The answer editor takes over the row's width; its buttons sit under it. */
+.editor {
+  margin-top: var(--space-2);
+}
+
+.field {
+  width: 100%;
+  min-height: calc(var(--control-height) * 2);
+  padding: var(--space-2);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: var(--text-body);
+  line-height: 1.5;
+  resize: vertical;
+}
+.field:focus {
+  border-color: var(--focus-input-border);
+  box-shadow: 0 0 0 3px var(--focus-input-glow);
+}
+
+.editorActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.error {
+  margin: var(--space-2) 0 0;
+  font: var(--text-body-sm);
+  color: var(--color-danger-text);
+}
+
+/* Resolved questions are a quieter group under the open ones. */
+.resolved {
+  margin-top: var(--space-4);
+}
+
+@media (pointer: coarse) {
+  .remove {
+    opacity: 1;
+  }
+}
+
+/* The gutter costs too much width on a phone: the mark tucks in beside the
+   text and the actions drop below. */
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: 24px minmax(0, 1fr);
+  }
+  .actions {
+    grid-column: 2;
+    justify-content: flex-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row,
+  .remove {
+    transition: none;
+  }
+}

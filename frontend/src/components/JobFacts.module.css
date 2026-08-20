@@ -1,0 +1,49 @@
+/* A property list: label column, value column. Reads as a spec sheet rather
+   than as the wrapping sentence of meta the header used to carry. */
+.list {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+}
+
+.label {
+  font: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  /* Optically aligns the 11px caps with the 13px value beside them. */
+  padding-top: 2px;
+}
+
+.value {
+  margin: 0;
+  font: var(--text-body-sm);
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+/* "Not applied yet" and "Not rated" are real states, not missing data — they
+   are set back from a real value without dropping below the text floor. */
+.absent {
+  composes: value;
+  color: var(--color-text-muted);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font: var(--text-body-sm);
+  color: var(--color-link);
+}
+
+/* Fit is a RANK, not a status: neutral, never a pipeline colour. */
+.score {
+  font-weight: var(--weight-semibold);
+}
+
+.outOf {
+  color: var(--color-text-muted);
+}

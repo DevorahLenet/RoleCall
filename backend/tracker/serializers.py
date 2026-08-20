@@ -30,6 +30,12 @@ class ContactSerializer(serializers.ModelSerializer):
 class JobSerializer(serializers.ModelSerializer):
     """Slim payload for the Jobs list/board — the job's own fields only."""
 
+    # A blank company means "undisclosed". The model's default only fires on
+    # create, so it is applied here instead: that way the New application form
+    # and the edit dialog can both send an empty field and mean the same thing,
+    # without the frontend having to know what the default string is.
+    company = serializers.CharField(required=False, allow_blank=True, max_length=200)
+
     class Meta:
         model = Job
         fields = [
@@ -42,15 +48,8 @@ class JobSerializer(serializers.ModelSerializer):
             "created_at",
         ]
 
-
-class JobDetailSerializer(JobSerializer):
-    """Detail payload — the slim job plus its embedded contacts (read-only;
-    the link is written from the Contact side via `Contact.jobs`)."""
-
-    contacts = ContactSerializer(many=True, read_only=True)
-
-    class Meta(JobSerializer.Meta):
-        fields = [*JobSerializer.Meta.fields, "contacts"]
+    def validate_company(self, value: str) -> str:
+        return value.strip() or Job._meta.get_field("company").default
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -123,3 +122,40 @@ def _validate_exactly_one_parent(serializer, attrs):
         raise serializers.ValidationError(
             "Attach to exactly one of a job or a task."
         )
+
+
+class JobDetailSerializer(JobSerializer):
+    """Detail payload for the job page: the slim job, its long-form fields, and
+    everything hanging off it. Contacts, notes and questions ride along so the
+    page loads in one request; all three are read-only here and are written
+    through their own endpoints (contacts from the Contact side, via `Contact.jobs`).
+
+    Defined last in this file because it embeds the serializers below it."""
+
+    contacts = ContactSerializer(many=True, read_only=True)
+    notes = NoteSerializer(many=True, read_only=True)
+    questions = QuestionSerializer(many=True, read_only=True)
+    # DRF renders a DecimalField as a string by default. The score is a number
+    # everywhere it's used — a stepped input, and a sort key later — so it goes
+    # over the wire as one.
+    fit_score = serializers.DecimalField(
+        max_digits=3,
+        decimal_places=1,
+        coerce_to_string=False,
+        allow_null=True,
+        required=False,
+        # Declaring the field by hand drops the model's validators, so the range
+        # is restated here. Without it an out-of-range score reaches the DB check
+        # constraint and surfaces as a 500 instead of a 400.
+        min_value=0,
+        max_value=10,
+    )
+
+    class Meta(JobSerializer.Meta):
+        fields = [
+            *JobSerializer.Meta.fields,
+            "fit_score",
+            "contacts",
+            "notes",
+            "questions",
+        ]

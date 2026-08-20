@@ -1,0 +1,96 @@
+/* A log entry: date gutter, then the entry. The fixed leading column is what
+   distinguishes this list from the task rows above it at a glance — same flat
+   row treatment, different rhythm. It wraps, so 44px is a floor, not a height. */
+.row {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) 44px;
+  align-items: start;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background 0.1s ease;
+}
+.row:hover {
+  background: var(--color-surface-hover);
+}
+
+.stamp {
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  /* Optically aligns the 12px date with the 14px entry beside it. */
+  padding-top: 3px;
+  white-space: nowrap;
+}
+
+/* `pre-wrap` keeps the line breaks the user typed — a logbook entry is often a
+   short list, and collapsing it into a paragraph loses that. */
+.text {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--color-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Destructive, so it stays quiet until the row is hovered or it takes focus —
+   and is always visible on touch, where there is no hover. */
+.remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-top: calc(var(--space-2) * -1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease, color 0.12s ease, background 0.12s ease;
+}
+.row:hover .remove,
+.remove:focus-visible {
+  opacity: 1;
+}
+.remove:hover {
+  background: var(--color-surface-active);
+  color: var(--color-danger-text);
+}
+
+@media (pointer: coarse) {
+  .remove {
+    opacity: 1;
+  }
+}
+
+/* The gutter costs too much width on a phone; the date moves above the entry. */
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) 44px;
+  }
+  .stamp {
+    grid-column: 1;
+    grid-row: 1;
+    padding-top: 0;
+  }
+  .text {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .remove {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row,
+  .remove {
+    transition: none;
+  }
+}

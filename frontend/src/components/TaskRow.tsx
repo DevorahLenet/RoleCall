@@ -1,6 +1,6 @@
 import { Check, DotsThreeVertical, PencilSimple, Trash } from '@phosphor-icons/react'
 import { useEffect, useRef, useState } from 'react'
-import type { CSSProperties } from 'react'
+import type { CSSProperties, DragEvent } from 'react'
 import type { Task } from '../types'
 import { getJobStatus } from '../design-system/statuses'
 import { getCategory } from '../design-system/categories'
@@ -10,61 +10,47 @@ import styles from './TaskRow.module.css'
 
 interface Props {
   task: Task
+  /** False on a job page, where every row belongs to the job in the page title
+   *  and the chip would repeat it on every line. */
+  showChip?: boolean
   onToggleDone: (task: Task) => void
   onChangePriority: (task: Task, priorityId: string) => void
-  onEditTitle: (task: Task, title: string) => void
+  /** Opens the task dialog on this row. Every field of a task is edited there,
+   *  so the row itself never grows a second, title-only editor. */
+  onEdit: (task: Task) => void
   onDeleteTask: (task: Task) => void
+  /** Set by a list that groups rows by status (Today), which is the only place a
+   *  drag has anywhere to land. The job page's flat list leaves these off and
+   *  the row is simply not draggable there. */
+  onDragStart?: (task: Task) => void
+  onDragEnd?: () => void
+  /** This row is the one currently in hand — fades so the drop target reads. */
+  dragging?: boolean
 }
 
 // One task line: checkbox · title · chip · priority pill · row menu. The chip is
 // the job's pipeline stage when attached, otherwise the category, otherwise "no
 // job". Done rows mute and strike through in place (styling), staying in their
-// group. The title edits inline; the menu holds rename and delete.
+// group. The menu holds Edit — which opens the full task dialog — and Delete.
 export function TaskRow({
   task,
+  showChip = true,
   onToggleDone,
   onChangePriority,
-  onEditTitle,
+  onEdit,
   onDeleteTask,
+  onDragStart,
+  onDragEnd,
+  dragging = false,
 }: Props) {
   const done = task.is_done
   const jobStatus = getJobStatus(task.job_status)
   const category = getCategory(task.category)
   const hasJob = task.job !== null && task.job_company !== null
+  const draggable = onDragStart !== undefined
 
-  // Inline-edit + menu state. `draft` holds the in-progress title; `skipBlur`
-  // stops the unmount-blur from re-committing after Enter/Escape already ran.
-  const [editing, setEditing] = useState(false)
-  const [draft, setDraft] = useState(task.title)
   const [menuOpen, setMenuOpen] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
-  const skipBlur = useRef(false)
-
-  // Enter edit mode from a fresh copy of the title, then focus + select it.
-  function startEditing() {
-    setMenuOpen(false)
-    setDraft(task.title)
-    setEditing(true)
-  }
-  useEffect(() => {
-    if (editing) inputRef.current?.select()
-  }, [editing])
-
-  // Commit the rename (only when non-empty and actually changed); guard the
-  // trailing unmount-blur so it can't fire onEditTitle a second time.
-  function commit() {
-    const next = draft.trim()
-    skipBlur.current = true
-    setEditing(false)
-    if (next && next !== task.title) onEditTitle(task, next)
-  }
-  // Abandon the edit, restoring the original title.
-  function cancel() {
-    skipBlur.current = true
-    setDraft(task.title)
-    setEditing(false)
-  }
 
   // While the menu is open, dismiss it on an outside click or the Escape key.
   useEffect(() => {
@@ -85,8 +71,38 @@ export function TaskRow({
     }
   }, [menuOpen])
 
+  // The task id rides along in dataTransfer as well as in the list's state:
+  // setting some payload is what makes the drag valid in Firefox, and reading it
+  // back on drop is more reliable than trusting state to still be current.
+  //
+  // The state update is deferred by a tick on purpose. Restyling the dragged
+  // element *during* dragstart (here, fading it) makes Chrome cancel the drag
+  // before it begins — the browser is still snapshotting the element for its
+  // drag image. Letting dragstart finish first fixes it. (Same reasoning, and
+  // the same fix, as JobCard on the board.)
+  function handleDragStart(e: DragEvent<HTMLElement>) {
+    e.dataTransfer.setData('text/plain', String(task.id))
+    e.dataTransfer.effectAllowed = 'move'
+    setTimeout(() => onDragStart?.(task), 0)
+  }
+
+  const classes = [
+    styles.row,
+    done ? styles.rowDone : '',
+    showChip ? '' : styles.rowNoChip,
+    draggable ? styles.rowDraggable : '',
+    dragging ? styles.rowDragging : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div className={done ? `${styles.row} ${styles.rowDone}` : styles.row}>
+    <div
+      className={classes}
+      draggable={draggable}
+      onDragStart={draggable ? handleDragStart : undefined}
+      onDragEnd={draggable ? onDragEnd : undefined}
+    >
       <button
         type="button"
         className={styles.check}
@@ -99,35 +115,19 @@ export function TaskRow({
         </span>
       </button>
 
-      {editing ? (
-        <input
-          ref={inputRef}
-          className={styles.titleInput}
-          value={draft}
-          aria-label="Task title"
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') commit()
-            else if (e.key === 'Escape') cancel()
-          }}
-          onBlur={() => {
-            if (skipBlur.current) {
-              skipBlur.current = false
-              return
-            }
-            commit()
-          }}
-        />
-      ) : (
-        <span className={styles.title}>
-          {task.title}
-        </span>
-      )}
+      <span className={styles.title}>{task.title}</span>
 
-      {hasJob && jobStatus ? (
+      {/* The chip names the row's context — the job's company and stage, or the
+          category for a job-less task. A job page passes showChip={false}:
+          there the context is the page itself. */}
+      {showChip &&
+        (hasJob && jobStatus ? (
         <a
           href="#"
           className={styles.chip}
+          /* An anchor drags itself as a link by default, which would hijack the
+             row's own drag the moment the pointer started on the chip. */
+          draggable={false}
           style={
             {
               background: jobStatus.badgeBg,
@@ -145,14 +145,14 @@ export function TaskRow({
         <span className={styles.categoryChip}>{category.label}</span>
       ) : (
         <span className={styles.noJob}>No job attached</span>
-      )}
+      ))}
 
       <PriorityPill
         priorityId={task.priority}
         onChange={(id) => onChangePriority(task, id)}
       />
 
-      {/* Row overflow menu: rename and delete, at raised elevation. */}
+      {/* Row overflow menu: edit and delete, at raised elevation. */}
       <div className={styles.menuWrap} ref={menuRef}>
         <button
           type="button"
@@ -171,10 +171,13 @@ export function TaskRow({
               type="button"
               role="menuitem"
               className={styles.menuItem}
-              onClick={startEditing}
+              onClick={() => {
+                setMenuOpen(false)
+                onEdit(task)
+              }}
             >
               <PencilSimple size={15} aria-hidden />
-              Edit title
+              Edit
             </button>
             <button
               type="button"

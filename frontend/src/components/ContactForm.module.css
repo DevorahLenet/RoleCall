@@ -1,0 +1,35 @@
+/* The picker and the new-person fields are alternatives, so a rule and a word
+   separate them rather than letting them read as one long form. */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* Remove sits apart from Cancel/Save: it is the one destructive action here,
+   and it belongs at the opposite end from the button you actually meant. */
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}

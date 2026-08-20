@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import type { Job, NewJob, NewTask, Task } from './types'
+import type { Job, JobDetail, JobPatch, NewJob, NewTask, Task, TaskPatch } from './types'
 import {
   createJob,
   createTask,
@@ -19,11 +19,13 @@ export interface Tracker {
   load: LoadState
   reload: () => void
   onCreateJob: (input: NewJob) => Promise<Job>
+  onUpdateJob: (job: Job, patch: JobPatch) => Promise<JobDetail>
   onChangeJobStatus: (job: Job, statusId: string) => void
   onCreateTask: (input: NewTask) => Promise<Task>
+  onUpdateTask: (task: Task, patch: TaskPatch) => Promise<Task>
   onToggleDone: (task: Task) => void
   onChangePriority: (task: Task, priorityId: string) => void
-  onEditTitle: (task: Task, title: string) => void
+  onChangeTaskStatus: (task: Task, statusId: string) => void
   onDeleteTask: (task: Task) => void
 }
 
@@ -69,6 +71,25 @@ export function useTracker(): Tracker {
     const job = await createJob(input)
     setJobs((prev) => [...prev, job])
     return job
+  }, [])
+
+  // Save an edit to a job's board-visible fields (the Edit application dialog).
+  // Awaited rather than optimistic, like create, so a failure keeps the dialog
+  // open with the typing intact.
+  //
+  // The list is merged from the SAVED record rather than from the patch that was
+  // sent, because the API normalises as it writes — a cleared company comes back
+  // as "undisclosed" — and only the board-visible keys are taken, so the list
+  // keeps its slim shape. The full record is returned for the job page to mirror.
+  const onUpdateJob = useCallback(async (job: Job, patch: JobPatch) => {
+    const saved = await patchJob(job.id, patch)
+    const { role, company, status, applied_on, posting_url } = saved
+    setJobs((prev) =>
+      prev.map((j) =>
+        j.id === job.id ? { ...j, role, company, status, applied_on, posting_url } : j,
+      ),
+    )
+    return saved
   }, [])
 
   // Move a job to another pipeline stage, optimistically: the card jumps columns
@@ -124,17 +145,32 @@ export function useTracker(): Tracker {
     [patchLocal],
   )
 
-  // Optimistic title rename; revert to the old title if the PATCH fails.
-  const onEditTitle = useCallback(
-    (task: Task, title: string) => {
-      const previous = task.title
-      patchLocal(task.id, { title })
-      patchTask(task.id, { title }).catch(() =>
-        patchLocal(task.id, { title: previous }),
+  // Move a task to another status group, optimistically: the row jumps groups
+  // under the pointer that dragged it and snaps back if the PATCH fails. This is
+  // the drag-and-drop path; the edit dialog's Status select goes through
+  // onUpdateTask instead, since a dialog can wait for the server.
+  const onChangeTaskStatus = useCallback(
+    (task: Task, statusId: string) => {
+      if (statusId === task.status) return
+      patchLocal(task.id, { status: statusId })
+      patchTask(task.id, { status: statusId }).catch(() =>
+        patchLocal(task.id, { status: task.status }),
       )
     },
     [patchLocal],
   )
+
+  // Save an edit from the task dialog. Unlike the row's own edits this is
+  // awaited rather than optimistic, for the same reason as onUpdateJob: a
+  // failure has somewhere to be shown, so the dialog stays open with the typing
+  // intact. The list is merged from the SAVED record because the API resolves
+  // the job context (`job_company`/`job_status`) the row chip needs — re-pointing
+  // a task at another job changes a chip the patch itself never mentions.
+  const onUpdateTask = useCallback(async (task: Task, patch: TaskPatch) => {
+    const saved = await patchTask(task.id, patch)
+    setTasks((prev) => prev.map((t) => (t.id === task.id ? saved : t)))
+    return saved
+  }, [])
 
   // Optimistic delete: drop the row now, DELETE the server, re-insert on failure.
   const onDeleteTask = useCallback((task: Task) => {
@@ -152,11 +188,13 @@ export function useTracker(): Tracker {
     load,
     reload,
     onCreateJob,
+    onUpdateJob,
     onChangeJobStatus,
     onCreateTask,
+    onUpdateTask,
     onToggleDone,
     onChangePriority,
-    onEditTitle,
+    onChangeTaskStatus,
     onDeleteTask,
   }
 }

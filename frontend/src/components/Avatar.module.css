@@ -1,0 +1,16 @@
+/* Initials in a circle — one of the three places --radius-full is correct
+   (avatars, status dots, count badges). Sized from the type it sits beside. */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-active);
+  color: var(--color-text-secondary);
+  font: var(--weight-semibold) 11px/1 var(--font-sans);
+  text-transform: uppercase;
+  user-select: none;
+}

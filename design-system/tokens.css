@@ -198,6 +198,9 @@
      five active stages fit on screen at once with no sideways scroller — this is
      only the width below which they wrap rather than shrink any further. */
   --board-column-min: 200px;
+  /* Properties rail on the job detail page. Wide enough for a label + value
+     pair without wrapping, narrow enough to leave the lists their width. */
+  --detail-rail-width: 280px;
 
   /* ---------- Control heights ----------
      Buttons and menu items run compact on a mouse and grow to the 44px

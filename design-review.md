@@ -32,7 +32,7 @@ The editorial "newsprint" register was retired for an application register (see 
 - ✅ **§4 type scale** — formalized and sized for an application (20/15/14/13/12/11).
 - ✅ **§1 "restraint tips into flat"** — density and a real shell replace the long stretches of near-identical cards.
 
-Still open: the kanban board, job detail page, dashboard/momentum stats (#8, #12), a celebratory Offer moment (#12), and a logo mark (#11).
+Still open: dashboard/momentum stats (#8, #12), a celebratory Offer moment (#12), and a logo mark (#11). The **kanban board** and the **job detail page** have since been built.
 
 ---
 

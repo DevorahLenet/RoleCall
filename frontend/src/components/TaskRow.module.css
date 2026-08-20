@@ -14,6 +14,13 @@
   background: var(--color-surface-hover);
 }
 
+/* On a job page the chip is suppressed, so the grid drops its column — without
+   this the empty track still contributes a `gap` between title and priority.
+   Same move the 600px breakpoint makes at the foot of this file. */
+.rowNoChip {
+  grid-template-columns: 44px minmax(0, 1fr) auto auto;
+}
+
 .rowDone .chip,
 .rowDone .categoryChip {
   opacity: 0.55;
@@ -68,20 +75,24 @@
   text-decoration: line-through;
 }
 
-/* Inline title editor: sits in the title column, matching the row's type. */
-.titleInput {
-  width: 100%;
-  font: var(--text-body);
-  color: var(--color-text);
-  padding: var(--space-1) var(--space-2);
-  background: var(--color-surface);
-  border: 1.5px solid var(--color-border-strong);
-  border-radius: var(--radius-sm);
+/* Grab cursor only where the row can actually be dragged — on Today, where the
+   groups it would land in exist. The controls inside keep their own pointer. */
+.rowDraggable {
+  cursor: grab;
 }
-.titleInput:focus {
-  outline: none;
-  border-color: var(--focus-input-border);
-  box-shadow: 0 0 0 3px var(--focus-input-glow);
+.rowDraggable:active {
+  cursor: grabbing;
+}
+.rowDraggable .check,
+.rowDraggable .menuTrigger,
+.rowDraggable .chip {
+  cursor: pointer;
+}
+
+/* The row currently in hand. It stays in place (the browser drags a snapshot)
+   and fades, so the highlighted group reads as the thing being answered. */
+.rowDragging {
+  opacity: 0.4;
 }
 
 /* Job chip: the pipeline stage, tinted from statuses.json. Squared off — a

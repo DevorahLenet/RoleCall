@@ -3,6 +3,7 @@
    padding is trimmed because the status pill's 44px hit area already supplies
    the optical space: the target keeps its full size, the card doesn't grow. */
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
@@ -17,6 +18,38 @@
      card. The card's text isn't selectable, which is the usual trade for a
      draggable tile. */
   user-select: none;
+}
+
+/* The whole card is a link, so it declares itself on hover the way the design
+   system asks a clickable card to: the border takes the accent, fill and shadow
+   stay put. :focus-within covers the keyboard, since the focus lands on the
+   stretched link inside. */
+.card:hover,
+.card:focus-within {
+  border-color: var(--color-accent);
+}
+
+/* The stretched link: it covers the card, so a click anywhere opens the job. */
+.open {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: var(--radius-md);
+}
+
+/* ONLY genuinely interactive things are raised above that link — never their
+   containers. Raising the whole <h3> or the whole footer puts inert text above
+   the click layer, which reads as a card that ignores clicks: the role line is
+   full-width, and all but one job has no posting link, so the obvious place to
+   click was dead on almost every card. Anything raised here must itself do
+   something when clicked. */
+.raised {
+  position: relative;
+  z-index: 1;
+  /* Keeps the pill shrinking and ellipsising inside the flex footer, which a
+     default inline wrapper would prevent. */
+  display: inline-flex;
+  min-width: 0;
 }
 
 /* The card being dragged recedes in place, so the gap it will leave is legible
@@ -40,6 +73,10 @@
    would shout. Hover and keyboard focus are what declare it: it takes the link
    colour and underlines, matching links everywhere else in the app. */
 .roleLink {
+  /* Raised above the card link so it keeps its own target: clicking the role
+     text opens the posting, clicking anywhere else opens the job. */
+  position: relative;
+  z-index: 1;
   color: inherit;
   text-decoration: none;
   transition: color 0.12s ease;
@@ -71,6 +108,7 @@
   gap: var(--space-2);
 }
 
+/* Date sits at the trailing edge of the footer. */
 .applied {
   font: var(--text-meta);
   font-variant-numeric: tabular-nums;

@@ -14,6 +14,7 @@ an additive migration.
 
 from __future__ import annotations
 
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from . import design_system as ds
@@ -39,6 +40,18 @@ class Job(CreatedAtModel):
         default="researching",
         help_text="Pipeline stage id from design-system/statuses.json.",
     )
+    # How well the role fits, as a number only. It is a column of its own rather
+    # than a line inside a note so jobs can be ranked by it later (stories 4-6)
+    # without parsing "~8.5/10" back out of prose. The reasoning behind a score
+    # belongs in the job's notes, which is where every other judgement is logged.
+    fit_score = models.DecimalField(
+        max_digits=3,
+        decimal_places=1,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(10)],
+        help_text="Fit out of 10, to one decimal place (e.g. 8.5). Null = unrated.",
+    )
 
     class Meta:
         ordering = ["company"]
@@ -46,6 +59,13 @@ class Job(CreatedAtModel):
             models.CheckConstraint(
                 condition=models.Q(status__in=ds.JOB_STATUS_IDS),
                 name="job_status_in_statuses_json",
+            ),
+            # The validators cover forms and DRF; this is the DB backstop, same
+            # discipline as the enum constraints above.
+            models.CheckConstraint(
+                condition=models.Q(fit_score__isnull=True)
+                | models.Q(fit_score__gte=0, fit_score__lte=10),
+                name="job_fit_score_0_to_10",
             ),
         ]
 
@@ -83,7 +103,7 @@ class Task(CreatedAtModel):
     status = models.CharField(
         max_length=ds.ENUM_MAX_LENGTH,
         choices=ds.TASK_STATUS_CHOICES,
-        default="todo",
+        default=ds.TASK_STATUS_DEFAULT,
         help_text="Task status id from design-system/task-statuses.json.",
     )
     is_done = models.BooleanField(default=False)

@@ -83,7 +83,7 @@ export function AppShell() {
       {jobFormOpen && (
         <JobForm
           initialStatusId={focusedStatusId}
-          onCreate={handleCreateJob}
+          onSave={handleCreateJob}
           onClose={() => setJobFormOpen(false)}
         />
       )}

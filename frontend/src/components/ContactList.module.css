@@ -1,0 +1,94 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* The row IS the edit control — a person's details are the only thing there is
+   to do with them here, so clicking the row opens them rather than hiding that
+   behind a second affordance. */
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: var(--space-1) var(--space-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.row:hover {
+  background: var(--color-surface-active);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  font: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* What the person is to this job. Note it belongs to the CONTACT, not to the
+   contact-on-this-job — the M2M has no fields of its own. */
+.meta {
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Icon-only mail link, quiet until the row is hovered or it takes focus. */
+.mail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 32px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  opacity: 0;
+  transition: opacity 0.12s ease, color 0.12s ease;
+}
+.item:hover .mail,
+.mail:focus-visible {
+  opacity: 1;
+}
+.mail:hover {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+@media (pointer: coarse) {
+  .mail {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mail {
+    transition: none;
+  }
+}

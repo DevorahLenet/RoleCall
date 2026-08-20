@@ -1,0 +1,64 @@
+/* The composer sits between a section's header and its rows, set slightly back
+   from the page so it reads as a temporary surface rather than as another row. */
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+}
+
+.control {
+  flex: 1 1 100%;
+  min-width: 0;
+  min-height: var(--control-height);
+  padding: var(--space-2);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: var(--text-body);
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.control::placeholder {
+  color: var(--color-text-placeholder);
+}
+.control:focus {
+  border-color: var(--focus-input-border);
+  box-shadow: 0 0 0 3px var(--focus-input-glow);
+}
+.control:disabled {
+  background: var(--color-surface-active);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* A note runs longer than a line, so its field starts taller and can grow. */
+.multiline {
+  min-height: calc(var(--control-height) * 2);
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+/* Full-width so it drops under the field rather than squeezing it. */
+.error {
+  flex: 1 1 100%;
+  margin: 0;
+  font: var(--text-body-sm);
+  color: var(--color-danger-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control {
+    transition: none;
+  }
+}
