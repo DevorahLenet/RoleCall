@@ -15,6 +15,8 @@ export function Today() {
     load,
     reload,
     onOpenNav,
+    onNewApplication,
+    onCreateTask,
     onToggleDone,
     onChangePriority,
     onEditTitle,
@@ -27,7 +29,11 @@ export function Today() {
         title="Today"
         onOpenNav={onOpenNav}
         actions={
-          <Button variant="primary" icon={<Plus size={15} weight="bold" />}>
+          <Button
+            variant="primary"
+            icon={<Plus size={15} weight="bold" />}
+            onClick={onNewApplication}
+          >
             New application
           </Button>
         }
@@ -36,7 +42,7 @@ export function Today() {
       <div className={styles.content}>
         {load === 'loading' && (
           <div role="status" aria-live="polite">
-            <span className={styles.srOnly}>Loading your day…</span>
+            <span className="sr-only">Loading your day…</span>
             <SkeletonRows />
           </div>
         )}
@@ -57,7 +63,9 @@ export function Today() {
           <>
             <PipelineBand jobs={jobs} />
             <TodayList
+              jobs={jobs}
               tasks={tasks}
+              onCreateTask={onCreateTask}
               onToggleDone={onToggleDone}
               onChangePriority={onChangePriority}
               onEditTitle={onEditTitle}

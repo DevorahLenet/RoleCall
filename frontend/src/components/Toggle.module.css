@@ -1,0 +1,75 @@
+/* The whole label is the hit area, held at the 44px touch floor. */
+.wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* The native control does the work but isn't painted — it covers the whole label
+   so every pointer state lands on it, and the focus ring is drawn on the track. */
+.input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* 16px tall like the checkbox, pill-shaped so it reads as a switch rather than
+   a wide checkbox. Off is --color-border-strong, on is --color-accent. */
+.track {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background: var(--color-border-strong);
+  transition: background 0.12s ease;
+}
+.input:checked ~ .track {
+  background: var(--color-accent);
+}
+.input:hover ~ .track {
+  box-shadow: inset 0 0 0 999px var(--wash-cyan-hover);
+}
+.input:active ~ .track {
+  box-shadow: inset 0 0 0 999px var(--wash-cyan-active);
+}
+/* The hidden input can't show the global ring itself, so the track wears it. */
+.input:focus-visible ~ .track {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.12s ease;
+}
+.input:checked ~ .track .knob {
+  transform: translateX(12px);
+}
+
+.text {
+  font: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .knob {
+    transition: none;
+  }
+}

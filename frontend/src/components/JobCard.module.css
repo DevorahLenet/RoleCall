@@ -1,15 +1,29 @@
 /* Ground and surface are both white, so a card separates by border + shadow —
-   and it reads forward here because the column behind it is sunken. Padding is
-   even, since the columns now share the pane and inner width is scarce. */
+   and it reads forward here because the column behind it is sunken. The bottom
+   padding is trimmed because the status pill's 44px hit area already supplies
+   the optical space: the target keeps its full size, the card doesn't grow. */
 .card {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  padding: var(--space-3);
+  padding: var(--space-3) var(--space-3) var(--space-1);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   box-shadow: var(--shadow-sm);
+  cursor: grab;
+  /* Without this a press-and-drag starting on the role or company text begins a
+     text selection, and the browser drags the selected string instead of the
+     card. The card's text isn't selectable, which is the usual trade for a
+     draggable tile. */
+  user-select: none;
+}
+
+/* The card being dragged recedes in place, so the gap it will leave is legible
+   while the cursor carries its ghost elsewhere. */
+.cardDragging {
+  opacity: 0.4;
+  cursor: grabbing;
 }
 
 /* Role is the card's name, set at list-row size so "the thing's name" is one
@@ -47,31 +61,14 @@
 }
 
 /* Stage left, date right; they drop onto separate lines rather than crushing
-   when a long stage label meets a date in a narrow column. */
+   when a long stage label meets a date in a narrow column. The pill owns the
+   row's height (44px), so there's no margin on top of it. */
 .foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--space-2);
-  margin-top: var(--space-1);
-}
-
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 3px var(--space-2);
-  border-radius: var(--radius-xs);
-  font: var(--weight-semibold) 11px/1.35 var(--font-sans);
-  white-space: nowrap;
-}
-
-.statusDot {
-  width: 6px;
-  height: 6px;
-  border-radius: var(--radius-full);
-  flex: none;
 }
 
 .applied {
@@ -79,18 +76,4 @@
   font-variant-numeric: tabular-nums;
   color: var(--color-text-muted);
   white-space: nowrap;
-}
-
-/* Visually hidden, still announced — carries the context the visual design
-   deliberately drops ("Applied", "opens in a new tab"). */
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }

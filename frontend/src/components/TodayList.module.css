@@ -6,8 +6,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
   margin-bottom: var(--space-4);
+}
+
+/* Toggle + New task sit together at the right; they wrap under the heading
+   rather than crush it on a narrow screen. */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
 }
 
 .heading {

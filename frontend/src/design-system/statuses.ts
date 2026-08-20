@@ -23,6 +23,11 @@ const byId: Record<string, JobStatus> = Object.fromEntries(
  *  under Jobs, never in the Today pipeline band). */
 export const activeJobStatuses = jobStatuses.filter((s) => s.group === 'active')
 
+/** Where a new application starts — the first active stage in pipeline order.
+ *  Derived rather than typed out so it stays the same value as the Job model's
+ *  `status` default; changing the pipeline's opening stage is still one file. */
+export const defaultJobStatusId = activeJobStatuses[0].id
+
 // Resolve a status id to its full record (label + colours); undefined if unknown.
 export function getJobStatus(id: string | null | undefined): JobStatus | undefined {
   return id ? byId[id] : undefined

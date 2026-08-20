@@ -16,9 +16,6 @@
 .errorBody {
   composes: errorBody from './Pane.module.css';
 }
-.srOnly {
-  composes: srOnly from './Pane.module.css';
-}
 
 @media (max-width: 600px) {
   .pane {

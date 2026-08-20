@@ -1,0 +1,28 @@
+{
+  "$comment": "RoleCall writing-piece type — single source of truth for the Writing Library. Drives the type filter chips, the type badge on a piece row, and the DB enum. `id` is the stable machine value; `label` is display text.",
+  "$storage": "Store as the `id` in a database ENUM column whose allowed values are exactly the `id`s below. `backend/tracker/design_system.py` reads this file to build both model `choices` and the DB CheckConstraint — editing this list changes the constraint, so it needs `makemigrations`.",
+  "$style": "Rendered as a squared tag (`--radius-xs`, outline `1px --color-border`, `--color-text-muted`) per design-system.md §5 — NOT a status badge. Writing types carry no colour: pipeline colour belongs to statuses.json, and a piece row already shows its job's company. Distinguishing types by hue would put four more colours on screen competing with the pipeline.",
+  "types": [
+    {
+      "id": "resume",
+      "label": "Resume",
+      "description": "A full resume, usually tailored to a specific job. Base resumes have no job attached; tailored ones do, and set `derived_from` to the piece they were forked from."
+    },
+    {
+      "id": "cover_letter",
+      "label": "Cover letter",
+      "description": "A full-length letter written for a specific application."
+    },
+    {
+      "id": "blurb",
+      "label": "Blurb",
+      "description": "Short-form pitch copy — application-form paragraphs, outreach emails, LinkedIn messages, 'tell us about yourself' boxes."
+    },
+    {
+      "id": "impact_statement",
+      "label": "Impact statement",
+      "description": "A reusable accomplishment framing — the raw material that gets adapted into resumes and letters. Usually generic, rarely tied to one job."
+    }
+  ],
+  "$reuse": "Type describes the DOCUMENT, not the unit of reuse. What gets reused is a passage inside it — a bullet, a paragraph. See writing-library-plan.md for why passages are their own table."
+}

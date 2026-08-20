@@ -1,6 +1,6 @@
 // Thin API client for the Django backend. Base URL is a constant for now; move
 // to an env var (VITE_API_BASE) when there's more than one environment.
-import type { Job, Task } from '../types'
+import type { Job, NewJob, NewTask, Task } from '../types'
 
 const API_BASE = 'http://localhost:8000/api'
 
@@ -21,6 +21,39 @@ export function getJobs(): Promise<Job[]> {
 // Fetch every task for the Today screen.
 export function getTasks(): Promise<Task[]> {
   return fetch(`${API_BASE}/tasks/`).then((r) => toJson<Task[]>(r))
+}
+
+// Create a job from the New application form. Returns the saved row so the board
+// can render it with the id and created_at the server assigned.
+export function createJob(input: NewJob): Promise<Job> {
+  return fetch(`${API_BASE}/jobs/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  }).then((r) => toJson<Job>(r))
+}
+
+/** Partial update — currently only moving a job to another pipeline stage, from
+ *  the board's status pill or a drag between columns. */
+export function patchJob(
+  id: number,
+  patch: Partial<Pick<Job, 'status'>>,
+): Promise<Job> {
+  return fetch(`${API_BASE}/jobs/${id}/`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(patch),
+  }).then((r) => toJson<Job>(r))
+}
+
+// Create a task from the New task form. Returns the saved row so the list can
+// render it with the id and the job context (company + stage) the server resolved.
+export function createTask(input: NewTask): Promise<Task> {
+  return fetch(`${API_BASE}/tasks/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  }).then((r) => toJson<Task>(r))
 }
 
 /** Partial update — toggling `is_done`, changing `priority`, or renaming `title`. */

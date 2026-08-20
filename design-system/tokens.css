@@ -98,6 +98,10 @@
   --color-danger-hover: var(--danger-hover);
   --color-danger-text: var(--danger-text);
 
+  /* Fill for a container that will accept the thing currently being dragged —
+     the Jobs board's columns. Paired with a --color-accent ring. */
+  --color-drop-target: var(--cyan-50);
+
   /* ---------- Priority ramp ----------
      Priority is a RANK, not a status. It stays in neutral greys and never
      borrows a pipeline color — weight alone carries the hierarchy. */
@@ -246,3 +250,18 @@ a:hover {
 
 /* Tabular figures utility for dates / numeric columns. */
 .tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* Visually hidden, still announced. For context the visual design deliberately
+   drops (a bare date's "Applied", a link's new-tab warning) and for live regions
+   that narrate a change the sighted user can simply see. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

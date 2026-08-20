@@ -1,0 +1,85 @@
+/* Shared form-control styles. Every form in the app composes from this file so
+   input/label/action styling is declared once rather than restated per dialog. */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Two controls side by side; collapses to one column on a phone. */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.label {
+  margin-bottom: var(--space-2);
+  font: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Input / select / textarea share one control treatment. */
+.control {
+  width: 100%;
+  min-height: var(--control-height);
+  padding: var(--space-2);
+  font: var(--text-body);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+}
+.control::placeholder {
+  color: var(--color-text-placeholder);
+}
+.control:focus {
+  outline: none;
+  border-color: var(--focus-input-border);
+  box-shadow: 0 0 0 3px var(--focus-input-glow);
+}
+.control:disabled {
+  background: var(--color-surface-active);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Help text under a control — why it's disabled, what the field means. */
+.hint {
+  margin: var(--space-2) 0 0;
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+}
+
+/* Save failure, above the actions: plain language, never a bare status code. */
+.error {
+  margin: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-danger-text);
+  border-radius: var(--radius-sm);
+  font: var(--text-body-sm);
+  color: var(--color-danger-text);
+}
+
+/* Cancel then confirm, right-aligned — the loud action sits closest to the edge. */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

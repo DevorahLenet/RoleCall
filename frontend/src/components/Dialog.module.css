@@ -1,0 +1,90 @@
+/* The sheet the dialog floats over. Flex + `margin: auto` on the card centres it
+   without clipping the top edge when the form is taller than the viewport. */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: flex;
+  padding: var(--space-4);
+  overflow-y: auto;
+  background: var(--scrim-dialog);
+  animation: fade 0.12s ease;
+}
+
+/* Dialog elevation: the card genuinely floats, so it earns a shadow. */
+.dialog {
+  margin: auto;
+  width: min(520px, 100%);
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-dialog);
+  animation: rise 0.14s ease;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.title {
+  margin: 0;
+  font: var(--text-section);
+  color: var(--color-text);
+}
+
+/* Close affordance: transparent 44px hit area holding a 16px glyph, per the
+   icon-only button rule. Pulled to the corner so it doesn't inflate the header. */
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: calc(var(--space-3) * -1) calc(var(--space-3) * -1) 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.close:hover {
+  background: var(--color-surface-active);
+  color: var(--color-text);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim,
+  .dialog {
+    animation: none;
+  }
+}
+
+/* On a phone the dialog takes the full width it can and sits nearer the top. */
+@media (max-width: 600px) {
+  .scrim {
+    padding: var(--space-3);
+  }
+  .dialog {
+    padding: var(--space-5);
+  }
+}

@@ -1,0 +1,98 @@
+.wrap {
+  position: relative;
+  min-width: 0;
+}
+
+/* Transparent trigger carries the 44px hit area; the visible pill inside stays
+   compact. Like the priority tag, this stays 44px at every pointer size — the
+   card's bottom padding is trimmed to pay for it rather than the target. */
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 100%;
+  padding: 3px var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  font: var(--weight-semibold) 11px/1.35 var(--font-sans);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+/* Hover says "this is a control" without disturbing the status colour: a value
+   wash and an accent border, never a change of hue. */
+.trigger:hover .pill {
+  border-color: var(--color-accent);
+  box-shadow: inset 0 0 0 999px var(--wash-ink-hover);
+}
+.pillOpen {
+  border-color: var(--color-accent);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex: none;
+}
+
+/* Opens below the pill and left-aligned to it, at menu elevation. It is allowed
+   to spill past the column — nothing on the board clips it. */
+.menu {
+  position: absolute;
+  top: calc(100% - var(--space-2));
+  left: 0;
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 172px;
+  padding: var(--space-1);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+/* The row is the hit area; the pill inside is the preview of the result. */
+.item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--control-height);
+  padding: var(--space-1) var(--space-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+.item:hover {
+  background: var(--color-surface-hover);
+}
+.itemActive {
+  background: var(--color-surface-active);
+}
+
+.itemPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-xs);
+  font: var(--weight-semibold) 11px/1.35 var(--font-sans);
+  white-space: nowrap;
+}

@@ -19,6 +19,6 @@
       "description": "Blocked on someone else. Not actionable — carries a day count since it started waiting."
     }
   ],
-  "$done": "Completion is a separate boolean field on the task, NOT a fourth status. A completed task strikes through and mutes in place rather than moving groups. How long it lingers before clearing is still undecided.",
+  "$done": "Completion is a separate boolean field on the task, NOT a fourth status. A completed task strikes through and mutes IN PLACE — it does not move groups and does not move within its group, because a row that jumps the moment you check it pulls itself out from under the cursor. Completed tasks are never auto-cleared; the Today list header carries a `Show completed` toggle that hides them on demand.",
   "$waitingSince": "`waiting` needs a timestamp to render its day count ('12d'). Store `waiting_since` alongside status."
 }

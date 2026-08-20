@@ -14,6 +14,12 @@ export interface Job {
 
 // Detail payload for a single job — the slim job plus embedded contacts.
 // Mirrors JobDetailSerializer; only the detail endpoint sends `contacts`.
+// What the "New application" form sends. The server assigns `id`/`created_at`,
+// and `company` is omitted entirely when the field is left blank so the model's
+// "undisclosed" default applies rather than an empty string the model rejects.
+export type NewJob = Pick<Job, 'role' | 'status'> &
+  Partial<Pick<Job, 'company' | 'posting_url' | 'applied_on'>>
+
 export interface JobDetail extends Job {
   contacts: Contact[]
 }
@@ -43,3 +49,11 @@ export interface Task {
   category: string
   created_at: string
 }
+
+/** What the "New task" form sends. The server assigns `id`/`created_at` and
+ *  echoes back the job context (`job_company`/`job_status`) the row chip needs.
+ *  `category` must be empty whenever `job` is set — the model's "never both". */
+export type NewTask = Pick<
+  Task,
+  'title' | 'status' | 'priority' | 'category' | 'job' | 'due_on'
+>

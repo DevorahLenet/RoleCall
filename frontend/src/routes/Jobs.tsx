@@ -14,7 +14,8 @@ import styles from './Jobs.module.css'
 // the pipeline band) focuses a column rather than filtering to it: on a board,
 // hiding the other stages would throw away the thing you came to look at.
 export function Jobs() {
-  const { jobs, load, reload, onOpenNav } = useTrackerContext()
+  const { jobs, load, reload, onOpenNav, onNewApplication, onChangeJobStatus } =
+    useTrackerContext()
   const [params] = useSearchParams()
   const focused = getJobStatus(params.get('status'))
 
@@ -24,7 +25,11 @@ export function Jobs() {
         title="Jobs"
         onOpenNav={onOpenNav}
         actions={
-          <Button variant="primary" icon={<Plus size={15} weight="bold" />}>
+          <Button
+            variant="primary"
+            icon={<Plus size={15} weight="bold" />}
+            onClick={onNewApplication}
+          >
             New application
           </Button>
         }
@@ -33,7 +38,7 @@ export function Jobs() {
       <div className={styles.pane}>
         {load === 'loading' && (
           <div role="status" aria-live="polite">
-            <span className={styles.srOnly}>Loading your applications…</span>
+            <span className="sr-only">Loading your applications…</span>
             <SkeletonBoard />
           </div>
         )}
@@ -57,15 +62,24 @@ export function Jobs() {
               title="No applications yet"
               message="Add the first role you're chasing and it lands in Researching, ready to move down the pipeline as things progress."
               action={
-                <Button variant="primary" icon={<Plus size={15} weight="bold" />}>
+                <Button
+                  variant="primary"
+                  icon={<Plus size={15} weight="bold" />}
+                  onClick={onNewApplication}
+                >
                   Add an application
                 </Button>
               }
             />
           ) : (
-            <JobBoard jobs={jobs} focusedStatusId={focused?.id ?? null} />
+            <JobBoard
+              jobs={jobs}
+              focusedStatusId={focused?.id ?? null}
+              onChangeJobStatus={onChangeJobStatus}
+            />
           ))}
       </div>
+
     </>
   )
 }

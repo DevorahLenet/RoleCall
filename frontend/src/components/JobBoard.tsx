@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { DragEvent } from 'react'
 import type { Job } from '../types'
-import { activeJobStatuses } from '../design-system/statuses'
+import { activeJobStatuses, getJobStatus } from '../design-system/statuses'
 import { JobCard } from './JobCard'
 import { TruncatedText } from './TruncatedText'
 import styles from './JobBoard.module.css'
@@ -10,6 +11,7 @@ interface Props {
   /** Stage arrived at via `?status=` (sidebar or pipeline band): highlighted and,
    *  on a stacked layout, scrolled to. `null` when the board was opened plainly. */
   focusedStatusId: string | null
+  onChangeJobStatus: (job: Job, statusId: string) => void
 }
 
 // Newest first within a column: by applied date descending, with jobs that
@@ -25,10 +27,17 @@ function byRecency(a: Job, b: Job): number {
 }
 
 // The Jobs board: one column per active stage in statuses.json, all five on
-// screen at once. Closed stages aren't columns here — the board is the live
-// pipeline.
-export function JobBoard({ jobs, focusedStatusId }: Props) {
+// screen at once. Cards move between stages by drag-and-drop or by the status
+// pill's menu; either way the change is optimistic and persists via PATCH.
+export function JobBoard({ jobs, focusedStatusId, onChangeJobStatus }: Props) {
   const focusedRef = useRef<HTMLElement | null>(null)
+  // The card currently in hand. Its status is kept alongside the id because
+  // dragover has to decide whether a column is a valid target, and dataTransfer
+  // payloads are unreadable until drop.
+  const [dragged, setDragged] = useState<{ id: number; status: string } | null>(null)
+  const [dropTarget, setDropTarget] = useState<string | null>(null)
+  // Narrates a move that a sighted user simply watches happen.
+  const [announcement, setAnnouncement] = useState('')
 
   // Only matters once the columns have stacked (below 600px), where a deep link
   // to a late stage would otherwise land at the top of the board. On the wide
@@ -40,40 +49,108 @@ export function JobBoard({ jobs, focusedStatusId }: Props) {
     el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' })
   }, [focusedStatusId])
 
+  // The one place a stage change is committed, whichever gesture asked for it.
+  function moveJob(job: Job, statusId: string) {
+    if (job.status === statusId) return
+    onChangeJobStatus(job, statusId)
+    setAnnouncement(`${job.role} moved to ${getJobStatus(statusId)?.label ?? statusId}`)
+  }
+
+  function clearDrag() {
+    setDragged(null)
+    setDropTarget(null)
+  }
+
+  // preventDefault is what marks a column as a valid drop target, and it runs
+  // unconditionally: gating it on React state would mean any tick where
+  // `dragged` isn't populated yet silently swallows the drop. The state only
+  // decides whether to *highlight* — landing a card back on its own column is
+  // already a no-op in moveJob.
+  function handleDragOver(e: DragEvent<HTMLElement>, statusId: string) {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    const wanted = dragged && dragged.status !== statusId ? statusId : null
+    if (dropTarget !== wanted) setDropTarget(wanted)
+  }
+
+  // dragleave also fires when the pointer crosses onto a child, so only clear
+  // the highlight when the pointer has genuinely left the column's subtree.
+  function handleDragLeave(e: DragEvent<HTMLElement>) {
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+      setDropTarget(null)
+    }
+  }
+
+  // dataTransfer is the source of truth, with the drag state as a fallback: a
+  // drop that can't identify its card would otherwise fail silently, which looks
+  // exactly like the drop never registering at all.
+  function handleDrop(e: DragEvent<HTMLElement>, statusId: string) {
+    e.preventDefault()
+    const id = Number(e.dataTransfer.getData('text/plain')) || dragged?.id
+    const job = jobs.find((j) => j.id === id)
+    if (job) moveJob(job, statusId)
+    clearDrag()
+  }
+
   return (
-    <div className={styles.board}>
-      {activeJobStatuses.map((status) => {
-        const items = jobs.filter((j) => j.status === status.id).sort(byRecency)
-        const focused = status.id === focusedStatusId
-        const headingId = `board-col-${status.id}`
+    <>
+      <div className={styles.board}>
+        {activeJobStatuses.map((status) => {
+          const items = jobs.filter((j) => j.status === status.id).sort(byRecency)
+          const focused = status.id === focusedStatusId
+          const isDropTarget = dropTarget === status.id
+          const headingId = `board-col-${status.id}`
 
-        return (
-          <section
-            key={status.id}
-            ref={focused ? focusedRef : undefined}
-            className={focused ? `${styles.column} ${styles.columnFocused}` : styles.column}
-            aria-labelledby={headingId}
-          >
-            <h2 id={headingId} className={styles.columnHead}>
-              <span className={styles.dot} style={{ background: status.dot }} aria-hidden />
-              <TruncatedText text={status.label} className={styles.columnLabel} />
-              <span className={items.length ? styles.count : styles.countZero}>
-                {items.length}
-              </span>
-            </h2>
+          const classes = [
+            styles.column,
+            focused ? styles.columnFocused : '',
+            isDropTarget ? styles.columnDropTarget : '',
+          ]
+            .filter(Boolean)
+            .join(' ')
 
-            {items.length === 0 ? (
-              <p className={styles.empty}>Nothing yet in this stage</p>
-            ) : (
-              <div className={styles.stack}>
-                {items.map((job) => (
-                  <JobCard key={job.id} job={job} />
-                ))}
-              </div>
-            )}
-          </section>
-        )
-      })}
-    </div>
+          return (
+            <section
+              key={status.id}
+              ref={focused ? focusedRef : undefined}
+              className={classes}
+              aria-labelledby={headingId}
+              onDragOver={(e) => handleDragOver(e, status.id)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, status.id)}
+            >
+              <h2 id={headingId} className={styles.columnHead}>
+                <span className={styles.dot} style={{ background: status.dot }} aria-hidden />
+                <TruncatedText text={status.label} className={styles.columnLabel} />
+                <span className={items.length ? styles.count : styles.countZero}>
+                  {items.length}
+                </span>
+              </h2>
+
+              {items.length === 0 ? (
+                <p className={styles.empty}>Nothing yet in this stage</p>
+              ) : (
+                <div className={styles.stack}>
+                  {items.map((job) => (
+                    <JobCard
+                      key={job.id}
+                      job={job}
+                      dragging={dragged?.id === job.id}
+                      onChangeStatus={moveJob}
+                      onDragStart={(j) => setDragged({ id: j.id, status: j.status })}
+                      onDragEnd={clearDrag}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+          )
+        })}
+      </div>
+
+      <p className="sr-only" role="status" aria-live="polite">
+        {announcement}
+      </p>
+    </>
   )
 }

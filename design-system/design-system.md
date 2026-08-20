@@ -89,8 +89,10 @@ Truncation is **visual only** — the full string stays in the DOM, so screen re
 - **Labels:** `--text-eyebrow` caps, `--color-text-muted`, `--space-2` below.
 - **Segmented control:** `--color-surface-active` track, `--radius-sm`; active segment `--color-surface` + `--shadow-xs`; inactive `--color-text-muted`.
 - **Radio / checkbox / toggle:** 16px controls, `--radius-sm`, `1.5px --color-border-strong`; checked/on uses `--color-accent`; off toggle `--color-border-strong`.
+- **Toggle switch** (`Toggle.tsx`) is the one shape exception: a 28×16 `--radius-full` track with a 12px knob, because a wide `--radius-sm` control reads as a stretched checkbox rather than a switch. The knob is a dot, which is what `--radius-full` is for — this is not licence to round a button. Use it for a **view preference that applies immediately** (no Save); use a checkbox for a value being submitted with a form. The native `<input role="switch">` sits transparent over the whole label, so the label is the 44px hit area and the focus ring is drawn on the track.
 - **Checkbox hover / pressed:** hover borders `--color-accent` and takes a `--wash-cyan-hover` inset wash; pressed deepens to `--wash-cyan-active`. A checked box takes the **same** wash — the accent fill never changes hue, only value. Keep the 44×44px hit area around the 16px control.
 - **Always native `<input>`/`<select>`** with associated `<label>`s.
+- **The control styles live in `Form.module.css`** — field, label, control, hint, error and the right-aligned actions row. Forms compose from it rather than restating input CSS per dialog, the same rule `Button.tsx` carries for buttons.
 
 ### Priority control
 **Priority is a rank, not a status** — it stays in the neutral `--priority-*` tokens and **never borrows a pipeline color.** Weight alone carries the hierarchy: High is the heaviest neutral fill, Med the light one, Low an outline.
@@ -153,6 +155,8 @@ List view of the pipeline. Container `--radius-md`, `--color-bg-sunken` fill. Ey
 
 ### Dialogs
 Overlay-elevation card over a `--scrim-dialog` sheet. `--color-surface`, `--radius-lg`, `--shadow-dialog`, `--space-6` pad. **Form dialog** for creating; **confirm dialog** (narrower, danger action) for destructive intent. Close affordance top-right (`X` icon).
+
+`Dialog.tsx` is the shell every form dialog composes from — it renders the scrim, the card, the title and the `X`, and the caller supplies the `<form>`. Like the tooltip it **portals to `<body>`**, so no ancestor's `overflow` can clip it. It **traps Tab** inside the card, sends focus to the first form control on open and returns it to the opener on close, freezes body scroll while open, and dismisses on Escape, the `X`, or a click that both starts and ends on the scrim. Mount it only while open, so a reopened form starts empty.
 
 ### Pull-out drawer
 Right-docked panel over `--scrim-drawer` for quick tasks that shouldn't take the whole page (quick-add, edit contacts, filters — and RoleCall's resume/cover-letter panels). `min(440px, 100%)` wide, `--color-surface` bg, `--shadow-drawer`, scrollable. Dismiss via sheet, `X`, Escape, or Cancel.

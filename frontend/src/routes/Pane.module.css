@@ -25,18 +25,8 @@
   color: var(--color-text-muted);
 }
 
-/* Visually hidden, still announced — pairs with the skeleton's aria-hidden. */
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+/* Visually-hidden text uses the global `.sr-only` utility in tokens.css — one
+   definition for the whole app rather than a copy per screen. */
 
 @media (max-width: 600px) {
   .content {

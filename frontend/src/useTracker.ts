@@ -1,7 +1,15 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import type { Job, Task } from './types'
-import { deleteTask, getJobs, getTasks, patchTask } from './api/client'
+import type { Job, NewJob, NewTask, Task } from './types'
+import {
+  createJob,
+  createTask,
+  deleteTask,
+  getJobs,
+  getTasks,
+  patchJob,
+  patchTask,
+} from './api/client'
 
 export type LoadState = 'loading' | 'ready' | 'error'
 
@@ -10,6 +18,9 @@ export interface Tracker {
   tasks: Task[]
   load: LoadState
   reload: () => void
+  onCreateJob: (input: NewJob) => Promise<Job>
+  onChangeJobStatus: (job: Job, statusId: string) => void
+  onCreateTask: (input: NewTask) => Promise<Task>
   onToggleDone: (task: Task) => void
   onChangePriority: (task: Task, priorityId: string) => void
   onEditTitle: (task: Task, title: string) => void
@@ -49,6 +60,40 @@ export function useTracker(): Tracker {
       cancelled = true
     }
   }, [attempt])
+
+  // Add a job from the New application form. Unlike the task edits this is not
+  // optimistic: a card needs the id the server assigns before it can key a React
+  // list or accept a later PATCH. The promise is returned rather than swallowed
+  // so the dialog can stay open and show the failure itself.
+  const onCreateJob = useCallback(async (input: NewJob) => {
+    const job = await createJob(input)
+    setJobs((prev) => [...prev, job])
+    return job
+  }, [])
+
+  // Move a job to another pipeline stage, optimistically: the card jumps columns
+  // immediately and snaps back if the PATCH fails. The sidebar counts and the
+  // pipeline band read the same state, so they follow for free.
+  const onChangeJobStatus = useCallback((job: Job, statusId: string) => {
+    if (statusId === job.status) return
+    const previous = job.status
+    const setStatus = (status: string) =>
+      setJobs((prev) => prev.map((j) => (j.id === job.id ? { ...j, status } : j)))
+
+    setStatus(statusId)
+    patchJob(job.id, { status: statusId }).catch(() => setStatus(previous))
+  }, [])
+
+  // Add a task from the New task form. Like onCreateJob this is not optimistic:
+  // the row needs the server's id, and the job chip needs the company/stage the
+  // server resolves from the FK. Prepending matches the API's `-created_at`
+  // ordering, so the new task lands where a reload would put it. The promise is
+  // returned rather than swallowed so the dialog can show its own failure.
+  const onCreateTask = useCallback(async (input: NewTask) => {
+    const task = await createTask(input)
+    setTasks((prev) => [task, ...prev])
+    return task
+  }, [])
 
   // Patch one task in local state only — the optimistic half of an edit.
   const patchLocal = useCallback((id: number, patch: Partial<Task>) => {
@@ -106,6 +151,9 @@ export function useTracker(): Tracker {
     tasks,
     load,
     reload,
+    onCreateJob,
+    onChangeJobStatus,
+    onCreateTask,
     onToggleDone,
     onChangePriority,
     onEditTitle,
@@ -113,10 +161,13 @@ export function useTracker(): Tracker {
   }
 }
 
-/** What the shell hands down: the data hook plus the mobile drawer trigger the
- *  Toolbar needs on every screen. */
+/** What the shell hands down: the data hook plus the two app-level actions every
+ *  screen's Toolbar can offer — the mobile drawer and the New application form. */
 export interface ShellContext extends Tracker {
   onOpenNav: () => void
+  /** Opens the New application dialog, which the shell owns so the button works
+   *  the same from any screen. */
+  onNewApplication: () => void
 }
 
 // Typed accessor for the shell context, so screens don't reach for `any`.
