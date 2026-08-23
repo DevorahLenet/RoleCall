@@ -204,6 +204,7 @@ export function JobDetail() {
                 <NoteList
                   notes={job.notes}
                   onAdd={detail.onAddNote}
+                  onEdit={detail.onEditNote}
                   onDelete={detail.onDeleteNote}
                 />
 

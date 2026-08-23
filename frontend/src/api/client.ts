@@ -115,6 +115,16 @@ export function createNote(input: Pick<Note, 'job' | 'text'>): Promise<Note> {
   }).then((r) => toJson<Note>(r))
 }
 
+/** Partial update — the text, which is the only editable thing about a note.
+ *  `job`/`task` stay put: a note never moves between parents. */
+export function patchNote(id: number, patch: Pick<Note, 'text'>): Promise<Note> {
+  return fetch(`${API_BASE}/notes/${id}/`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(patch),
+  }).then((r) => toJson<Note>(r))
+}
+
 export function deleteNote(id: number): Promise<void> {
   return fetch(`${API_BASE}/notes/${id}/`, { method: 'DELETE' }).then((res) => {
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)

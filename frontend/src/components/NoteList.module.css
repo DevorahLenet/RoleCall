@@ -1,9 +1,10 @@
-/* A log entry: date gutter, then the entry. The fixed leading column is what
-   distinguishes this list from the task rows above it at a glance — same flat
-   row treatment, different rhythm. It wraps, so 44px is a floor, not a height. */
+/* A log entry: date gutter, then the entry, then its actions. The fixed leading
+   column is what distinguishes this list from the task rows above it at a
+   glance — same flat row treatment, different rhythm. Entries wrap, so 44px is
+   a floor, not a height. */
 .row {
   display: grid;
-  grid-template-columns: 4.5rem minmax(0, 1fr) 44px;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
   align-items: start;
   gap: var(--space-3);
   min-height: 44px;
@@ -34,63 +35,121 @@
   overflow-wrap: anywhere;
 }
 
-/* Destructive, so it stays quiet until the row is hovered or it takes focus —
-   and is always visible on touch, where there is no hover. */
-.remove {
+/* Edit and delete ride together, quiet until the row is hovered or one of them
+   takes focus — and always visible on touch, where there is no hover. */
+.actions {
+  display: flex;
+  align-items: center;
+  flex: none;
+  margin-top: calc(var(--space-2) * -1);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.row:hover .actions,
+.actions:focus-within {
+  opacity: 1;
+}
+
+.action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
-  margin-top: calc(var(--space-2) * -1);
   padding: 0;
   border: 0;
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.12s ease, color 0.12s ease, background 0.12s ease;
+  transition: color 0.12s ease, background 0.12s ease;
 }
-.row:hover .remove,
-.remove:focus-visible {
-  opacity: 1;
-}
-.remove:hover {
+.action:hover {
   background: var(--color-surface-active);
+  color: var(--color-text);
+}
+
+/* Destructive, so only this one warms to danger — at most once per row. */
+.remove:hover {
+  color: var(--color-danger-text);
+}
+
+/* The editor takes the entry's column; its buttons sit under the field, the
+   same shape as the composer that wrote the note. */
+.editor {
+  min-width: 0;
+}
+
+.field {
+  width: 100%;
+  min-height: calc(var(--control-height) * 2);
+  padding: var(--space-2);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: var(--text-body);
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.field:focus {
+  border-color: var(--focus-input-border);
+  box-shadow: 0 0 0 3px var(--focus-input-glow);
+}
+.field:disabled {
+  background: var(--color-surface-active);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+.editorActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.error {
+  margin: var(--space-2) 0 0;
+  font: var(--text-body-sm);
   color: var(--color-danger-text);
 }
 
 @media (pointer: coarse) {
-  .remove {
+  .actions {
     opacity: 1;
   }
 }
 
-/* The gutter costs too much width on a phone; the date moves above the entry. */
+/* The gutter costs too much width on a phone; the date moves above the entry
+   and the actions sit to its right. */
 @media (max-width: 600px) {
   .row {
-    grid-template-columns: minmax(0, 1fr) 44px;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
   .stamp {
     grid-column: 1;
     grid-row: 1;
     padding-top: 0;
   }
-  .text {
-    grid-column: 1;
+  .text,
+  .editor {
+    grid-column: 1 / -1;
     grid-row: 2;
   }
-  .remove {
+  .actions {
     grid-column: 2;
-    grid-row: 1 / span 2;
-    margin-top: 0;
+    grid-row: 1;
+    margin-top: calc(var(--space-3) * -1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .row,
-  .remove {
+  .actions,
+  .action,
+  .field {
     transition: none;
   }
 }

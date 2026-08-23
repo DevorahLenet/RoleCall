@@ -11,6 +11,7 @@ import {
   getJob,
   patchContact,
   patchJob,
+  patchNote,
   patchQuestion,
 } from './api/client'
 
@@ -27,6 +28,7 @@ export interface JobDetailStore {
   applyLocal: (patch: Partial<JobDetail>) => void
   onSaveDetails: (patch: JobPatch) => Promise<void>
   onAddNote: (text: string) => Promise<void>
+  onEditNote: (note: Note, text: string) => Promise<void>
   onDeleteNote: (note: Note) => void
   onAddQuestion: (text: string) => Promise<void>
   onAnswerQuestion: (question: Question, answer: string) => Promise<void>
@@ -101,6 +103,18 @@ export function useJobDetail(id: number): JobDetailStore {
     },
     [id],
   )
+
+  // Awaited rather than optimistic, like answering a question: the editor stays
+  // open on failure with the typing intact, which matters more for a paragraph
+  // than for a checkbox. The saved record replaces the old one.
+  const onEditNote = useCallback(async (note: Note, text: string) => {
+    const saved = await patchNote(note.id, { text })
+    setJob((prev) =>
+      prev
+        ? { ...prev, notes: prev.notes.map((n) => (n.id === saved.id ? saved : n)) }
+        : prev,
+    )
+  }, [])
 
   // Optimistic delete: drop the row now, re-insert it if the DELETE fails.
   const onDeleteNote = useCallback((note: Note) => {
@@ -241,6 +255,7 @@ export function useJobDetail(id: number): JobDetailStore {
     applyLocal,
     onSaveDetails,
     onAddNote,
+    onEditNote,
     onDeleteNote,
     onAddQuestion,
     onAnswerQuestion,
