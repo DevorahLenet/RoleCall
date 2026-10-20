@@ -1,5 +1,6 @@
-/* The rail sits BACK from the page: sunken fill + a right hairline, against the
-   white content pane. It never uses --color-surface (that reads as "forward"). */
+/* The one dark ground in the app: a deep navy rail with its own --sidebar-* text
+   ramp. No edge — the change of ground is the separation. Page text tokens
+   (--color-text-*) never appear in this file. */
 .sidebar {
   grid-area: sidebar;
   display: flex;
@@ -9,9 +10,8 @@
   height: 100vh;
   position: sticky;
   top: 0;
-  padding: var(--space-5) var(--space-3);
-  background: var(--color-bg-sunken);
-  border-right: 1px solid var(--color-border);
+  padding: var(--space-6) var(--space-4);
+  background: var(--sidebar-bg);
   overflow-y: auto;
 }
 
@@ -19,13 +19,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-2);
+  padding: var(--space-2) var(--space-2) 0;
 }
 
+/* Playfair, upright — the wordmark is one of the display face's two jobs. */
 .wordmark {
-  font: var(--weight-bold) 16px/1 var(--font-sans);
-  letter-spacing: -0.01em;
-  color: var(--color-text);
+  font: var(--text-wordmark);
+  letter-spacing: var(--tracking-title);
+  color: var(--sidebar-wordmark);
 }
 
 /* Drawer dismiss — only rendered on small screens (see the media query). */
@@ -35,17 +36,17 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  margin-right: calc(var(--space-2) * -1);
+  margin: calc(var(--space-3) * -1) calc(var(--space-2) * -1) calc(var(--space-3) * -1) 0;
   padding: 0;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: transparent;
-  color: var(--color-text-muted);
+  color: var(--sidebar-text);
   cursor: pointer;
 }
 .close:hover {
-  background: var(--color-surface-active);
-  color: var(--color-text);
+  background: var(--sidebar-hover-bg);
+  color: var(--sidebar-text-strong);
 }
 
 .nav {
@@ -57,75 +58,72 @@
 .navItem {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  min-height: 34px;
+  height: var(--nav-item-height);
   padding: 0 var(--space-2);
-  border-radius: var(--radius-sm);
-  font: var(--weight-medium) 13px/1 var(--font-sans);
-  color: var(--color-text-secondary);
+  border-radius: var(--radius-md);
+  font: var(--text-nav);
+  color: var(--sidebar-text);
   text-decoration: none;
   transition: background 0.12s ease, color 0.12s ease;
 }
 .navItem:hover {
-  background: var(--color-surface-active);
-  color: var(--color-text);
+  background: var(--sidebar-hover-bg);
+  color: var(--sidebar-text-strong);
   text-decoration: none;
 }
 
-/* Active view reads by weight + fill, not by colour alone. */
-.navItemActive {
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-weight: var(--weight-semibold);
-  box-shadow: var(--shadow-xs);
-}
+/* Active view is a pale pill on the dark rail — read by fill and weight, not by
+   colour alone. */
+.navItemActive,
 .navItemActive:hover {
-  background: var(--color-surface);
+  background: var(--sidebar-active-bg);
+  color: var(--sidebar-active-text);
+  font-weight: var(--weight-extrabold);
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
 }
 
 .sectionTitle {
-  margin: 0 0 var(--space-1);
+  margin: 0 0 var(--space-2);
   padding: 0 var(--space-2);
   font: var(--text-eyebrow);
   letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--sidebar-text-muted);
 }
 
 .stages {
   display: flex;
   flex-direction: column;
-  gap: 1px;
 }
 
 .stage {
   display: grid;
   grid-template-columns: 8px minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--space-3);
-  min-height: 30px;
+  gap: var(--space-2);
+  min-height: var(--space-8);
   padding: 0 var(--space-2);
-  border-radius: var(--radius-sm);
-  font: var(--text-body-sm);
-  color: var(--color-text-secondary);
+  border-radius: var(--radius-md);
+  font: var(--text-stage);
+  color: var(--sidebar-text-strong);
   text-decoration: none;
 }
 .stage:hover {
-  background: var(--color-surface-active);
-  color: var(--color-text);
+  background: var(--sidebar-hover-bg);
+  color: var(--sidebar-text-strong);
   text-decoration: none;
 }
 
+/* The ring keeps the navy Researching dot visible against the navy rail. */
 .dot {
   width: 8px;
   height: 8px;
   border-radius: var(--radius-full);
+  box-shadow: 0 0 0 1.5px var(--sidebar-dot-ring);
 }
 
 .stageLabel {
@@ -137,12 +135,13 @@
 .count {
   font: var(--text-meta);
   font-variant-numeric: tabular-nums;
-  color: var(--color-text-muted);
+  color: var(--sidebar-text-muted);
 }
-/* An empty stage still shows its number, just recedes. */
+/* An empty stage still shows its number, just recedes. Muted is already the
+   rail's floor for text, so zero steps down in weight rather than in colour. */
 .countZero {
   composes: count;
-  color: var(--color-text-disabled);
+  font-weight: var(--weight-regular);
 }
 
 .account {
@@ -151,24 +150,23 @@
   gap: var(--space-3);
   margin-top: auto;
   padding: var(--space-2);
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--space-4);
 }
 
+/* Pale on dark, like the active nav pill — coral is kept for actions. */
 .avatar {
   display: grid;
   place-items: center;
   width: 26px;
   height: 26px;
   border-radius: var(--radius-full);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-  font: var(--weight-semibold) 12px/1 var(--font-sans);
+  background: var(--sidebar-active-bg);
+  color: var(--sidebar-active-text);
+  font: var(--text-eyebrow);
 }
 
 .accountName {
   font: var(--text-body-sm);
-  color: var(--color-text-secondary);
+  color: var(--sidebar-text);
 }
 
 /* ---------- Mobile: the rail becomes an overlay drawer ---------- */
@@ -191,7 +189,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sidebar {
+  .sidebar,
+  .navItem {
     transition: none;
   }
 }

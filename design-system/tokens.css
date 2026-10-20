@@ -4,10 +4,16 @@
    elevation, and z-index. Reference these variables everywhere;
    never hardcode a hex, size, or spacing value in a component.
 
-   Concept: a calm, dense professional workspace. Hierarchy comes
-   from weight, density and a quiet neutral ground — the data is
-   louder than the chrome. Cyan carries interaction; magenta is
-   the rare "win" voice.
+   Concept: "Step forward" — energy and calm together. A deep navy
+   sidebar anchors a pale-blue page; white task tiles lift off it;
+   coral is the single action/brand accent; Playfair Display gives
+   page titles a voice. Energy comes from CONTRAST (a real title,
+   heavy UI weights, one confident accent); calm comes from
+   RESTRAINT IN QUANTITY (one hue family, one accent, steady rhythm).
+
+   Source: the Claude Design "RoleCall" project, rolecall-new/ handoff
+   of the Grove 14s exploration (Oct 2026). Reference screen:
+   design-handoff/today.html.
 
    TWO LAYERS, and the split is load-bearing:
      1. RAW PALETTE  — literal values. Components must NOT use these.
@@ -21,139 +27,168 @@
      LAYER 1 — RAW PALETTE (do not reference from components)
      ============================================================ */
 
-  /* ---------- Neutral ramp — cool/true grey ---------- */
-  --neutral-0: #ffffff;
-  --neutral-50: #fafafa;
-  --neutral-100: #f4f4f5;
-  --neutral-200: #e4e4e7;
-  --neutral-300: #d4d4d8;
-  --neutral-400: #a1a1aa;   /* non-text only — disabled glyphs, dividers */
-  --neutral-500: #71717a;   /* placeholder text floor (~4.8:1 on white) */
-  --neutral-600: #52525b;   /* muted text (~7.0:1 on white) */
-  --neutral-700: #3f3f46;
-  --neutral-800: #27272a;
-  --neutral-900: #18181b;   /* ink — primary text */
+  /* ---------- Navy ramp — the whole neutral system ----------
+     Replaces the old cool-zinc greys. Every border, divider, muted line
+     and surface tint now sits in one blue family, so the ground and the
+     accents finally belong to each other. */
+  --navy-950: #0a1530;   /* primary text, high-priority pill */
+  --navy-900: #0c1a38;   /* headings, active nav text */
+  --navy-800: #14284f;   /* sidebar ground, Researching stage */
+  --navy-700: #26385c;   /* secondary text */
+  --navy-600: #4d5d7a;   /* muted text — floor for text (6.6:1 on white) */
+  --navy-500: #5f7096;   /* placeholder text (4.95:1 on white) */
+  --navy-450: #7a8cb0;   /* control outlines — checkbox, input (3.38:1, meets 1.4.11) */
+  --navy-400: #8ea3cb;   /* non-text only on light grounds; sidebar muted text */
+  --navy-300: #a3b3d1;   /* decorative strong border */
+  --navy-250: #c5d2ea;   /* sidebar text */
+  --navy-200: #d3ddee;   /* default border, med-priority pill */
+  --navy-150: #dfe6f3;   /* done-tile outline */
+  --navy-100: #e5ebf6;   /* subtle border, sunken wells */
+  --navy-75:  #e2e9f6;   /* sidebar strong text */
+  --navy-50:  #eef3fb;   /* page ground */
+  --navy-25:  #f5f8fd;   /* done-tile fill, surface hover */
+  --white:    #ffffff;
 
-  /* ---------- Cyan ramp — interactive / primary ---------- */
-  --cyan-50: #e9f8ff;
-  --cyan-100: #cbeeff;
-  --cyan-200: #99e0ff;
-  --cyan-300: #62c5ee;
-  --cyan-400: #38a6cf;
-  --cyan-500: #0088b0;   /* brand cyan — UI accents, NOT body text */
-  --cyan-600: #006786;   /* link + text-safe cyan on white (AA) */
-  --cyan-700: #004961;
+  /* ---------- Coral — the single brand / action accent ----------
+     coral-500 is the brand hue but fails AA as text or behind white text
+     (3.97:1). It's for non-text marks and large display type only.
+     Buttons and links use the deeper steps, which read as the same coral. */
+  --coral-50:  #fff1ec;  /* drop-target tint */
+  --coral-500: #e5482b;  /* brand: title accent word, done checkbox, focus ring, Offer */
+  --coral-600: #d23e22;  /* primary button fill — white label 4.72:1 */
+  --coral-700: #c93b20;  /* link text — 5.08:1 on white */
+  --coral-800: #b3321a;  /* primary button hover */
+  --coral-900: #a52e18;  /* link hover */
 
-  /* ---------- Magenta ramp — second spot / "win" ---------- */
-  --magenta-50: #ffdee6;
-  --magenta-100: #ffc0d0;
-  --magenta-200: #ff90b1;
-  --magenta-300: #ff458e;
-  --magenta-500: #d6006c;  /* magenta — Offer / celebratory */
-  --magenta-600: #aa0b56;
-  --magenta-700: #790e3d;
-
-  /* ---------- Accent solids ---------- */
-  --press-yellow: #edbb00; /* warm pipeline step (Interviewing) */
-  --sage: #7a8a5e;         /* success / hired */
-  --danger: #c43e17;       /* destructive ONLY — distinct from magenta */
-  --danger-hover: #9a3110;
-  --danger-text: #9a3110;  /* danger as text/outline on white (AA) */
+  /* ---------- Crimson — destructive ONLY ----------
+     Deliberately cooler and deeper than coral, so "go" and "destroy"
+     never read as the same red. */
+  --crimson-600: #b4183c; /* 6.7:1 on white, and with a white label */
+  --crimson-700: #8f1230;
 
   /* ============================================================
      LAYER 2 — SEMANTIC (the only color names components may use)
      ============================================================ */
 
   /* ---------- Ground & surfaces ----------
-     "Sunken" sits back from the page (sidebar, wells); "surface" sits
-     level or forward (cards, menus) and is separated by border + shadow. */
-  --color-bg: var(--neutral-0);
-  --color-bg-sunken: var(--neutral-50);
-  --color-surface: var(--neutral-0);
-  --color-surface-hover: var(--neutral-50);
-  --color-surface-active: var(--neutral-100);
+     The page is pale navy; content sits forward on white. "Sunken" is
+     for wells that sit BEHIND the page (board columns, inline-add,
+     skeletons) — it is no longer the sidebar, which has its own tokens. */
+  --color-bg: var(--navy-50);
+  --color-bg-sunken: var(--navy-100);
+  --color-surface: var(--white);
+  --color-surface-hover: var(--navy-25);
+  --color-surface-active: var(--navy-100);
+  --color-surface-done: var(--navy-25);   /* completed task tile */
+
+  /* ---------- Sidebar — a dark ground with its own text ramp ---------- */
+  --sidebar-bg: var(--navy-800);
+  --sidebar-text: var(--navy-250);         /* 9.5:1 */
+  --sidebar-text-strong: var(--navy-75);   /* stage labels, 11.9:1 */
+  --sidebar-text-muted: var(--navy-400);   /* eyebrow, counts, 5.7:1 */
+  --sidebar-active-bg: var(--navy-50);
+  --sidebar-active-text: var(--navy-900);
+  --sidebar-wordmark: var(--navy-50);
+  --sidebar-dot-ring: var(--navy-250);     /* keeps the navy Researching dot visible */
+  --sidebar-hover-bg: rgba(238, 243, 251, 0.08); /* nav/stage hover — a faint lift of the page ground on the dark rail */
 
   /* ---------- Borders ---------- */
-  --color-border: var(--neutral-200);         /* default border */
-  --color-border-subtle: var(--neutral-100);  /* list-row dividers */
-  --color-border-strong: var(--neutral-300);  /* inputs, secondary button */
+  --color-border: var(--navy-200);          /* default border */
+  --color-border-subtle: var(--navy-100);   /* dividers */
+  --color-border-strong: var(--navy-450);   /* checkboxes, inputs, secondary button */
 
   /* ---------- Text ----------
-     --color-text-muted is the floor for text. Anything lighter
-     (--neutral-500 and up the ramp) is placeholder or non-text. */
-  --color-text: var(--neutral-900);
-  --color-text-secondary: var(--neutral-700);
-  --color-text-muted: var(--neutral-600);
-  --color-text-placeholder: var(--neutral-500);
-  --color-text-disabled: var(--neutral-400);
+     --color-text-muted is the floor for text. Anything lighter is
+     placeholder or non-text. */
+  --color-text: var(--navy-950);
+  --color-text-heading: var(--navy-900);
+  --color-text-secondary: var(--navy-700);
+  --color-text-muted: var(--navy-600);
+  --color-text-placeholder: var(--navy-500);
+  --color-text-disabled: var(--navy-400);
 
   /* ---------- Interactive ---------- */
-  --color-primary: #007391;        /* primary button fill (4.6:1 with white) */
-  --color-primary-hover: #006786;
-  --color-on-primary: var(--neutral-0);
-  --color-link: var(--cyan-600);
-  --color-accent: var(--cyan-500);
+  --color-primary: var(--coral-600);
+  --color-primary-hover: var(--coral-800);
+  --color-on-primary: var(--white);
+  --color-link: var(--coral-700);
+  --color-link-hover: var(--coral-900);
+  --color-accent: var(--coral-500);        /* checked states, active borders — non-text */
+  --color-title-accent: var(--coral-500);  /* the italic accent word in a page title (large text, 3.56:1) */
 
-  --color-danger: var(--danger);
-  --color-danger-hover: var(--danger-hover);
-  --color-danger-text: var(--danger-text);
+  --color-danger: var(--crimson-600);
+  --color-danger-hover: var(--crimson-700);
+  --color-danger-text: var(--crimson-600);
 
-  /* Fill for a container that will accept the thing currently being dragged —
-     the Jobs board's columns. Paired with a --color-accent ring. */
-  --color-drop-target: var(--cyan-50);
+  /* Fill for a container that will accept the thing being dragged — the
+     Jobs board's columns. Paired with a --color-accent ring. */
+  --color-drop-target: var(--coral-50);
 
-  /* ---------- Priority ramp ----------
-     Priority is a RANK, not a status. It stays in neutral greys and never
-     borrows a pipeline color — weight alone carries the hierarchy. */
-  --priority-high-bg: var(--neutral-200);
-  --priority-high-text: var(--neutral-800);
-  --priority-med-bg: var(--neutral-100);
-  --priority-med-text: var(--neutral-700);
+  /* ---------- Priority ----------
+     Priority is a RANK, not a status. It stays in the navy family and
+     never borrows a pipeline color — weight alone carries the hierarchy. */
+  --priority-high-bg: var(--navy-950);
+  --priority-high-text: var(--navy-50);
+  --priority-med-bg: var(--navy-200);
+  --priority-med-text: var(--navy-950);
   --priority-low-bg: transparent;
-  --priority-low-text: var(--neutral-600);
-  --priority-low-border: var(--neutral-300);
+  --priority-low-text: var(--navy-600);
+  --priority-low-border: var(--navy-300);
 
   /* ---------- Focus ---------- */
-  --focus-ring: #007391;                 /* general :focus-visible outline color */
+  --focus-ring: var(--coral-500);          /* 3.56:1 on the page ground */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
-  --focus-input-border: var(--cyan-500);
-  --focus-input-glow: rgba(0, 136, 176, 0.20);
+  --focus-input-border: var(--coral-500);
+  --focus-input-glow: rgba(229, 72, 43, 0.20);
 
   /* ---------- Interaction washes ----------
      Applied as an inset box-shadow so a control's own fill keeps its hue —
      hover and press change value, never color. */
-  --wash-cyan-hover: rgba(0, 136, 176, 0.10);   /* checkbox / radio / toggle hover */
-  --wash-cyan-active: rgba(0, 103, 134, 0.22);  /* same, pressed */
-  --wash-ink-hover: rgba(24, 24, 27, 0.06);     /* neutral pill hover (priority) */
+  --wash-accent-hover: rgba(229, 72, 43, 0.10);   /* checkbox / toggle hover */
+  --wash-accent-active: rgba(201, 59, 32, 0.20);  /* same, pressed */
+  --wash-ink-hover: rgba(10, 21, 48, 0.06);       /* neutral pill hover (priority) */
 
   /* ---------- Overlay scrims ---------- */
-  --scrim-dialog: rgba(24, 24, 27, 0.45);
-  --scrim-drawer: rgba(24, 24, 27, 0.40);
+  --scrim-dialog: rgba(10, 21, 48, 0.45);
+  --scrim-drawer: rgba(10, 21, 48, 0.40);
 
   /* ============================================================
      SCALES — type, spacing, radius, elevation, z-index
      ============================================================ */
 
-  /* ---------- Typeface ---------- */
-  --font-sans: 'Figtree', system-ui, -apple-system, sans-serif;
+  /* ---------- Typefaces — three, each with one job ---------- */
+  --font-display: 'Playfair Display', Georgia, serif;   /* page titles, wordmark */
+  --font-sans: 'Public Sans', system-ui, -apple-system, sans-serif;  /* all UI */
+  --font-task: 'Roboto', system-ui, sans-serif;          /* task titles only */
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
+  --weight-extrabold: 800;
 
-  /* ---------- Type scale — application register ----------
-     Sized for a dense tool, not an article. The data (14px body) reads
-     louder than the chrome (20px page title), which is the whole point. */
-  --text-title: 600 20px/1.3 var(--font-sans);     /* page title, tracking --tracking-title */
-  --text-section: 600 15px/1.4 var(--font-sans);   /* section heading */
-  --text-eyebrow: 600 11px/1 var(--font-sans);     /* group headers, UPPERCASE + --tracking-eyebrow */
-  --text-body: 400 14px/1.5 var(--font-sans);      /* default UI text, list rows */
-  --text-body-sm: 400 13px/1.45 var(--font-sans);
-  --text-meta: 400 12px/1.35 var(--font-sans);     /* counts, dates, company line */
+  /* ---------- Type scale ----------
+     The title finally has a voice: 30px Playfair against 15px UI. The
+     contrast between them is where the energy comes from. */
+  --text-title: 700 30px/1.02 var(--font-display);    /* page title — tracking --tracking-title */
+  --text-wordmark: 700 20px/1 var(--font-display);    /* "RoleCall" — tracking --tracking-title */
+  --text-section: 700 16px/1.35 var(--font-sans);     /* section heading within a screen */
+  --text-eyebrow: 700 12px/1 var(--font-sans);        /* group headers, UPPERCASE + --tracking-eyebrow */
+  --text-task: 500 15px/1.35 var(--font-task);        /* task titles — tracking --tracking-task */
+  --text-body: 500 15px/1.5 var(--font-sans);         /* default UI text */
+  --text-body-sm: 500 14px/1.45 var(--font-sans);     /* menus, secondary controls */
+  --text-meta: 600 13px/1.3 var(--font-sans);         /* counts, dates, company line */
+  --text-nav: 600 15px/1 var(--font-sans);            /* sidebar nav — active item uses 800 */
+  --text-stage: 500 15px/1.4 var(--font-sans);        /* sidebar pipeline stages */
+  --text-button: 800 14px/1 var(--font-sans);
+  --text-search: 500 14px/1 var(--font-sans);
+  --text-chip: 700 11px/1 var(--font-sans);           /* chips, priority, category */
+  --text-band-label: 800 12px/1 var(--font-sans);     /* pipeline band stage name */
+  --text-band-names: 400 12px/1.25 var(--font-sans);  /* pipeline band company list */
 
-  --tracking-title: -0.01em;
-  --tracking-eyebrow: 0.06em;  /* caps labels — tight enough to still scan at 11px */
+  --tracking-title: -0.02em;
+  --tracking-task: -0.005em;
+  --tracking-eyebrow: 0.08em;
 
   /* ---------- Spacing — 4pt scale ---------- */
   --space-1: 4px;
@@ -163,33 +198,41 @@
   --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
+  --space-9: 36px;
   --space-12: 48px;
   --space-16: 64px;
 
   /* ---------- Radius ----------
-     --radius-full is for avatars, status dots and count badges ONLY.
-     A fully-rounded button reads consumer/marketing; buttons use --radius-sm. */
-  --radius-xs: 4px;     /* chips, tags, priority */
-  --radius-sm: 6px;     /* buttons, inputs, checkboxes, menu items */
-  --radius-md: 8px;     /* cards, menus, popovers */
-  --radius-lg: 12px;    /* dialogs, panels */
-  --radius-full: 999px;
+     Softer than before. Pills (--radius-full) are now the shape for
+     buttons, chips, priority and status — the design's deliberate choice. */
+  --radius-xs: 4px;     /* small inline marks */
+  --radius-sm: 6px;     /* checkboxes, inputs, menu items */
+  --radius-md: 10px;    /* nav items, search, cards, menus, popovers */
+  --radius-lg: 14px;    /* task tiles, dialogs, panels */
+  --radius-full: 999px; /* buttons, chips, pills, dots, avatars */
 
   /* ---------- Elevation ----------
-     Reserved for things that genuinely float. Flat list rows separate by
-     divider, not by shadow. */
-  --shadow-xs: 0 1px 2px rgba(24, 24, 27, 0.05);
-  --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.06), 0 1px 3px rgba(24, 24, 27, 0.06);
-  --shadow-md: 0 2px 4px rgba(24, 24, 27, 0.06), 0 4px 12px rgba(24, 24, 27, 0.08);
-  --shadow-lg: 0 8px 24px rgba(24, 24, 27, 0.12);
-  --shadow-dialog: 0 24px 60px rgba(24, 24, 27, 0.24);
-  --shadow-drawer: -8px 0 32px rgba(24, 24, 27, 0.16);
-  --shadow-toast: 0 8px 24px rgba(24, 24, 27, 0.24);
+     Navy-tinted so shadows sit in the same hue family as the ground. */
+  --shadow-xs: 0 1px 2px rgba(15, 29, 58, 0.06);
+  --shadow-sm: 0 1px 2px rgba(15, 29, 58, 0.08), 0 1px 3px rgba(15, 29, 58, 0.06);
+  --shadow-md: 0 2px 4px rgba(15, 29, 58, 0.06), 0 4px 12px rgba(20, 38, 77, 0.10);
+  --shadow-lg: 0 8px 24px rgba(20, 38, 77, 0.14);
+  --shadow-task: 0 1px 2px rgba(15, 29, 58, 0.10), 0 4px 10px -2px rgba(20, 38, 77, 0.14), 0 12px 24px -12px rgba(20, 38, 77, 0.30);
+  --shadow-search: 0 1px 2px rgba(15, 29, 58, 0.08), inset 0 0 0 1px var(--navy-200);
+  --shadow-done: inset 0 0 0 1px var(--navy-150);
+  --shadow-dialog: 0 24px 60px rgba(10, 21, 48, 0.24);
+  --shadow-drawer: -8px 0 32px rgba(10, 21, 48, 0.16);
+  --shadow-toast: 0 8px 24px rgba(10, 21, 48, 0.24);
 
   /* ---------- Layout ---------- */
   --sidebar-width: 240px;
   --content-max: 1120px;
-  --toolbar-height: 56px;   /* sticky group headers offset against this */
+  --toolbar-height: 96px;   /* header min-height; sticky group headers offset against this */
+  --nav-item-height: 38px;
+  --task-min-height: 40px;
+  --task-gap: 3px;          /* between task tiles in a group */
+  --group-gap: 18px;        /* between task groups */
+  --priority-pill-width: 46px; /* fixed, so High/Med/Low line up down a column of tiles */
   /* Floor for a pipeline chevron, so an empty stage still shows dot + label
      rather than collapsing to a sliver when a busy stage takes the space. */
   --pipeline-segment-min: 92px;
@@ -198,17 +241,18 @@
      five active stages fit on screen at once with no sideways scroller — this is
      only the width below which they wrap rather than shrink any further. */
   --board-column-min: 200px;
-  /* Properties rail on the job detail page. Wide enough for a label + value
-     pair without wrapping, narrow enough to leave the lists their width. */
+  /* Properties rail on the job detail page. */
   --detail-rail-width: 280px;
 
   /* ---------- Control heights ----------
-     Buttons and menu items run compact on a mouse and grow to the 44px
-     touch minimum on coarse pointers (see the media query below). Controls
-     with a transparent hit-area wrapper (checkbox, kebab, priority) stay
-     44px unconditionally and don't use these. */
+     General buttons and menu items run compact on a mouse and grow to the
+     44px touch minimum on coarse pointers. The header's primary button and
+     search field are always 44px (--control-height-lg). Controls with a
+     transparent hit-area wrapper (checkbox, kebab, priority) stay 44px
+     unconditionally and don't use these. */
   --control-height: 36px;
   --control-height-sm: 30px;
+  --control-height-lg: 44px;
 
   /* ---------- Z-index ---------- */
   --z-nav: 50;
@@ -241,6 +285,7 @@ a {
   text-decoration: none;
 }
 a:hover {
+  color: var(--color-link-hover);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

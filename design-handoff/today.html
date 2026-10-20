@@ -1,0 +1,92 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>RoleCall — Today (design reference)</title>
+<!-- FROZEN VISUAL REFERENCE — not app code. Pulled from the Claude Design "RoleCall" project,
+     rolecall-new/today.html (Oct 2026). Rebuild it in the React app using design-system/tokens.css;
+     do not copy this markup or its tokens.css into the app. -->
+<link rel="stylesheet" href="tokens.css"><style>
+*{box-sizing:border-box}body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-sans)}
+a{color:var(--color-primary)}a:hover{color:var(--color-primary-hover)}
+.app{display:grid;grid-template-columns:var(--sidebar-width) minmax(0,1fr);min-height:100vh}
+.side{background:var(--sidebar-bg);padding:var(--space-6) var(--space-4);display:flex;flex-direction:column;gap:var(--space-6)}
+.mark{font:var(--text-wordmark);letter-spacing:var(--tracking-wordmark);color:var(--sidebar-wordmark);padding:var(--space-2) var(--space-2) 0}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;height:var(--nav-item-height);padding:0 var(--space-2);border-radius:var(--radius-md);font:var(--text-nav);color:var(--sidebar-text);text-decoration:none}
+.nav a.on{background:var(--sidebar-active-bg);color:var(--sidebar-active-text);font-weight:800}
+.side-h{font:var(--text-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--sidebar-text-muted);padding:0 var(--space-2);margin-bottom:var(--space-2)}
+.stage{display:flex;align-items:center;gap:var(--space-2);height:32px;padding:0 var(--space-2);font:var(--text-stage);color:var(--sidebar-text-strong)}
+.stage .n{margin-left:auto;font:var(--text-meta);color:var(--sidebar-text-muted);font-variant-numeric:tabular-nums}
+.dot{width:8px;height:8px;border-radius:var(--radius-full);flex:none}.side .dot{box-shadow:0 0 0 1.5px var(--sidebar-text)}
+.main{min-width:0}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);min-height:96px;padding:var(--space-5) var(--space-9)}
+.title{font:var(--text-title);letter-spacing:var(--tracking-title);margin:0;white-space:nowrap;flex:none}.title em{font-style:italic;color:var(--color-accent)}
+.bar-r{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-3);flex:1 1 auto;min-width:0}
+.cmdk{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex:0 1 280px;min-width:150px;height:var(--control-height);padding:0 var(--space-3);border-radius:var(--radius-md);background:var(--color-surface);color:var(--color-text-muted);box-shadow:var(--shadow-search);font:var(--text-search);border:0;cursor:text}
+.cmdk kbd{font:700 11px/1 var(--font-sans);padding:4px 6px;border-radius:5px;background:var(--navy-50);color:var(--color-text)}
+.btn{height:var(--control-height);padding:0 22px;border-radius:var(--radius-full);border:0;background:var(--color-primary);color:var(--color-on-primary);font:var(--text-button);white-space:nowrap;flex:none;cursor:pointer}.btn:hover{background:var(--color-primary-hover)}
+.body{max-width:var(--content-max);padding:0 var(--space-9) var(--space-9)}
+.band{display:flex;margin-bottom:var(--space-8)}
+.seg{min-width:var(--pipeline-segment-min);padding:7px 12px 7px 18px;margin-right:-1px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,8px 50%)}
+.seg:first-child{padding-left:12px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%)}
+.seg b{display:flex;align-items:center;gap:6px;font:var(--text-band-label);margin-bottom:3px}
+.seg i{display:block;font:var(--text-band-names);font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grp{display:flex;flex-direction:column;gap:var(--task-gap);margin-bottom:var(--group-gap)}
+.grp-h{font:var(--text-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--color-text-heading);padding:0 4px 2px}
+.row{display:flex;align-items:center;gap:var(--space-3);min-height:var(--task-min-height);padding:4px var(--space-3);background:var(--color-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-task)}
+.row>:not(.t){flex:none}
+.row.is-done{background:var(--color-surface-done);box-shadow:var(--shadow-done)}.row.is-done .t{color:var(--color-text-muted);text-decoration:line-through}
+.cb{width:20px;height:20px;border-radius:var(--radius-sm);border:2px solid var(--color-border-strong)}.cb.done{background:var(--color-accent);border-color:var(--color-accent)}
+.t{flex:1;min-width:0;font:var(--text-task);letter-spacing:var(--tracking-task)}
+.chip{display:inline-flex;align-items:center;gap:6px;font:var(--text-chip);padding:5px 8px;border-radius:var(--radius-full);white-space:nowrap}
+.cat{font:var(--text-chip);padding:4px 8px;border-radius:var(--radius-full);border:1px solid var(--color-border);color:var(--color-text-muted)}
+.pri{width:46px;text-align:center;font:var(--text-chip);padding:5px 0;border-radius:var(--radius-full)}
+.p-high{background:var(--priority-high-bg);color:var(--priority-high-text)}.p-med{background:var(--priority-med-bg);color:var(--priority-med-text)}.p-low{background:var(--priority-low-bg);color:var(--priority-low-text);box-shadow:inset 0 0 0 1px var(--priority-low-border)}
+.st-researching{background:var(--status-researching-bg);color:var(--status-researching-fg)}.st-researching .dot,.dot.st-researching{background:var(--status-researching-dot)}
+.st-applied{background:var(--status-applied-bg);color:var(--status-applied-fg)}.st-applied .dot,.dot.st-applied{background:var(--status-applied-dot)}
+.st-intro{background:var(--status-intro-bg);color:var(--status-intro-fg)}.st-intro .dot,.dot.st-intro{background:var(--status-intro-dot)}
+.st-interviewing{background:var(--status-interviewing-bg);color:var(--status-interviewing-fg)}.st-interviewing .dot,.dot.st-interviewing{background:var(--status-interviewing-dot)}
+.st-offer{background:var(--status-offer-bg);color:var(--status-offer-fg)}.st-offer .dot,.dot.st-offer{background:var(--status-offer-dot)}
+</style></head><body>
+<div class="app">
+<aside class="side">
+<div class="mark">RoleCall</div>
+<nav class="nav"><a class="on">Today</a><a>Jobs</a><a>Writing Library</a></nav>
+<div><div class="side-h">Pipeline</div>
+<div class="stage"><span class="dot st-researching"></span>Researching<span class="n">10</span></div>
+<div class="stage"><span class="dot st-applied"></span>Applied<span class="n">3</span></div>
+<div class="stage"><span class="dot st-intro"></span>Intro<span class="n">1</span></div>
+<div class="stage"><span class="dot st-interviewing"></span>Interviewing<span class="n">1</span></div>
+<div class="stage"><span class="dot st-offer"></span>Offer<span class="n">0</span></div>
+</div>
+</aside>
+<main class="main">
+<header class="bar">
+<h1 class="title">Step <em>forward</em></h1>
+<div class="bar-r"><button class="cmdk"><span>Search or jump to…</span><kbd>⌘K</kbd></button><button class="btn">New task</button></div>
+</header>
+<div class="body">
+<div class="band">
+<div class="seg st-researching" style="flex-grow:10"><b><span class="dot"></span>Researching</b><i>Base44, Dart Staffing, FinBot, Akamai, HaShadchan, Alteva RCM, Linear, Litify, Rounds</i></div>
+<div class="seg st-applied" style="flex-grow:3"><b><span class="dot"></span>Applied</b><i>Gorin Systems, Deloitte, 200Apps</i></div>
+<div class="seg st-intro" style="flex-grow:1"><b><span class="dot"></span>Intro</b><i>Medflo</i></div>
+<div class="seg st-interviewing" style="flex-grow:1"><b><span class="dot"></span>Interviewing</b><i>Fun and Function</i></div>
+<div class="seg st-offer" style="flex-grow:1"><b><span class="dot"></span>Offer</b><i style="font-style:italic">None yet</i></div>
+</div>
+<section class="grp"><div class="grp-h">In progress</div>
+<div class="row"><span class="cb"></span><span class="t">Generate the .docx and .pdf of the ops-tailored Rounds resume</span><span class="chip st-researching"><span class="dot"></span>Rounds</span><span class="pri p-high">High</span></div>
+<div class="row"><span class="cb"></span><span class="t">Finish the RoleCall app</span><span class="cat">Professional development</span><span class="pri p-high">High</span></div>
+</section>
+<section class="grp"><div class="grp-h">Waiting</div>
+<div class="row"><span class="cb"></span><span class="t">Decision from Fun and Function after the interview</span><span class="chip st-interviewing"><span class="dot"></span>Fun and Function · Interviewing</span><span class="pri p-high">High</span></div>
+<div class="row"><span class="cb"></span><span class="t">Response from Deloitte on the assurance role</span><span class="chip st-applied"><span class="dot"></span>Deloitte Israel</span><span class="pri p-med">Med</span></div>
+</section>
+<section class="grp"><div class="grp-h">To do</div>
+<div class="row"><span class="cb"></span><span class="t">Send the Alteva application — resume and cover blurb are final</span><span class="chip st-researching"><span class="dot"></span>Alteva RCM</span><span class="pri p-high">High</span></div>
+<div class="row"><span class="cb"></span><span class="t">Schedule the consultant call with Yechiel — scope, timing, compensation</span><span class="chip st-intro"><span class="dot"></span>Medflo · Intro</span><span class="pri p-high">High</span></div>
+<div class="row"><span class="cb"></span><span class="t">Tailor a resume for the Linear PM role</span><span class="chip st-researching"><span class="dot"></span>Linear</span><span class="pri p-med">Med</span></div>
+<div class="row"><span class="cb"></span><span class="t">Reach out to Malki Hochman at Mobileye — warm intro first</span><span class="cat">Networking</span><span class="pri p-med">Med</span></div>
+<div class="row is-done"><span class="cb done"></span><span class="t">Follow up with Avital re: Deloitte role</span><span class="chip st-applied"><span class="dot"></span>Deloitte Israel</span><span class="pri p-med">Med</span></div>
+<div class="row"><span class="cb"></span><span class="t">Check LinkedIn for a referral connection at Linear</span><span class="chip st-researching"><span class="dot"></span>Linear</span><span class="pri p-low">Low</span></div>
+</section>
+</div>
+</main>
+</div>
+</body></html>

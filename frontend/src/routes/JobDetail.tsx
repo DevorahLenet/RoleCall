@@ -27,7 +27,7 @@ import styles from './JobDetail.module.css'
 // The page is split by KIND of information, which is what makes it readable:
 // the main column is work you act on (tasks, then the log, then open questions)
 // and the rail is reference you only read (the facts, the people). Three header
-// sizes — 20px role, 15px sections, 11px rail eyebrows — carry the hierarchy.
+// sizes — 30px role, 16px sections, 12px rail eyebrows — carry the hierarchy.
 // No counts anywhere: section headers are labels, not a dashboard.
 export function JobDetail() {
   const params = useParams()
@@ -182,7 +182,7 @@ export function JobDetail() {
                   {jobTasks.length === 0 ? (
                     <p className={section.empty}>Nothing outstanding on this one yet.</p>
                   ) : (
-                    <div className={section.rows}>
+                    <div className={section.tiles}>
                       {jobTasks.map((task) => (
                         <TaskRow
                           key={task.id}

@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import styles from './Button.module.css'
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger'
-type Size = 'sm' | 'md'
+type Size = 'sm' | 'md' | 'lg'
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant
@@ -13,8 +13,9 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // The one button in the system. Variants carry intent (primary = the single loud
-// action per view; danger = destructive), size carries density. Height comes from
-// --control-height, which grows to the 44px touch minimum on coarse pointers.
+// action per view; danger = destructive), size carries density. sm/md heights come
+// from --control-height(-sm), which grow to the 44px touch minimum on coarse
+// pointers; lg is the Toolbar's primary action, 44px everywhere.
 export function Button({
   variant = 'secondary',
   size = 'md',

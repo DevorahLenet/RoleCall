@@ -28,7 +28,7 @@ interface Props {
   dragging?: boolean
 }
 
-// One task line: checkbox · title · chip · priority pill · row menu. The chip is
+// One task tile: checkbox · title · chip · priority pill · row menu. The chip is
 // the job's pipeline stage when attached, otherwise the category, otherwise "no
 // job". Done rows mute and strike through in place (styling), staying in their
 // group. The menu holds Edit — which opens the full task dialog — and Delete.
@@ -89,7 +89,6 @@ export function TaskRow({
   const classes = [
     styles.row,
     done ? styles.rowDone : '',
-    showChip ? '' : styles.rowNoChip,
     draggable ? styles.rowDraggable : '',
     dragging ? styles.rowDragging : '',
   ]
@@ -111,7 +110,7 @@ export function TaskRow({
         onClick={() => onToggleDone(task)}
       >
         <span className={done ? `${styles.box} ${styles.boxDone}` : styles.box}>
-          {done && <Check size={11} weight="bold" aria-hidden />}
+          {done && <Check size={13} weight="bold" aria-hidden />}
         </span>
       </button>
 
@@ -147,10 +146,12 @@ export function TaskRow({
         <span className={styles.noJob}>No job attached</span>
       ))}
 
-      <PriorityPill
-        priorityId={task.priority}
-        onChange={(id) => onChangePriority(task, id)}
-      />
+      <span className={styles.priority}>
+        <PriorityPill
+          priorityId={task.priority}
+          onChange={(id) => onChangePriority(task, id)}
+        />
+      </span>
 
       {/* Row overflow menu: edit and delete, at raised elevation. */}
       <div className={styles.menuWrap} ref={menuRef}>

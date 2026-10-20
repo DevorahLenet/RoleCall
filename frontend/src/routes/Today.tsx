@@ -27,11 +27,13 @@ export function Today() {
   return (
     <>
       <Toolbar
-        title="Today"
+        title="Step forward"
+        accent="forward"
         onOpenNav={onOpenNav}
         actions={
           <Button
             variant="primary"
+            size="lg"
             icon={<Plus size={15} weight="bold" />}
             onClick={onNewApplication}
           >

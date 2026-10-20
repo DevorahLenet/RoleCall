@@ -27,6 +27,7 @@ export function Jobs() {
         actions={
           <Button
             variant="primary"
+            size="lg"
             icon={<Plus size={15} weight="bold" />}
             onClick={onNewApplication}
           >

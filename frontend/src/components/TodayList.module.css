@@ -1,5 +1,6 @@
+/* No top margin: the pipeline band above owns the --space-8 between them. */
 .list {
-  margin-top: var(--space-8);
+  margin: 0;
 }
 
 .head {
@@ -8,7 +9,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-2);
 }
 
 /* Toggle + New task sit together at the right; they wrap under the heading
@@ -22,17 +23,17 @@
 .heading {
   margin: 0;
   font: var(--text-section);
-  color: var(--color-text);
+  color: var(--color-text-heading);
 }
 
-/* The horizontal padding is always present, not added on hover: it gives the
-   drop-target ring room to sit outside the rows without the group changing
-   width mid-drag. The negative margins pull the rows back to the pane's edge,
-   so at rest the list looks exactly as it did before. */
+/* The padding is always present, not added on hover: it gives the drop-target
+   ring room to sit outside the tiles without the group changing size mid-drag.
+   The negative margins pull the tiles back to the pane's edge, so at rest the
+   groups sit exactly --group-gap apart. */
 .group {
-  margin: 0 calc(-1 * var(--space-3)) var(--space-6);
-  padding: 0 var(--space-3);
-  border-radius: var(--radius-md);
+  margin: 0 calc(-1 * var(--space-3)) calc(var(--group-gap) - 2 * var(--space-2));
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
 }
 
 /* The group a dragged row is currently over. Answers "will it land here?", so
@@ -53,12 +54,12 @@
   align-items: center;
   gap: var(--space-2);
   margin: 0;
-  padding: var(--space-2) 0;
+  padding: var(--space-2) var(--space-1);
   background: var(--color-bg);
   font: var(--text-eyebrow);
   letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--color-text-heading);
 }
 
 /* Only ever seen mid-drag: a status with no rows still has to be somewhere you
@@ -76,12 +77,22 @@
 
 .count {
   font-variant-numeric: tabular-nums;
-  color: var(--color-text-disabled);
+  color: var(--color-text-muted);
   letter-spacing: 0;
 }
 
-/* Rows are flat and divided — no gap, no card. The top border closes the list
-   against the group header. */
+/* Tiles float 3px apart — close enough to read as one group, far enough for
+   each lift to show. */
 .rows {
-  border-top: 1px solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--task-gap);
+}
+
+/* The Toolbar stops being sticky below 600px, so the group headers pin to the
+   top of the viewport instead of a gap where the bar used to be. */
+@media (max-width: 600px) {
+  .groupTitle {
+    top: 0;
+  }
 }

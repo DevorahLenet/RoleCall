@@ -1,8 +1,8 @@
-/* The board pane deliberately skips --content-max: the columns run as wide as
-   the pipeline needs and scroll sideways, so clamping would only add dead space
-   on the right of a wide screen. */
+/* The board pane deliberately skips --content-max: the columns share the whole
+   pane, so clamping would only add dead space on the right of a wide screen.
+   Same gutter as every other pane, flush under the Toolbar. */
 .pane {
-  padding: var(--space-6);
+  padding: 0 var(--space-9) var(--space-9);
 }
 
 /* Loading and error presentation is the same on every screen — composed from the
@@ -19,6 +19,6 @@
 
 @media (max-width: 600px) {
   .pane {
-    padding: var(--space-4);
+    padding: 0 var(--space-4) var(--space-6);
   }
 }

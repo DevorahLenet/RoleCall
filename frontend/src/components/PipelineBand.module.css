@@ -1,29 +1,23 @@
-/* Inset into the content pane rather than full-bleed chrome — it's a glance at
-   the board's shape, so it sits with the content it summarises. Fill matches the
-   page; the border alone holds the shape. */
+/* Directly on the page ground — no container, no border. The chevrons hold their
+   own shape. --space-8 below separates it from the task list. */
 .band {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-bg);
-  padding: var(--space-1);
-}
-
-/* overflow:hidden keeps the chevron clip-paths inside the rounded container. */
-.track {
   display: flex;
   align-items: stretch;
-  border-radius: var(--radius-xs);
-  overflow: hidden;
+  margin-bottom: var(--space-8);
 }
 
 /* Every stage stays legible: the flex weighting distributes the SPARE space, but
-   no segment drops below the floor, so an empty stage keeps its dot and label. */
+   no segment shrinks below the larger of --pipeline-segment-min and its own stage
+   name. That floor is carried by .head (min-width: auto here = its content), so a
+   long label like "Interviewing" never ellipsises while short ones keep the
+   token's floor. Two lines: stage name over the companies sitting in it. */
 .segment {
   display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: var(--pipeline-segment-min);
-  height: 32px;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-1);
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
   padding-right: var(--space-3);
   text-decoration: none;
   transition: filter 0.12s ease;
@@ -33,42 +27,67 @@
   filter: brightness(0.96);
 }
 
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: calc(var(--pipeline-segment-min) - var(--space-4) - var(--space-3));
+}
+
 .dot {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: var(--radius-full);
   flex: none;
 }
 
 .label {
-  font: var(--weight-semibold) 11px/1 var(--font-sans);
+  flex: none;
+  font: var(--text-band-label);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.count {
-  margin-left: auto;
-  padding-left: var(--space-2);
-  font: var(--weight-semibold) 11px/1 var(--font-sans);
-  font-variant-numeric: tabular-nums;
-  opacity: 0.7;
-  flex: none;
+/* The companies in the stage, on one line — clipped text recovers through the
+   tooltip, which portals out of the segment's clip-path. Zero intrinsic width,
+   so a long list fills the segment rather than widening it. */
+.names {
+  display: block;
+  width: 0;
+  min-width: 100%;
+  font: var(--text-band-names);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.namesEmpty {
+  composes: names;
+  font-style: italic;
 }
 
-/* Narrow screens can't fit five labelled chevrons — keep the dot and the count,
-   and let the tooltip-grade detail live on the Jobs screen. */
+@media (prefers-reduced-motion: reduce) {
+  .segment {
+    transition: none;
+  }
+}
+
+/* Narrow screens can't fit five labelled chevrons — the dot alone holds each
+   stage (its name stays as the accessible label), and the sidebar carries the
+   detail. */
 @media (max-width: 600px) {
-  .label {
+  .label,
+  .names,
+  .namesEmpty {
     display: none;
   }
-  .segment {
-    justify-content: center;
-    min-width: var(--pipeline-segment-min-compact);
-    padding-right: var(--space-2);
+  .head {
+    min-width: 0;
   }
-  .count {
-    margin-left: 0;
-    padding-left: 0;
+  .segment {
+    align-items: center;
+    min-width: var(--pipeline-segment-min-compact);
+    min-height: var(--space-8);
+    padding-right: var(--space-2);
   }
 }

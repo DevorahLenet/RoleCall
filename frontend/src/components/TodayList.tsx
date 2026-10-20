@@ -36,7 +36,7 @@ function sortWithinGroup(a: Task, b: Task): number {
 
 // The day's tasks, grouped by task status in the order task-statuses.json lists
 // them — In progress, then Waiting, then To do. Groups are separated by an
-// eyebrow header carrying a count; the rows themselves stay flat and dense.
+// eyebrow header carrying a count; each task is a floating tile, 3px apart.
 // Completed tasks strike through in place and can be hidden from the head, a
 // choice that is remembered across sessions.
 //

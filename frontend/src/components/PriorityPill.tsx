@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { getPriority, priorities } from '../design-system/priorities'
+import type { Priority } from '../design-system/priorities'
 import styles from './PriorityPill.module.css'
 
 // The pill IS the control: clicking opens a three-item menu in place at raised
@@ -10,6 +11,17 @@ import styles from './PriorityPill.module.css'
 interface Props {
   priorityId: string
   onChange: (priorityId: string) => void
+}
+
+// The pill's colours for one rank. The --priority-*-text tokens are only
+// readable on their own fill (High's is near-white), so text and fill always
+// travel together — never the text colour alone on a menu's white ground.
+function styleFor(p: Priority): CSSProperties {
+  return {
+    background: p.bg,
+    color: p.text,
+    border: p.border ? `1px solid ${p.border}` : '1px solid transparent',
+  }
 }
 
 export function PriorityPill({ priorityId, onChange }: Props) {
@@ -36,11 +48,7 @@ export function PriorityPill({ priorityId, onChange }: Props) {
     }
   }, [open])
 
-  const pillStyle: CSSProperties = {
-    background: current.bg,
-    color: current.text,
-    border: current.border ? `1px solid ${current.border}` : '1px solid transparent',
-  }
+  const pillStyle = styleFor(current)
 
   // Commit a menu selection (only firing onChange when it actually changed).
   function choose(id: string) {
@@ -77,10 +85,13 @@ export function PriorityPill({ priorityId, onChange }: Props) {
               className={
                 p.id === priorityId ? `${styles.item} ${styles.itemActive}` : styles.item
               }
-              style={{ color: p.text }}
               onClick={() => choose(p.id)}
             >
-              {p.label}
+              {/* Each option previews the pill it will become, as StatusPill's
+                  menu does for stages. */}
+              <span className={styles.pill} style={styleFor(p)}>
+                {p.label}
+              </span>
             </button>
           ))}
         </div>

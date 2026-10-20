@@ -1,6 +1,8 @@
+/* The Toolbar's own padding is the gap above, so content starts flush under it
+   and shares its --space-9 side gutter. */
 .content {
   max-width: var(--content-max);
-  padding: var(--space-6);
+  padding: 0 var(--space-9) var(--space-9);
 }
 
 /* Error state is a real card — the one place on this screen that boxes. */
@@ -30,6 +32,6 @@
 
 @media (max-width: 600px) {
   .content {
-    padding: var(--space-4);
+    padding: 0 var(--space-4) var(--space-6);
   }
 }

@@ -22,10 +22,10 @@
   align-items: center;
   gap: var(--space-2);
   max-width: 100%;
-  padding: 3px var(--space-2);
+  padding: calc(var(--space-1) - 1px) var(--space-2);
   border: 1px solid transparent;
-  border-radius: var(--radius-xs);
-  font: var(--weight-semibold) 11px/1.35 var(--font-sans);
+  border-radius: var(--radius-full);
+  font: var(--text-chip);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -43,8 +43,8 @@
 }
 
 .dot {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: var(--radius-full);
   flex: none;
 }
@@ -91,8 +91,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: 3px var(--space-2);
-  border-radius: var(--radius-xs);
-  font: var(--weight-semibold) 11px/1.35 var(--font-sans);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  font: var(--text-chip);
   white-space: nowrap;
 }

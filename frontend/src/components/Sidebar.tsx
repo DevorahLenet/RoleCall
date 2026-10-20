@@ -1,16 +1,17 @@
 import { NavLink } from 'react-router-dom'
-import { BookOpen, Briefcase, Sun, X } from '@phosphor-icons/react'
+import { X } from '@phosphor-icons/react'
 import type { Job } from '../types'
 import { activeJobStatuses } from '../design-system/statuses'
 import { TruncatedText } from './TruncatedText'
 import styles from './Sidebar.module.css'
 
 // Nav vocabulary is settled: Today · Jobs · Writing Library. Closed jobs are a
-// filter under Jobs, not a destination — there is no Archive item.
+// filter under Jobs, not a destination — there is no Archive item. Text only:
+// three short labels on a dark rail need no icons to be told apart.
 const NAV_ITEMS = [
-  { to: '/', label: 'Today', Icon: Sun, end: true },
-  { to: '/jobs', label: 'Jobs', Icon: Briefcase, end: false },
-  { to: '/writing', label: 'Writing Library', Icon: BookOpen, end: false },
+  { to: '/', label: 'Today', end: true },
+  { to: '/jobs', label: 'Jobs', end: false },
+  { to: '/writing', label: 'Writing Library', end: false },
 ]
 
 interface Props {
@@ -45,7 +46,7 @@ export function Sidebar({ jobs, open, onClose }: Props) {
       </div>
 
       <nav className={styles.nav} aria-label="Main">
-        {NAV_ITEMS.map(({ to, label, Icon, end }) => (
+        {NAV_ITEMS.map(({ to, label, end }) => (
           <NavLink
             key={to}
             to={to}
@@ -55,7 +56,6 @@ export function Sidebar({ jobs, open, onClose }: Props) {
               isActive ? `${styles.navItem} ${styles.navItemActive}` : styles.navItem
             }
           >
-            <Icon size={17} aria-hidden />
             {label}
           </NavLink>
         ))}

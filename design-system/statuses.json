@@ -1,70 +1,71 @@
 {
   "$comment": "RoleCall pipeline status — single source of truth. Drives kanban columns, status badges, filters, and the DB status enum. `id` is the stable machine value (use in the database); `label` is display text. `dot` = solid indicator color; `badgeBg`/`badgeFg` = soft-tinted pill. `group` splits active pipeline from closed outcomes.",
-  "$storage": "Store a job's status as its `id` in a database ENUM column whose allowed values are exactly the `id`s below. Do NOT store `label`, colors, or `group` — resolve those in the UI from this file at render time. Changing the pipeline (adding/removing/renaming a status) means editing this file AND running a DB enum migration.",
+  "$storage": "Store a job's status as its `id` in a database ENUM column whose allowed values are exactly the `id`s below. Do NOT store `label`, colors, or `group` — resolve those in the UI from this file at render time. Changing the pipeline (adding/removing/renaming a status) means editing this file AND running a DB enum migration. Changing only colors needs no migration.",
+  "$palette": "Active stages progress COOL → WARM in pipeline order — navy, blue, teal, lime, coral — so the band reads as a gradient of momentum and Offer lands on the brand coral. Source: Claude Design 'RoleCall' project, rolecall-new/ handoff (Oct 2026). Closed statuses were not in that handoff; they were chosen here to sit quietly in the navy family. Every badgeFg/badgeBg pair is ≥5.5:1.",
   "statuses": [
     {
       "id": "researching",
       "label": "Researching",
       "group": "active",
-      "dot": "#a1a1aa",
-      "badgeBg": "#f4f4f5",
-      "badgeFg": "#3f3f46"
+      "dot": "#14284f",
+      "badgeBg": "#d9dfeb",
+      "badgeFg": "#0c1a38"
     },
     {
       "id": "applied",
       "label": "Applied",
       "group": "active",
-      "dot": "#6486a1",
-      "badgeBg": "#dbe6ef",
-      "badgeFg": "#2b4761"
+      "dot": "#3e7bfa",
+      "badgeBg": "#dce7ff",
+      "badgeFg": "#1a3d8f"
     },
     {
       "id": "intro",
       "label": "Intro",
       "group": "active",
-      "dot": "#004961",
-      "badgeBg": "#62c5ee",
-      "badgeFg": "#00303f"
+      "dot": "#13a89a",
+      "badgeBg": "#c8efe9",
+      "badgeFg": "#0a4f48"
     },
     {
       "id": "interviewing",
       "label": "Interviewing",
       "group": "active",
-      "dot": "#edbb00",
-      "badgeBg": "#faeec2",
-      "badgeFg": "#6e5300"
+      "dot": "#7cb518",
+      "badgeBg": "#e4f3c4",
+      "badgeFg": "#3b5a06"
     },
     {
       "id": "offer",
       "label": "Offer",
       "group": "active",
-      "dot": "#d6006c",
-      "badgeBg": "#ffdee6",
-      "badgeFg": "#790e3d"
+      "dot": "#e5482b",
+      "badgeBg": "#ffe0d6",
+      "badgeFg": "#8a2a14"
     },
     {
       "id": "closed_rejected",
       "label": "Closed · Rejected",
       "group": "closed",
-      "dot": "#d4d4d8",
-      "badgeBg": "#f4f4f5",
-      "badgeFg": "#52525b"
+      "dot": "#a3b3d1",
+      "badgeBg": "#e5ebf6",
+      "badgeFg": "#4d5d7a"
     },
     {
       "id": "closed_hired",
       "label": "Closed · Hired",
       "group": "closed",
-      "dot": "#7a8a5e",
-      "badgeBg": "#e1eecc",
-      "badgeFg": "#3d472b"
+      "dot": "#2e8b57",
+      "badgeBg": "#d6f0e0",
+      "badgeFg": "#1d5236"
     },
     {
       "id": "closed_try_again",
       "label": "Closed · Try Again",
       "group": "closed",
-      "dot": "#8ec3d8",
-      "badgeBg": "#eaf4f9",
-      "badgeFg": "#00506b"
+      "dot": "#7d98d6",
+      "badgeBg": "#e8eef9",
+      "badgeFg": "#2f4677"
     }
   ]
 }

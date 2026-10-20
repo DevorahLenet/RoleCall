@@ -1,27 +1,45 @@
+/* On the page ground with no bottom edge — the 30px title does the separating.
+   The fill is still the page colour so content scrolls cleanly under it. */
 .bar {
   position: sticky;
   top: 0;
   z-index: var(--z-nav);
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-4);
   min-height: var(--toolbar-height);
-  padding: 0 var(--space-6);
+  padding: var(--space-5) var(--space-9);
   background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
 }
 
-/* A drilled-into screen's title is data (a job's role), so it can be long:
-   it ellipsises rather than pushing the actions off the bar. */
+/* Hamburger, back link and title travel together on the left. This is the part
+   that gives when space runs out: the title ellipsises, the actions never do. */
+.lead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+/* Playfair, never wrapping. A drilled-into screen's title is data (a job's role)
+   and can be long, so it ellipsises rather than pushing the actions off. */
 .title {
   min-width: 0;
   margin: 0;
   font: var(--text-title);
   letter-spacing: var(--tracking-title);
-  color: var(--color-text);
+  color: var(--color-text-heading);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* The one italic accent word. Brand coral is allowed here only because 30px is
+   large text (3:1); it never appears at body size. */
+.accent {
+  font-style: italic;
+  color: var(--color-title-accent);
 }
 
 /* Same 44px icon-button shape as the hamburger, but always present — it is the
@@ -34,7 +52,7 @@
   width: 44px;
   height: 44px;
   margin-left: calc(var(--space-3) * -1);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--color-text-secondary);
 }
 .back:hover {
@@ -43,11 +61,16 @@
   text-decoration: none;
 }
 
+/* Actions grow into the remaining width and right-align, which is the room left
+   for the future ⌘K search field: it will sit first in this row and shrink to
+   its floor before the primary button gives. They never shrink below their own
+   content — a right-aligned row that shrinks overflows leftward over the title. */
 .actions {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  margin-left: auto;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  flex: 1 0 auto;
 }
 
 /* Hamburger only exists once the sidebar has collapsed to a drawer. */
@@ -55,12 +78,13 @@
   display: none;
   align-items: center;
   justify-content: center;
+  flex: none;
   width: 44px;
   height: 44px;
   margin-left: calc(var(--space-3) * -1);
   padding: 0;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: transparent;
   color: var(--color-text-secondary);
   cursor: pointer;
@@ -74,10 +98,22 @@
   .navToggle {
     display: inline-flex;
   }
+  /* With the hamburger leading, the back link no longer hangs into the gutter —
+     it just closes up the gap so the two icons read as one cluster. */
+  .back {
+    margin-left: calc(var(--space-2) * -1);
+  }
 }
 
+/* The title keeps its size on a phone — the gutter gives instead, and the
+   actions wrap to their own row rather than squeeze the title to a few letters.
+   Two rows make the bar too tall to pin over a phone screen, so it scrolls away
+   with the page here (TodayList re-anchors its sticky group headers to match). */
 @media (max-width: 600px) {
   .bar {
-    padding: 0 var(--space-4);
+    position: static;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-4);
   }
 }

@@ -1,12 +1,12 @@
 /* One block on the job page, in two registers.
 
-   MAIN sections (Tasks, Notes, Questions) are the work: a 15px heading over a
+   MAIN sections (Tasks, Notes, Questions) are the work: a 16px heading over a
    list, separated from each other by space alone. RAIL blocks (Details,
-   Contacts) are reference: an 11px eyebrow on a sunken panel that sits back
-   from the page, the same surface the sidebar and the board's columns use.
+   Contacts) are reference: a 12px eyebrow on a sunken panel that sits back
+   from the page, the same surface the board's columns use.
 
-   Three header sizes across the page — 20px toolbar title, 15px section, 11px
-   rail eyebrow — are what let the eye sort the page at a glance. */
+   Three header sizes across the page — 30px Playfair toolbar title, 16px
+   section, 12px rail eyebrow — are what let the eye sort the page at a glance. */
 .section {
   margin-top: var(--space-8);
 }
@@ -37,7 +37,7 @@
 .title {
   margin: 0;
   font: var(--text-section);
-  color: var(--color-text);
+  color: var(--color-text-heading);
 }
 
 .titleRail {
@@ -45,13 +45,21 @@
   font: var(--text-eyebrow);
   letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--color-text-heading);
 }
 
-/* Rows sit directly against each other; the container carries the top rule and
-   each row its own bottom one, matching the Today list exactly. */
+/* Notes and questions are reference: flat rows directly against each other,
+   the container carrying the top rule and each row its own bottom one. */
 .rows {
   border-top: 1px solid var(--color-border-subtle);
+}
+
+/* Tasks are the work, so they float — the same tiles, the same --task-gap, as
+   Today. No top rule: each tile carries its own edge. */
+.tiles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--task-gap);
 }
 
 /* The normal state of a young job is empty, so this has to read as deliberate

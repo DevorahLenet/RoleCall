@@ -16,14 +16,18 @@
   cursor: pointer;
 }
 
-/* A rank tag, not a status badge — neutral fills only, squared corners. */
+/* A rank, not a status — neutral navy fills only, never a pipeline colour. Fixed
+   width so High/Med/Low line up down a column of tiles. The inline 1px border
+   (outline for Low, transparent otherwise) costs a pixel of padding, keeping it
+   the same height as the job chip beside it. */
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: 3px var(--space-2);
-  border-radius: var(--radius-xs);
-  font: var(--weight-semibold) 11px/1.35 var(--font-sans);
+  justify-content: center;
+  width: var(--priority-pill-width);
+  padding: calc(var(--space-1) - 1px) 0;
+  border-radius: var(--radius-full);
+  font: var(--text-chip);
   white-space: nowrap;
   transition: box-shadow 0.12s ease, border-color 0.12s ease;
 }
@@ -54,7 +58,8 @@
 }
 
 .item {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
   min-height: var(--control-height-sm);
   text-align: left;
@@ -71,5 +76,4 @@
 }
 .itemActive {
   background: var(--color-surface-active);
-  font-weight: var(--weight-semibold);
 }
