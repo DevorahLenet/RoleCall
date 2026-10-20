@@ -15,9 +15,10 @@ an additive migration.
 from __future__ import annotations
 
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models
+from django.db import models, transaction
 
 from . import design_system as ds
+from .passages import split_passages
 
 
 class CreatedAtModel(models.Model):
@@ -228,3 +229,122 @@ class Contact(models.Model):
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}".strip()
+
+
+class WritingPiece(CreatedAtModel):
+    """A saved piece of writing — a resume, cover letter, blurb or impact
+    statement (writing-types.json).
+
+    `job` is nullable and SET_NULL, matching Task: tailored resumes and
+    job-specific blurbs have a job, base resumes and impact statements do not,
+    and deleting a job must not destroy the writing done for it. Company
+    filtering falls out of the job relation rather than needing its own column.
+
+    `derived_from` records lineage — a tailored resume is a fork of a base one,
+    which is what makes "which existing piece is closest to what I need?"
+    answerable.
+
+    `body` is markdown, and that is load-bearing: passages are split out of it
+    on every save, so a piece pasted in as one unstructured blob produces one
+    useless passage and silently degrades topic search.
+    """
+
+    job = models.ForeignKey(
+        Job,
+        on_delete=models.SET_NULL,
+        related_name="writing_pieces",
+        null=True,
+        blank=True,
+    )
+    type = models.CharField(
+        max_length=ds.ENUM_MAX_LENGTH,
+        choices=ds.WRITING_TYPE_CHOICES,
+        help_text="Writing type id from design-system/writing-types.json.",
+    )
+    title = models.CharField(max_length=200)
+    body = models.TextField(help_text="Markdown. Passages are split out of it on save.")
+    derived_from = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        related_name="forks",
+        null=True,
+        blank=True,
+        help_text="The piece this one was forked from, if any.",
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-updated_at"]
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(type__in=ds.WRITING_TYPE_IDS),
+                name="writingpiece_type_in_writing_types_json",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.title
+
+    def save(self, *args, **kwargs):
+        """Save, then re-derive the passages. The override (the only one in this
+        app) is deliberate: chunking has to happen for the admin and the seed
+        command too, so it belongs on the model rather than in a serializer."""
+        with transaction.atomic():
+            super().save(*args, **kwargs)
+            self.sync_passages()
+
+    def sync_passages(self) -> None:
+        """Rebuild this piece's passages from `body`, KEEPING the use counts of
+        passages whose text is unchanged.
+
+        Deleting and recreating the lot on every save would be simpler and
+        wrong: `use_count` is what makes "most used" mean anything, and it is
+        the app's whole substitute for asking the user to star their best work.
+        A reworded passage does start again from zero — matching text is the
+        only honest way to know it is still the same line.
+        """
+        wanted = split_passages(self.body)
+        existing = {p.text: p for p in self.passages.all()}
+
+        keep_ids: list[int] = []
+        for position, text in enumerate(wanted):
+            passage = existing.get(text)
+            if passage is not None and passage.id not in keep_ids:
+                if passage.position != position:
+                    passage.position = position
+                    passage.save(update_fields=["position"])
+                keep_ids.append(passage.id)
+            else:
+                keep_ids.append(
+                    WritingPassage.objects.create(
+                        piece=self, text=text, position=position
+                    ).id
+                )
+
+        self.passages.exclude(id__in=keep_ids).delete()
+
+
+class WritingPassage(models.Model):
+    """One reusable chunk of a piece — a bullet or a paragraph.
+
+    Derived from the piece's body, never authored (see passages.py). A plain
+    Model rather than CreatedAtModel: a passage has no life of its own to date,
+    it belongs to its piece and dies with it (CASCADE).
+
+    `use_count`/`last_used_at` are stamped every time the passage is copied,
+    which is what lets "best writing" be computed rather than curated.
+    """
+
+    piece = models.ForeignKey(
+        WritingPiece, on_delete=models.CASCADE, related_name="passages"
+    )
+    text = models.TextField()
+    position = models.IntegerField()
+    use_count = models.IntegerField(default=0)
+    last_used_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["position"]
+
+    def __str__(self) -> str:
+        return self.text[:60]

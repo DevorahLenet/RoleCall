@@ -165,6 +165,17 @@ Order is **header → Tasks → Notes → Questions**, with the facts and the pe
 
 **Below 900px** the rail stacks under the main column. DOM order is main→rail at every width, so tab order always matches reading order — never an `order:` / DOM mismatch.
 
+### Writing Library
+Search-first, because the hard case is the one the screen exists for: not "six letters mention fundraising" but the sentence itself. The **row unit flips on the query** — no query lists pieces, a query lists matching passages — while type, company and sort narrow both.
+
+**Search field** (`SearchField.tsx`): a native `<input type="search">` at 44px with a leading `MagnifyingGlass` and a clear button that only exists when there is something to clear. Set larger than a form control on purpose — here the query is the primary control, not one input among several.
+
+**Filter chips** are controls, unlike the type *tag* they sit beside, so they take hover and a pressed state. Selection reads as **fill + weight, never colour**: writing types carry no hue, because a row already shows its job's company and four more colours would compete with the pipeline palette. Single-select with an `All` escape.
+
+**Copy is the primary action** of the whole surface, so the affordance repeats at every unit of reuse — passage row, search hit, whole body. `CopyButton.tsx` confirms with a transient label plus an `sr-only` `role="status"` announcement, matching the live regions the board and Today already use; there is no toast component in this app and one button did not warrant inventing one. A refused clipboard write says so and records nothing.
+
+**Search excerpts** mark their matches with `<mark>` over a `--wash-accent-hover` wash rather than a solid fill — a filled highlight in a dense row reads as a status colour.
+
 ### Cards
 `--radius-md`, `1px --color-border`, `--color-surface` bg, `--shadow-sm`, `--space-4`–`--space-5` pad. Use for genuinely discrete, floating items — **never for page layout, and never for list rows.**
 

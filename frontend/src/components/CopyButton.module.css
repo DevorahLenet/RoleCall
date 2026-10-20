@@ -1,0 +1,66 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  flex: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: var(--text-button);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+.button:hover {
+  background: var(--color-surface-active);
+  color: var(--color-text);
+}
+
+/* Bare 44px target for a list row, where the label would be noise repeated
+   down the page. */
+.icon {
+  width: 44px;
+  height: 44px;
+}
+
+/* Labelled, for the one-per-screen "Copy all" — sits in the Toolbar beside the
+   pill Buttons, so it takes their shape. */
+.full {
+  border-radius: var(--radius-full);
+  height: var(--control-height);
+  padding: 0 var(--space-3);
+  border-color: var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* Confirmation borrows the accent rather than a new colour: this is a success,
+   not a pipeline state, and the palette stays reserved. */
+.done {
+  color: var(--color-accent);
+  border-color: transparent;
+}
+.done:hover {
+  color: var(--color-accent);
+}
+
+.failed {
+  color: var(--color-danger-text);
+  border-color: transparent;
+}
+.failed:hover {
+  color: var(--color-danger-text);
+}
+
+/* Fixed width so the button does not resize as the word changes under it. */
+.word {
+  min-width: 5.5rem;
+  text-align: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}

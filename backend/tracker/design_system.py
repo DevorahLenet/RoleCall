@@ -62,6 +62,12 @@ TASK_PRIORITY_IDS = [p["id"] for p in _PRIORITIES]
 TASK_CATEGORY_CHOICES = _choices("task-categories.json", "categories")
 TASK_CATEGORY_IDS = ids("task-categories.json", "categories")
 
+# --- Writing piece type: writing-types.json ------------------------------
+# Note the list key is "types", not "statuses", and there is no "$default" —
+# nothing creates a piece yet, so no default is needed.
+WRITING_TYPE_CHOICES = _choices("writing-types.json", "types")
+WRITING_TYPE_IDS = ids("writing-types.json", "types")
+
 # Longest id across every enum, so char columns never truncate a valid value.
 _MAX_ID_LEN = max(
     len(i)
@@ -70,6 +76,7 @@ _MAX_ID_LEN = max(
         TASK_STATUS_IDS,
         TASK_PRIORITY_IDS,
         TASK_CATEGORY_IDS,
+        WRITING_TYPE_IDS,
     )
     for i in group
 )

@@ -118,3 +118,69 @@ export type TaskPatch = Partial<
     'title' | 'status' | 'priority' | 'category' | 'job' | 'due_on' | 'is_done'
   >
 >
+
+// --- Writing Library ---------------------------------------------------
+// Pieces are read-only here: writing is authored on a job page (still to
+// build), so the library stays a view over the data rather than a second place
+// to remember to populate.
+
+/** Slim piece — a row in the library index. Mirrors WritingPieceSerializer. */
+export interface WritingPiece {
+  id: number
+  title: string
+  /** Type id from design-system/writing-types.json. */
+  type: string
+  job: number | null
+  /** Resolved from the job, so a filter by company needs no extra column. */
+  company: string | null
+  created_at: string
+  updated_at: string
+}
+
+/** One reusable chunk of a piece, split out of its markdown body on save.
+ *  Never authored, so there is no write shape for it. */
+export interface WritingPassage {
+  id: number
+  text: string
+  position: number
+  use_count: number
+  last_used_at: string | null
+}
+
+/** Just enough of a piece to name it in a lineage line. */
+export interface WritingPieceRef {
+  id: number
+  title: string
+  type: string
+}
+
+/** Detail payload for the piece page — the slim piece plus its body, its
+ *  passages and its lineage in both directions. */
+export interface WritingPieceDetail extends WritingPiece {
+  role: string | null
+  body: string
+  passages: WritingPassage[]
+  derived_from: WritingPieceRef | null
+  forks: WritingPieceRef[]
+}
+
+/** One matching line from passage search. `excerpt` carries the match wrapped
+ *  in the sentinels the API defines — see HIGHLIGHT_OPEN in components/Excerpt. */
+export interface PassageHit {
+  passage_id: number
+  text: string
+  position: number
+  use_count: number
+  excerpt: string
+  piece: WritingPieceRef
+  company: string | null
+}
+
+/** The index's filters. They apply to both result modes, so browsing and
+ *  searching narrow by exactly the same rules. */
+export interface WritingFilters {
+  q: string
+  type: string
+  company: string
+  sort: string
+}

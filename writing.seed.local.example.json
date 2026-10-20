@@ -1,0 +1,39 @@
+{
+  "$comment": "Template for writing.seed.local.json — copy this file to that name and replace the content with your real writing. The real file is gitignored by the *.local.json rule; this example is committed and deliberately contains nothing real. Load it with: .venv/Scripts/python.exe backend/manage.py seed_writing",
+  "$scope": "This command wipes and reloads ONLY the writing tables. Jobs, tasks, notes, questions and contacts are never touched, so re-seeding your writing cannot cost you your pipeline.",
+  "$keys": "`key` and `derived_from` are natural keys that exist only in this file — they are resolved to real ids on load and never stored. A fork may appear before the piece it was forked from; lineage is wired in a second pass.",
+  "$job": "A piece is matched to a job by `company` AND `role` together, because company alone is ambiguous. If no job matches, the piece loads unattached and the command warns — it does not fail.",
+  "$passages": "Passages are NOT listed here. They are derived from `body` by the same splitter the model uses on save: blank lines separate passages, every markdown list item is its own passage, and headings are dropped. This is why `body` must be real markdown — a single unstructured blob becomes one useless passage and topic search quietly stops working.",
+  "$useCount": "`passage_use_count` is optional and applies to every passage derived from that piece, seeding the 'most used' sort. Leave it out or use 0 for writing you have not reached for yet.",
+  "$types": "`type` must be one of the ids in design-system/writing-types.json: resume · cover_letter · blurb · impact_statement.",
+
+  "pieces": [
+    {
+      "key": "base-resume",
+      "type": "resume",
+      "title": "Base resume",
+      "job": null,
+      "derived_from": null,
+      "passage_use_count": 0,
+      "body": "## Selected impact\n\n- Placeholder bullet describing an outcome and the number that proves it.\n- Placeholder bullet describing a team you led and what changed.\n\nPlaceholder closing line."
+    },
+    {
+      "key": "example-tailored-resume",
+      "type": "resume",
+      "title": "Example Co — tailored resume",
+      "job": { "company": "Example Co", "role": "Example Role" },
+      "derived_from": "base-resume",
+      "passage_use_count": 2,
+      "body": "## Selected impact\n\n- Placeholder bullet rewritten for this role.\n- Placeholder bullet describing a team you led and what changed.\n\nPlaceholder closing line."
+    },
+    {
+      "key": "example-blurb",
+      "type": "blurb",
+      "title": "Why this role — short blurb",
+      "job": null,
+      "derived_from": null,
+      "passage_use_count": 5,
+      "body": "Placeholder paragraph for an application form's 'tell us about yourself' box.\n\nPlaceholder second paragraph that gets reused on its own."
+    }
+  ]
+}

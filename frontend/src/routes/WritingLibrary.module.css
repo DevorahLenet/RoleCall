@@ -1,0 +1,200 @@
+.content {
+  composes: content from './Pane.module.css';
+}
+
+.error {
+  composes: error from './Pane.module.css';
+}
+.errorTitle {
+  composes: errorTitle from './Pane.module.css';
+}
+.errorBody {
+  composes: errorBody from './Pane.module.css';
+}
+
+/* The query and its filters sit together above the results, separated from
+   them by a rule — they govern what is below, so they read as one block. */
+.controls {
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+/* A filter chip is a control, so unlike the type TAG it takes a hover and a
+   pressed state. Still no colour: selection reads as fill + weight. */
+.chip {
+  min-height: var(--control-height-sm);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: var(--weight-semibold) 12px/1 var(--font-sans);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+.chip:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.chipOn {
+  composes: chip;
+  background: var(--color-surface-active);
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.selects {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.select {
+  min-height: var(--control-height-sm);
+  max-width: 12rem;
+  padding: 0 var(--space-2);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: var(--text-body-sm);
+  cursor: pointer;
+}
+.select:focus {
+  border-color: var(--focus-input-border);
+  box-shadow: 0 0 0 3px var(--focus-input-glow);
+}
+
+/* Flat list rows, per the design system: divider + hover fill, no cards. */
+.rows {
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.none {
+  margin: 0;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--color-border-subtle);
+  font: var(--text-body-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Browse mode: one row per piece ---------- */
+.pieceRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-2) var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.1s ease;
+}
+.pieceRow:hover {
+  background: var(--color-surface-hover);
+  text-decoration: none;
+}
+
+.pieceTitle {
+  font: var(--text-body);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pieceCompany,
+.pieceDate {
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+.pieceDate {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Search mode: one row per matching line ---------- */
+.hitRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background 0.1s ease;
+}
+.hitRow:hover {
+  background: var(--color-surface-hover);
+}
+
+.hitBody {
+  flex: 1;
+  min-width: 0;
+}
+
+/* The line is the answer; where it came from is the footnote. */
+.hitMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+}
+
+.hitSource {
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+}
+.hitSource:hover {
+  color: var(--color-link);
+}
+
+.uses {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 600px) {
+  /* The company and date drop off a piece row before the title has to shrink. */
+  .pieceRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .pieceCompany,
+  .pieceDate {
+    display: none;
+  }
+  .selects {
+    flex: 1 1 100%;
+  }
+  .select {
+    flex: 1;
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip,
+  .pieceRow,
+  .hitRow {
+    transition: none;
+  }
+}

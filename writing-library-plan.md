@@ -114,3 +114,17 @@ Increment `use_count` and stamp `last_used_at` on every copy. Workhorse lines fl
 - **Copy is the primary action, not open.** Easy to build this as a document manager where everything opens a detail page — but the job ends with text on the clipboard. The copy affordance belongs at every level: passage row, search result, drawer.
 - **Auto-capture is what keeps it alive.** If writing only enters the library through a deliberate save step, the library dies. Writing created on a job page must land here automatically.
 - **Type carries no colour.** Four more hues would compete with the pipeline palette. Types are outline tags; colour stays reserved for job status.
+
+---
+
+## Status — built read-only (Aug 2026)
+
+The index and piece detail ship as designed above, with one scope decision layered on: **the library is read + copy only.** Pieces are not editable, creatable or deletable here, and the API is read-only apart from the copy counter. Authoring belongs on the job page, which is also where the pull drawer will live — that keeps this screen an aggregate *view* rather than a second place to remember to populate, which is the failure mode "the library is a view, not a container" was written to avoid.
+
+**What that changed from the plan above:** no New piece action, no Edit, and no **Duplicate & tailor** — `derived_from` is populated and displayed in both directions, but nothing forks a piece yet. The index's empty state carries no CTA, because until job-page authoring exists there is genuinely no next step to offer.
+
+**Content comes from `seed_writing`**, a command separate from `seed_local` that wipes and reloads only the writing tables. Pieces name their job by **company + role together** (company alone is ambiguous — two Base44 roles, two Rounds, two Har Hotzvim); a miss leaves the piece unattached and warns rather than failing. Passages are not in the file: they are derived from `body` by the same splitter the model uses, so seeded pieces chunk identically to authored ones.
+
+**Search works as specified** — FTS5, porter, `snippet()` — with one thing the plan did not anticipate: **raw user input crashes FTS5.** An apostrophe, a trailing `OR` or an unbalanced quote is a syntax error, so the query is reduced to quoted word runs with a prefix `*` on the last. Boolean operators are consequently literal words, which is the right trade for a search box.
+
+**Still owed:** authoring and the pull drawer on the job page; `Duplicate & tailor`; and the synonym gap the plan already names — "leadership" still will not find "managed a team of six".

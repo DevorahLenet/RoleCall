@@ -9,9 +9,14 @@ import type {
   NewJob,
   NewTask,
   Note,
+  PassageHit,
   Question,
   Task,
   TaskPatch,
+  WritingFilters,
+  WritingPassage,
+  WritingPiece,
+  WritingPieceDetail,
 } from '../types'
 
 const API_BASE = 'http://localhost:8000/api'
@@ -194,4 +199,52 @@ export function deleteContact(id: number): Promise<void> {
   return fetch(`${API_BASE}/contacts/${id}/`, { method: 'DELETE' }).then((res) => {
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
   })
+}
+
+// --- Writing Library ---------------------------------------------------
+// Read-only apart from the copy counter: nothing in this pass creates or edits
+// a piece, and the client surface says so.
+
+// The index's filters, as query params. Empty values are dropped so a blank
+// filter never reaches the server as an empty string to match against.
+function writingQuery(filters: Partial<WritingFilters>): string {
+  const params = new URLSearchParams()
+  for (const [key, value] of Object.entries(filters)) {
+    if (value) params.set(key, value)
+  }
+  const query = params.toString()
+  return query ? `?${query}` : ''
+}
+
+/** Pieces for the index's browse mode. */
+export function getWritingPieces(
+  filters: Partial<WritingFilters> = {},
+): Promise<WritingPiece[]> {
+  const { q: _q, ...rest } = filters
+  return fetch(`${API_BASE}/writing/${writingQuery(rest)}`).then((r) =>
+    toJson<WritingPiece[]>(r),
+  )
+}
+
+/** One piece with its body, passages and lineage. */
+export function getWritingPiece(id: number): Promise<WritingPieceDetail> {
+  return fetch(`${API_BASE}/writing/${id}/`).then((r) => toJson<WritingPieceDetail>(r))
+}
+
+/** Passage search — the index's other result mode. Filters are the same ones
+ *  browse uses; the unit of the answer is a line, not a document. */
+export function searchPassages(
+  filters: Partial<WritingFilters>,
+): Promise<PassageHit[]> {
+  return fetch(`${API_BASE}/writing/search/${writingQuery(filters)}`).then((r) =>
+    toJson<PassageHit[]>(r),
+  )
+}
+
+/** Record that a passage was copied. Fired after the clipboard write succeeds,
+ *  which is what lets "most used" be computed rather than curated. */
+export function markPassageUsed(id: number): Promise<WritingPassage> {
+  return fetch(`${API_BASE}/writing/passages/${id}/used/`, { method: 'POST' }).then(
+    (r) => toJson<WritingPassage>(r),
+  )
 }

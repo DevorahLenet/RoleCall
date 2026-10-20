@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from rest_framework import serializers
 
-from .models import Contact, Job, Note, Question, Task
+from .models import Contact, Job, Note, Question, Task, WritingPassage, WritingPiece
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -158,4 +158,55 @@ class JobDetailSerializer(JobSerializer):
             "contacts",
             "notes",
             "questions",
+        ]
+
+
+class WritingPassageSerializer(serializers.ModelSerializer):
+    """One reusable chunk. Read-only everywhere: passages are derived from the
+    piece's body, never edited on their own."""
+
+    class Meta:
+        model = WritingPassage
+        fields = ["id", "text", "position", "use_count", "last_used_at"]
+        read_only_fields = fields
+
+
+class WritingPieceSerializer(serializers.ModelSerializer):
+    """Slim payload for the library index — enough for a list row, without
+    dragging a whole resume's body along with every result."""
+
+    company = serializers.CharField(source="job.company", read_only=True, default=None)
+
+    class Meta:
+        model = WritingPiece
+        fields = ["id", "title", "type", "job", "company", "created_at", "updated_at"]
+
+
+class WritingPieceLineageSerializer(serializers.ModelSerializer):
+    """Just enough of a piece to name it in a lineage line."""
+
+    class Meta:
+        model = WritingPiece
+        fields = ["id", "title", "type"]
+
+
+class WritingPieceDetailSerializer(WritingPieceSerializer):
+    """Detail payload for the piece page: the slim piece plus its body, its
+    passages, and its lineage in both directions.
+
+    Defined last because it embeds the serializers above it."""
+
+    passages = WritingPassageSerializer(many=True, read_only=True)
+    derived_from = WritingPieceLineageSerializer(read_only=True)
+    forks = WritingPieceLineageSerializer(many=True, read_only=True)
+    role = serializers.CharField(source="job.role", read_only=True, default=None)
+
+    class Meta(WritingPieceSerializer.Meta):
+        fields = [
+            *WritingPieceSerializer.Meta.fields,
+            "role",
+            "body",
+            "passages",
+            "derived_from",
+            "forks",
         ]

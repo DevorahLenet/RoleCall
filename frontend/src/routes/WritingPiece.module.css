@@ -1,0 +1,119 @@
+.content {
+  composes: content from './Pane.module.css';
+}
+
+.error {
+  composes: error from './Pane.module.css';
+}
+.errorTitle {
+  composes: errorTitle from './Pane.module.css';
+}
+.errorBody {
+  composes: errorBody from './Pane.module.css';
+}
+
+/* Page layout, so it is plain content closed by a rule — not a card. */
+.header {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+}
+
+.job {
+  font: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+.job:hover {
+  color: var(--color-link);
+}
+
+/* A base resume or a general impact statement has no job, and that is a real
+   state rather than missing data. */
+.unattached {
+  font: var(--text-body-sm);
+  color: var(--color-text-muted);
+}
+
+.stamp {
+  font: var(--text-meta);
+  color: var(--color-text-disabled);
+  font-variant-numeric: tabular-nums;
+}
+
+.lineage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: var(--space-3) 0 0;
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+}
+
+.sectionTitle {
+  margin: var(--space-6) 0 var(--space-1);
+  font: var(--text-section);
+  color: var(--color-text);
+}
+
+.sectionNote {
+  margin: 0 0 var(--space-2);
+  font: var(--text-body-sm);
+  color: var(--color-text-muted);
+}
+
+.rows {
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+/* One reusable chunk. The copy button is the row's point, so it stays visible
+   rather than appearing on hover the way a destructive action does. */
+.passage {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background 0.1s ease;
+}
+.passage:hover {
+  background: var(--color-surface-hover);
+}
+
+/* `pre-wrap` keeps the markdown exactly as it will land on the clipboard —
+   the bullet marker and its line breaks included. */
+.text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font: var(--text-body);
+  color: var(--color-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.passageEnd {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: none;
+}
+
+.uses {
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .passage {
+    transition: none;
+  }
+}
