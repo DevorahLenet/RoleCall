@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RoleCall — Writing Library, browse + open piece (design reference)</title>
+<!-- FROZEN DESIGN REFERENCE — Claude Design, Oct 21 2026 pass. Not app code.
+     Shows BROWSE mode (no query) with one piece OPEN in the side panel.
+     Browse alone = this page without .scrim/.drawer and without .it.on.
+     Tile list trimmed to a sample; preview text in tiles is placeholder —
+     the app shows each piece's first passage. -->
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="screen-shell.css" />
+<link rel="stylesheet" href="writing-library.css" />
+<style>.cmdk[aria-disabled="true"] { cursor: not-allowed; }</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-today" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="40" y="48" width="176" height="168" rx="16"/><path d="M40 96h176M88 32v32M168 32v32M100 152l20 20 40-40"/></g></symbol>
+  <symbol id="i-jobs" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="32" y="80" width="192" height="128" rx="16"/><path d="M96 80V64a16 16 0 0 1 16-16h32a16 16 0 0 1 16 16v16M32 136h192"/></g></symbol>
+  <symbol id="i-writing" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M48 200V56a16 16 0 0 1 16-16h128v144H64a16 16 0 0 0-16 16 16 16 0 0 0 16 16h128"/><path d="M96 88h56M96 120h40"/></g></symbol>
+  <symbol id="i-ratings" viewBox="0 0 256 256"><path d="M40 216h176M64 216v-64M112 216V96M160 216v-96M208 216V56" stroke="currentColor" stroke-width="18" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-search" viewBox="0 0 256 256"><circle cx="116" cy="116" r="72" stroke="currentColor" stroke-width="20" fill="none"/><path d="M168 168l48 48" stroke="currentColor" stroke-width="20" stroke-linecap="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 256 256"><path d="M128 40v176M40 128h176" stroke="currentColor" stroke-width="24" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-company" viewBox="0 0 256 256"><path d="M40 216V72l64-32v176M104 216V96l112 40v80M24 216h208" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 256 256"><rect x="40" y="48" width="176" height="168" rx="16" stroke="currentColor" stroke-width="18" fill="none"/><path d="M40 96h176M88 32v32M168 32v32" stroke="currentColor" stroke-width="18" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-caret" viewBox="0 0 256 256"><path d="M72 104l56 56 56-56" stroke="currentColor" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-all" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" fill="none"><rect x="40" y="40" width="72" height="72" rx="10"/><rect x="144" y="40" width="72" height="72" rx="10"/><rect x="40" y="144" width="72" height="72" rx="10"/><rect x="144" y="144" width="72" height="72" rx="10"/></g></symbol>
+  <symbol id="i-impact" viewBox="0 0 256 256"><path d="M128 32l26 62 66 6-50 44 15 64-57-34-57 34 15-64-50-44 66-6z" stroke="currentColor" stroke-width="18" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-blurb" viewBox="0 0 256 256"><path d="M48 48h160a16 16 0 0 1 16 16v96a16 16 0 0 1-16 16H112l-48 40v-40H48a16 16 0 0 1-16-16V64a16 16 0 0 1 16-16z" stroke="currentColor" stroke-width="18" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-cover" viewBox="0 0 256 256"><rect x="32" y="56" width="192" height="144" rx="12" stroke="currentColor" stroke-width="18" fill="none"/><path d="M32 72l96 72 96-72" stroke="currentColor" stroke-width="18" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-resume" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" stroke-linecap="round" fill="none"><rect x="48" y="32" width="160" height="192" rx="16"/><circle cx="128" cy="92" r="22"/><path d="M92 146c8-14 21-20 36-20s28 6 36 20M88 184h80"/></g></symbol>
+  <symbol id="i-copy" viewBox="0 0 256 256"><rect x="80" y="80" width="136" height="136" rx="12" stroke="currentColor" stroke-width="16" fill="none"/><path d="M176 80V52a12 12 0 0 0-12-12H52a12 12 0 0 0-12 12v112a12 12 0 0 0 12 12h28" stroke="currentColor" stroke-width="16" fill="none"/></symbol>
+  <symbol id="i-x" viewBox="0 0 256 256"><path d="M64 64l128 128M192 64L64 192" stroke="currentColor" stroke-width="20" stroke-linecap="round"/></symbol>
+</svg>
+<div class="app">
+  <aside class="side">
+    <div class="wordmark">RoleCall</div>
+    <nav class="nav">
+      <a><svg class="ico"><use href="#i-today"/></svg><span>Today</span></a>
+      <a><svg class="ico"><use href="#i-jobs"/></svg><span>Jobs</span></a>
+      <a class="on"><svg class="ico"><use href="#i-writing"/></svg><span>Writing Library</span></a>
+      <a><svg class="ico"><use href="#i-ratings"/></svg><span>Ratings</span></a>
+    </nav>
+    <div>
+      <h2 class="side-h">Pipeline</h2>
+      <div class="stage"><span class="dot st-researching"></span>Researching<span class="n">10</span></div>
+      <div class="stage"><span class="dot st-applied"></span>Applied<span class="n">3</span></div>
+      <div class="stage"><span class="dot st-intro"></span>Intro<span class="n">1</span></div>
+      <div class="stage"><span class="dot st-interviewing"></span>Interviewing<span class="n">1</span></div>
+      <div class="stage"><span class="dot st-offer"></span>Offer<span class="n zero">0</span></div>
+    </div>
+  </aside>
+  <main class="pane">
+    <div class="topbar">
+      <button class="cmdk" aria-disabled="true" title="Search is coming soon"><svg class="ico"><use href="#i-search"/></svg><span>Search or jump to…</span><kbd>⌘K</kbd></button>
+      <div class="top-r"><button class="btn primary md"><svg class="ico"><use href="#i-plus"/></svg>New application</button><button class="me" aria-label="Account — Devorah">D</button></div>
+    </div>
+    <div class="page">
+      <header class="bar"><div class="lead"><h1 class="title"><em>Ready</em> when you are</h1></div></header>
+      <div class="content">
+        <div class="top">
+          <div class="srch"><svg class="ico"><use href="#i-search"/></svg><input type="search" placeholder="Search for a line — fundraising, onboarding, a team you led…" aria-label="Search your writing" /></div>
+          <button class="flt"><svg class="ico"><use href="#i-company"/></svg><span>Any company</span><svg class="ico"><use href="#i-caret"/></svg></button>
+          <button class="flt"><svg class="ico"><use href="#i-cal"/></svg><span>Any time</span><svg class="ico"><use href="#i-caret"/></svg></button>
+        </div>
+        <div class="lib">
+          <nav class="types" aria-label="Writing type">
+            <a class="on"><svg class="ico"><use href="#i-all"/></svg>All writing</a>
+            <a><svg class="ico"><use href="#i-impact"/></svg>Impact statements</a>
+            <a><svg class="ico"><use href="#i-blurb"/></svg>Blurbs</a>
+            <a><svg class="ico"><use href="#i-cover"/></svg>Cover letters</a>
+            <a><svg class="ico"><use href="#i-resume"/></svg>Resumes</a>
+          </nav>
+          <div class="list">
+            <article class="it"><span class="ti"><svg class="ico"><use href="#i-impact"/></svg></span><div class="b"><p class="pv">I was tremendously valued as the bridge and “point person” between 7 different teams.</p><h3><span class="ty">Impact statement</span>Greatest hits — lines that keep earning their place</h3></div><span class="dt">Aug 3</span><button class="qc" aria-label="Copy this piece"><svg class="ico"><use href="#i-copy"/></svg></button></article>
+            <article class="it"><span class="ti"><svg class="ico"><use href="#i-blurb"/></svg></span><div class="b"><p class="pv">I'd like to apply for the Project Manager (Tech) job — it speaks very closely to my experience as a Project Manager and Product Owner at healthcare RCM software companies.</p><h3><span class="ty">Blurb</span>Alteva RCM — Project Manager (Tech)<span class="co">Alteva RCM</span></h3></div><span class="dt">Jul 29</span><button class="qc" aria-label="Copy this piece"><svg class="ico"><use href="#i-copy"/></svg></button></article>
+            <article class="it"><span class="ti"><svg class="ico"><use href="#i-cover"/></svg></span><div class="b"><p class="pv">To the wonderful team at HaShadchan, I am so excited about your platform!</p><h3><span class="ty">Cover letter</span>HaShadchan — U.S. release<span class="co">HaShadchan</span></h3></div><span class="dt">Jul 27</span><button class="qc" aria-label="Copy this piece"><svg class="ico"><use href="#i-copy"/></svg></button></article>
+            <article class="it"><span class="ti"><svg class="ico"><use href="#i-resume"/></svg></span><div class="b"><p class="pv">Technical Product Manager and former full-stack developer with experience owning platform development end-to-end.</p><h3><span class="ty">Resume</span>Resume summary — Platform / technical PM<span class="co">TryHackMe</span></h3></div><span class="dt">Jul 20</span><button class="qc" aria-label="Copy this piece"><svg class="ico"><use href="#i-copy"/></svg></button></article>
+            <article class="it on"><span class="ti"><svg class="ico"><use href="#i-cover"/></svg></span><div class="b"><p class="pv">To the Gorin Systems Team, I was truly excited to see your Client Project Manager job opening!</p><h3><span class="ty">Cover letter</span>Gorin Systems — Client Project Manager<span class="co">Gorin Systems</span></h3></div><span class="dt">Jul 6</span><button class="qc" aria-label="Copy this piece"><svg class="ico"><use href="#i-copy"/></svg></button></article>
+            <article class="it"><span class="ti"><svg class="ico"><use href="#i-impact"/></svg></span><div class="b"><p class="pv">Took ownership of release quality, ensuring bi-weekly releases were smooth and without issues.</p><h3><span class="ty">Impact statement</span>Impact statements — standalone accomplishment lines</h3></div><span class="dt">Jun 30</span><button class="qc" aria-label="Copy this piece"><svg class="ico"><use href="#i-copy"/></svg></button></article>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrim" aria-hidden="true"></div>
+    <aside class="drawer" role="dialog" aria-label="Gorin Systems — Client Project Manager">
+      <header class="dw-h">
+        <span class="ti"><svg class="ico"><use href="#i-cover"/></svg></span>
+        <div class="dw-t"><span class="ty">Cover letter</span><h2>Gorin Systems — Client Project Manager</h2></div>
+        <button class="qc" aria-label="Copy this piece"><svg class="ico"><use href="#i-copy"/></svg></button>
+        <button class="dw-x" aria-label="Close"><svg class="ico"><use href="#i-x"/></svg></button>
+      </header>
+      <div class="dw-meta"><span>Gorin Systems</span><span>Updated Jul 6</span><span>Copied 3×</span></div>
+      <div class="dw-body">
+        <div class="para"><p>To the Gorin Systems Team,</p><button class="pcopy" aria-label="Copy this paragraph"><svg class="ico"><use href="#i-copy"/></svg></button></div>
+        <div class="para"><p>I was truly excited to see your Client Project Manager job opening! The role's primary responsibilities — relationship building, gathering requirements and communicating them to the development team, managing scope and issues, and ensuring client satisfaction — speak directly to my favorite skills and experience.</p><button class="pcopy" aria-label="Copy this paragraph"><svg class="ico"><use href="#i-copy"/></svg></button></div>
+        <div class="para"><p>As Product Owner, I transformed feature planning by introducing a user-focused planning process. I also served as the app's primary "point person" for the (30-40 member) internal teams. I led cross-functional planning meetings to align team members and ensure that insights and risks from every part of the team were incorporated in product planning.</p><button class="pcopy" aria-label="Copy this paragraph"><svg class="ico"><use href="#i-copy"/></svg></button></div>
+        <div class="para"><p>Thank you and looking forward to learning more,<br>D. Lenet</p><button class="pcopy" aria-label="Copy this paragraph"><svg class="ico"><use href="#i-copy"/></svg></button></div>
+      </div>
+    </aside>
+  </main>
+</div>
+</body>
+</html>

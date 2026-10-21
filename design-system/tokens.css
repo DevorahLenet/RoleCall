@@ -5,15 +5,15 @@
    never hardcode a hex, size, or spacing value in a component.
 
    Concept: "Step forward" — energy and calm together. A deep navy
-   sidebar anchors a pale-blue page; white task tiles lift off it;
-   coral is the single action/brand accent; Playfair Display gives
-   page titles a voice. Energy comes from CONTRAST (a real title,
-   heavy UI weights, one confident accent); calm comes from
-   RESTRAINT IN QUANTITY (one hue family, one accent, steady rhythm).
+   sidebar and a pale top bar frame a near-white page sheet; white
+   tiles lift off it; coral is the single action/brand accent; page
+   titles are heavy Nunito Sans with one hand-drawn Permanent Marker
+   accent word. Energy comes from CONTRAST (a confident title, heavy UI
+   weights, one accent); calm comes from RESTRAINT IN QUANTITY (one hue
+   family, one accent, steady rhythm).
 
-   Source: the Claude Design "RoleCall" project, rolecall-new/ handoff
-   of the Grove 14s exploration (Oct 2026). Reference screen:
-   design-handoff/today.html.
+   Source: the Claude Design "RoleCall" project (Oct 21, 2026 design
+   pass). Reference screens: design-handoff/components/*.html.
 
    TWO LAYERS, and the split is load-bearing:
      1. RAW PALETTE  — literal values. Components must NOT use these.
@@ -45,9 +45,21 @@
   --navy-150: #dfe6f3;   /* done-tile outline */
   --navy-100: #e5ebf6;   /* subtle border, sunken wells */
   --navy-75:  #e2e9f6;   /* sidebar strong text */
-  --navy-50:  #eef3fb;   /* page ground */
+  --navy-850: #0d1c3c;   /* sidebar ground — a shade deeper than navy-800 */
+  --navy-50:  #eef3fb;   /* sidebar active pill, priority-high text */
+  --navy-30:  #f7f9fd;   /* page ground — palest blue that still reads as not-white */
   --navy-25:  #f5f8fd;   /* done-tile fill, surface hover */
   --white:    #ffffff;
+
+  /* ---------- Teal — the open-question mark only ----------
+     Same values as the Intro stage, but owned here so the question mark
+     never depends on pipeline colours (which live in statuses.json). */
+  --teal-100: #c8efe9;
+  --teal-800: #0a4f48;   /* 7.6:1 on teal-100 */
+
+  /* ---------- Highlighter yellow — search matches only ---------- */
+  --yellow-200: #fff0a3;
+  --yellow-900: #3d3200; /* 11.0:1 on yellow-200 */
 
   /* ---------- Coral — the single brand / action accent ----------
      coral-500 is the brand hue but fails AA as text or behind white text
@@ -71,10 +83,13 @@
      ============================================================ */
 
   /* ---------- Ground & surfaces ----------
-     The page is pale navy; content sits forward on white. "Sunken" is
-     for wells that sit BEHIND the page (board columns, inline-add,
-     skeletons) — it is no longer the sidebar, which has its own tokens. */
-  --color-bg: var(--navy-50);
+     The page is a near-white sheet; content sits forward on white tiles.
+     "Sunken" is for wells that sit BEHIND the page (rail blocks, inline-add,
+     skeletons) — it is not the sidebar, which has its own tokens.
+     NOTE: --color-surface-active and --color-bg-sunken are the same value,
+     so an "active" fill vanishes on a sunken block. Hovers on sunken
+     surfaces lift to --color-surface instead. */
+  --color-bg: var(--navy-30);
   --color-bg-sunken: var(--navy-100);
   --color-surface: var(--white);
   --color-surface-hover: var(--navy-25);
@@ -82,7 +97,7 @@
   --color-surface-done: var(--navy-25);   /* completed task tile */
 
   /* ---------- Sidebar — a dark ground with its own text ramp ---------- */
-  --sidebar-bg: var(--navy-800);
+  --sidebar-bg: var(--navy-850);
   --sidebar-text: var(--navy-250);         /* 9.5:1 */
   --sidebar-text-strong: var(--navy-75);   /* stage labels, 11.9:1 */
   --sidebar-text-muted: var(--navy-400);   /* eyebrow, counts, 5.7:1 */
@@ -91,6 +106,25 @@
   --sidebar-wordmark: var(--navy-50);
   --sidebar-dot-ring: var(--navy-250);     /* keeps the navy Researching dot visible */
   --sidebar-hover-bg: rgba(238, 243, 251, 0.08); /* nav/stage hover — a faint lift of the page ground on the dark rail */
+
+  /* ---------- Global top bar — search, New application, account ----------
+     A pale strip that, with the sidebar, frames the page sheet. Global
+     actions live here; page actions stay in each page's toolbar. */
+  --topbar-bg: var(--navy-100);
+
+  /* ---------- Avatars — people, never pipeline-coloured ----------
+     The account avatar AND contact avatars. A person isn't at a pipeline
+     stage, so avatars stay navy rather than borrowing a stage colour. */
+  --avatar-bg: var(--sidebar-bg);
+  --avatar-text: var(--sidebar-wordmark);   /* 15.1:1 */
+
+  /* ---------- Search highlight — a highlighter pen for matched text ---------- */
+  --highlight-bg: var(--yellow-200);
+  --highlight-text: var(--yellow-900);
+
+  /* ---------- Open-question mark (job detail) ---------- */
+  --question-mark-bg: var(--teal-100);
+  --question-mark-text: var(--teal-800);
 
   /* ---------- Borders ---------- */
   --color-border: var(--navy-200);          /* default border */
@@ -114,7 +148,7 @@
   --color-link: var(--coral-700);
   --color-link-hover: var(--coral-900);
   --color-accent: var(--coral-500);        /* checked states, active borders — non-text */
-  --color-title-accent: var(--coral-500);  /* the italic accent word in a page title (large text, 3.56:1) */
+  --color-title-accent: var(--coral-500);  /* the marker-pen accent word in a page title (large text, 3.76:1 on the page) */
 
   --color-danger: var(--crimson-600);
   --color-danger-hover: var(--crimson-700);
@@ -136,7 +170,7 @@
   --priority-low-border: var(--navy-300);
 
   /* ---------- Focus ---------- */
-  --focus-ring: var(--coral-500);          /* 3.56:1 on the page ground */
+  --focus-ring: var(--coral-500);          /* 3.76:1 on the page ground */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --focus-input-border: var(--coral-500);
@@ -157,10 +191,11 @@
      SCALES — type, spacing, radius, elevation, z-index
      ============================================================ */
 
-  /* ---------- Typefaces — three, each with one job ---------- */
-  --font-display: 'Playfair Display', Georgia, serif;   /* page titles, wordmark */
-  --font-sans: 'Public Sans', system-ui, -apple-system, sans-serif;  /* all UI */
-  --font-task: 'Roboto', system-ui, sans-serif;          /* task titles only */
+  /* ---------- Typefaces — four, each with one job ---------- */
+  --font-display: 'Nunito Sans', system-ui, sans-serif;  /* page titles, wordmark */
+  --font-accent: 'Permanent Marker', cursive;           /* the ONE coral accent word in a page title — upright, weight 400 */
+  --font-sans: 'Public Sans', system-ui, -apple-system, sans-serif;  /* all UI chrome */
+  --font-task: 'Roboto', system-ui, sans-serif;          /* content you wrote: task titles, notes, questions, card roles, writing */
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
@@ -168,10 +203,10 @@
   --weight-extrabold: 800;
 
   /* ---------- Type scale ----------
-     The title finally has a voice: 30px Playfair against 15px UI. The
-     contrast between them is where the energy comes from. */
-  --text-title: 700 30px/1.02 var(--font-display);    /* page title — tracking --tracking-title */
-  --text-wordmark: 700 20px/1 var(--font-display);    /* "RoleCall" — tracking --tracking-title */
+     The title has a voice: 25px/800 Nunito Sans against 15px UI, plus one
+     marker-pen accent word. Title and wordmark deliberately match. */
+  --text-title: 800 25px/1.1 var(--font-display);     /* page title — tracking --tracking-title */
+  --text-wordmark: 800 25px/1 var(--font-display);    /* "RoleCall" — tracking --tracking-title */
   --text-section: 700 16px/1.35 var(--font-sans);     /* section heading within a screen */
   --text-eyebrow: 700 12px/1 var(--font-sans);        /* group headers, UPPERCASE + --tracking-eyebrow */
   --text-task: 500 15px/1.35 var(--font-task);        /* task titles — tracking --tracking-task */
@@ -226,6 +261,11 @@
 
   /* ---------- Layout ---------- */
   --sidebar-width: 240px;
+  --topbar-height: 56px;
+  --page-corner-radius: var(--radius-md); /* where the page sheet meets the top bar + sidebar frame */
+  --avatar-size: 36px;      /* account avatar in the top bar */
+  --nav-icon-size: 18px;
+  --search-max-width: 420px;
   --content-max: 1120px;
   --toolbar-height: 96px;   /* header min-height; sticky group headers offset against this */
   --nav-item-height: 38px;

@@ -79,9 +79,10 @@
   color: var(--color-text);
   overflow-wrap: anywhere;
 }
-/* Done rows read as done from the strikethrough alone — every title keeps the
-   primary text colour so the list scans as one column of type. */
+/* Done tiles mute and strike through, keeping their weight — they settle back
+   with the tile rather than thinning out. Muted is still the text floor. */
 .rowDone .title {
+  color: var(--color-text-muted);
   text-decoration: line-through;
 }
 

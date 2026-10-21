@@ -1,0 +1,94 @@
+/* ============================================================
+   RoleCall — shared screen frame for the Screens cards.
+   FROZEN DESIGN REFERENCE (Claude Design, Oct 21 2026 pass) — not app code.
+   Maps to the app's AppShell, Sidebar, TopBar (new), Toolbar, Button,
+   StatusPill, PriorityPill, TaskRow and JobSection.
+   Every value is a token from ../styles.css (→ design-system/tokens.css).
+   ============================================================ */
+
+.app { display: grid; grid-template-columns: var(--sidebar-width) minmax(0, 1fr); min-height: 100vh; }
+/* The pane is the top-bar ground; .page is the content sheet inset into the frame. */
+.pane { min-width: 0; display: flex; flex-direction: column; background: var(--topbar-bg); }
+.page { flex: 1; min-width: 0; background: var(--color-bg); border-top-left-radius: var(--page-corner-radius); box-shadow: inset 1px 1px 0 var(--color-border-subtle); }
+
+/* ---------- Global top bar — search left; New application + account right ---------- */
+.topbar { position: sticky; top: 0; z-index: var(--z-nav); display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); height: var(--topbar-height); padding: 0 var(--space-9) 0 var(--space-6); background: var(--topbar-bg); }
+.cmdk { display: flex; align-items: center; gap: 10px; flex: 0 1 var(--search-max-width); min-width: 150px; height: var(--control-height); padding: 0 var(--space-3); border: 0; border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-text-placeholder); box-shadow: inset 0 0 0 1px var(--color-border); font: var(--text-search); cursor: text; }
+.cmdk span { flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmdk kbd { font: var(--text-chip); padding: 4px 6px; border-radius: var(--radius-xs); background: var(--color-bg-sunken); color: var(--color-text); }
+.top-r { display: flex; align-items: center; gap: var(--space-3); }
+.me { display: grid; place-items: center; flex: none; width: var(--avatar-size); height: var(--avatar-size); padding: 0; border: 0; border-radius: var(--radius-full); background: var(--avatar-bg); color: var(--avatar-text); font: var(--weight-extrabold) 13px/1 var(--font-sans); box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 3px var(--color-border); cursor: pointer; }
+
+/* ---------- Sidebar — the one dark ground ---------- */
+.side { display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-6) var(--space-4); background: var(--sidebar-bg); }
+.wordmark { padding: var(--space-2) var(--space-2) 0; font: var(--text-wordmark); letter-spacing: var(--tracking-title); color: var(--sidebar-wordmark); }
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav a { display: flex; align-items: center; height: var(--nav-item-height); padding: 0 var(--space-2); border-radius: var(--radius-md); font: var(--text-nav); color: var(--sidebar-text); text-decoration: none; }
+.nav a { gap: 10px; }
+.nav a .ico { width: var(--nav-icon-size); height: var(--nav-icon-size); }
+.nav a.on { background: var(--sidebar-active-bg); color: var(--sidebar-active-text); font-weight: var(--weight-extrabold); }
+.side-h { margin: 0 0 var(--space-2); padding: 0 var(--space-2); font: var(--text-eyebrow); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--sidebar-text-muted); }
+.stage { display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; align-items: center; gap: var(--space-2); min-height: var(--space-8); padding: 0 var(--space-2); border-radius: var(--radius-md); font: var(--text-stage); color: var(--sidebar-text-strong); }
+.stage .n { font: var(--text-meta); font-variant-numeric: tabular-nums; color: var(--sidebar-text-muted); }
+.stage .n.zero { font-weight: var(--weight-regular); }
+.side .dot { box-shadow: 0 0 0 1.5px var(--sidebar-dot-ring); }
+
+/* ---------- Toolbar — on the page ground, no edge ---------- */
+.bar { display: flex; align-items: center; gap: var(--space-4); min-height: var(--toolbar-height); padding: var(--space-5) var(--space-9); background: var(--color-bg); }
+.lead { display: flex; align-items: center; gap: var(--space-2); flex: 0 1 auto; min-width: 0; }
+.title { min-width: 0; margin: 0; font: var(--text-title); letter-spacing: var(--tracking-title); color: var(--color-text-heading); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.title em { font-family: var(--font-accent); font-weight: var(--weight-regular); font-style: normal; letter-spacing: 0; color: var(--color-title-accent); }
+.back { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 44px; height: 44px; margin-left: calc(var(--space-3) * -1); border-radius: var(--radius-md); color: var(--color-text-secondary); }
+.actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-3); flex: 1 0 auto; }
+
+/* ---------- Buttons — pills, every size, every variant ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); border: 1px solid transparent; border-radius: var(--radius-full); font: var(--text-button); white-space: nowrap; cursor: pointer; }
+.btn.lg { height: var(--control-height-lg); padding: 0 var(--space-5); }
+.btn.md { height: var(--control-height); padding: 0 var(--space-4); }
+.btn.sm { height: var(--control-height-sm); padding: 0 var(--space-3); }
+.btn.primary { background: var(--color-primary); color: var(--color-on-primary); }
+.btn.secondary { background: var(--color-surface); color: var(--color-text); box-shadow: var(--shadow-search); }
+.btn.ghost { background: transparent; color: var(--color-text-secondary); }
+.btn svg { margin-left: -2px; }
+
+/* ---------- Content pane ---------- */
+.content { max-width: var(--content-max); padding: 0 var(--space-9) var(--space-9); }
+
+/* ---------- Status pill / chip — colours from statuses.json ---------- */
+.dot { width: 8px; height: 8px; border-radius: var(--radius-full); flex: none; }
+.pill { display: inline-flex; align-items: center; gap: var(--space-2); max-width: 100%; padding: calc(var(--space-1) - 1px) var(--space-2); border: 1px solid transparent; border-radius: var(--radius-full); font: var(--text-chip); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.st-researching { background: var(--status-researching-bg); color: var(--status-researching-fg); } .st-researching .dot, .dot.st-researching { background: var(--status-researching-dot); }
+.st-applied { background: var(--status-applied-bg); color: var(--status-applied-fg); } .st-applied .dot, .dot.st-applied { background: var(--status-applied-dot); }
+.st-intro { background: var(--status-intro-bg); color: var(--status-intro-fg); } .st-intro .dot, .dot.st-intro { background: var(--status-intro-dot); }
+.st-interviewing { background: var(--status-interviewing-bg); color: var(--status-interviewing-fg); } .st-interviewing .dot, .dot.st-interviewing { background: var(--status-interviewing-dot); }
+.st-offer { background: var(--status-offer-bg); color: var(--status-offer-fg); } .st-offer .dot, .dot.st-offer { background: var(--status-offer-dot); }
+
+/* ---------- Priority pill — a rank, never a pipeline colour ---------- */
+.pri { width: var(--priority-pill-width); padding: 5px 0; border-radius: var(--radius-full); font: var(--text-chip); text-align: center; }
+.p-high { background: var(--priority-high-bg); color: var(--priority-high-text); }
+.p-med { background: var(--priority-med-bg); color: var(--priority-med-text); }
+.p-low { background: var(--priority-low-bg); color: var(--priority-low-text); box-shadow: inset 0 0 0 1px var(--priority-low-border); }
+
+/* ---------- Task tile — the one collection that floats ---------- */
+.tiles { display: flex; flex-direction: column; gap: var(--task-gap); }
+.tile { display: flex; align-items: center; gap: var(--space-3); min-height: var(--task-min-height); padding: var(--space-1) var(--space-3); background: var(--color-surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-task); }
+.tile > :not(.t) { flex: none; }
+.tile .box { width: 20px; height: 20px; border-radius: var(--radius-sm); border: 2px solid var(--color-border-strong); }
+.tile .t { flex: 1 1 auto; min-width: 0; font: var(--text-task); letter-spacing: var(--tracking-task); color: var(--color-text); }
+.tile.done { background: var(--color-surface-done); box-shadow: var(--shadow-done); }
+.tile.done .t { color: var(--color-text-muted); text-decoration: line-through; }
+.tile.done .box { background: var(--color-accent); border-color: var(--color-accent); }
+
+/* ---------- Sections (job detail) ---------- */
+.section { margin-top: var(--space-8); }
+.section:first-child { margin-top: 0; }
+.s-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); min-height: var(--control-height-sm); margin-bottom: var(--space-2); }
+.s-title { margin: 0; font: var(--text-section); color: var(--color-text-heading); }
+.rail-block { padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-bg-sunken); }
+.rail-block + .rail-block { margin-top: var(--space-4); }
+.r-title { margin: 0; font: var(--text-eyebrow); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--color-text-heading); }
+/* Notes / questions — a list of quiet tiles (lighter than task tiles: they're not action items). */
+.rows { display: flex; flex-direction: column; gap: var(--task-gap); }
+
+/* ---------- Small icons ---------- */
+.ico { width: 16px; height: 16px; flex: none; }

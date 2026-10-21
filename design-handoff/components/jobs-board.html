@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RoleCall — Jobs (design reference)</title>
+<!-- FROZEN DESIGN REFERENCE — Claude Design, Oct 21 2026 pass. Not app code. -->
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="screen-shell.css" />
+<style>
+.content { max-width: none; }
+.board { display: flex; gap: var(--space-3); align-items: flex-start; }
+/* A lane per active stage: the stage's soft fill mixed 25% into the page, with a faint outline. */
+.col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--task-gap); background: color-mix(in srgb, var(--sb) 25%, var(--color-bg)); border-radius: var(--radius-lg); padding: 3px 10px 12px; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sb) 55%, var(--color-bg)); }
+/* Header: stage name in the stage's text colour, sentence case, white count pill, no dot. */
+.ch { display: flex; align-items: center; gap: 8px; margin: 0; padding: 0 4px 3px; color: var(--sf); font: 600 14px/1.2 var(--font-sans); }
+.ch .cnt { margin-left: auto; font: 800 11px/1 var(--font-sans); padding: 3px 7px; border-radius: var(--radius-full); background: var(--color-surface); color: var(--sf); }
+/* Card: fixed height — company eyebrow, role (2-line clamp), status line. No pill, no dot. */
+.card { background: var(--color-surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-task); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; height: 112px; }
+.co { font: 800 10.5px/1.2 var(--font-sans); letter-spacing: .09em; text-transform: uppercase; color: var(--color-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.role { margin: 0; font: 500 14px/1.35 var(--font-task); color: var(--color-text); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.meta { margin-top: auto; font: 500 12px/1 var(--font-sans); color: var(--color-text-muted); }
+.empty { margin: 0; padding: 14px; border-radius: var(--radius-lg); border: 1.5px dashed color-mix(in srgb, var(--sd) 40%, transparent); font: 500 13px/1.3 var(--font-sans); color: var(--sf); text-align: center; }
+/* App keeps its existing no-sideways-scroll rule: wrap below 900px, one lane per row below 600px. */
+@media (max-width: 900px) { .board { flex-wrap: wrap; } .col { flex: 1 1 var(--board-column-min); } }
+@media (max-width: 600px) { .col { flex: 1 1 100%; } }
+.cmdk[aria-disabled="true"] { cursor: not-allowed; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-today" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="40" y="48" width="176" height="168" rx="16"/><path d="M40 96h176M88 32v32M168 32v32M100 152l20 20 40-40"/></g></symbol>
+  <symbol id="i-jobs" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="32" y="80" width="192" height="128" rx="16"/><path d="M96 80V64a16 16 0 0 1 16-16h32a16 16 0 0 1 16 16v16M32 136h192"/></g></symbol>
+  <symbol id="i-writing" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M48 200V56a16 16 0 0 1 16-16h128v144H64a16 16 0 0 0-16 16 16 16 0 0 0 16 16h128"/><path d="M96 88h56M96 120h40"/></g></symbol>
+  <symbol id="i-ratings" viewBox="0 0 256 256"><path d="M40 216h176M64 216v-64M112 216V96M160 216v-96M208 216V56" stroke="currentColor" stroke-width="18" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-search" viewBox="0 0 256 256"><circle cx="116" cy="116" r="72" stroke="currentColor" stroke-width="20" fill="none"/><path d="M168 168l48 48" stroke="currentColor" stroke-width="20" stroke-linecap="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 256 256"><path d="M128 40v176M40 128h176" stroke="currentColor" stroke-width="24" stroke-linecap="round" fill="none"/></symbol>
+</svg>
+<div class="app">
+  <aside class="side">
+    <div class="wordmark">RoleCall</div>
+    <nav class="nav">
+      <a><svg class="ico"><use href="#i-today"/></svg><span>Today</span></a>
+      <a class="on"><svg class="ico"><use href="#i-jobs"/></svg><span>Jobs</span></a>
+      <a><svg class="ico"><use href="#i-writing"/></svg><span>Writing Library</span></a>
+      <a><svg class="ico"><use href="#i-ratings"/></svg><span>Ratings</span></a>
+    </nav>
+    <div>
+      <h2 class="side-h">Pipeline</h2>
+      <div class="stage"><span class="dot st-researching"></span>Researching<span class="n">10</span></div>
+      <div class="stage"><span class="dot st-applied"></span>Applied<span class="n">3</span></div>
+      <div class="stage"><span class="dot st-intro"></span>Intro<span class="n">1</span></div>
+      <div class="stage"><span class="dot st-interviewing"></span>Interviewing<span class="n">1</span></div>
+      <div class="stage"><span class="dot st-offer"></span>Offer<span class="n zero">0</span></div>
+    </div>
+  </aside>
+  <main class="pane">
+    <div class="topbar">
+      <button class="cmdk" aria-disabled="true" title="Search is coming soon"><svg class="ico"><use href="#i-search"/></svg><span>Search or jump to…</span><kbd>⌘K</kbd></button>
+      <div class="top-r"><button class="btn primary md"><svg class="ico"><use href="#i-plus"/></svg>New application</button><button class="me" aria-label="Account — Devorah">D</button></div>
+    </div>
+    <div class="page">
+      <header class="bar"><div class="lead"><h1 class="title">Jobs in <em>progress</em></h1></div></header>
+      <div class="content"><div class="board">
+        <section class="col" style="--sb:var(--status-researching-bg);--sf:var(--status-researching-fg);--sd:var(--status-researching-dot)"><h2 class="ch">Researching<span class="cnt">10</span></h2>
+          <article class="card"><span class="co">Base44 (Wix)</span><h3 class="role">Full Stack Marketer</h3><span class="meta">Started Jul 14</span></article>
+          <article class="card"><span class="co">Base44 (Wix)</span><h3 class="role">AI Growth Marketer</h3><span class="meta">Started Jul 14</span></article>
+          <article class="card"><span class="co">Dart Staffing</span><h3 class="role">Front-End Developer (UI/UX)</h3><span class="meta">Started Jul 12</span></article>
+          <article class="card"><span class="co">FinBot</span><h3 class="role">Product Manager</h3><span class="meta">Started Jul 10</span></article>
+          <article class="card"><span class="co">Akamai</span><h3 class="role">Product Manager — Micro-Segmentation Platform</h3><span class="meta">Started Jul 9</span></article>
+          <article class="card"><span class="co">HaShadchan</span><h3 class="role">US Operations Manager</h3><span class="meta">Started Jul 8</span></article>
+          <article class="card"><span class="co">Alteva RCM</span><h3 class="role">Project Manager (Tech)</h3><span class="meta">Started Jul 8</span></article>
+          <article class="card"><span class="co">Linear</span><h3 class="role">Product Manager</h3><span class="meta">Started Jul 6</span></article>
+          <article class="card"><span class="co">Litify</span><h3 class="role">Senior Product Manager (ELM Practice Management)</h3><span class="meta">Started Jul 3</span></article>
+          <article class="card"><span class="co">Rounds</span><h3 class="role">Product Operations Specialist</h3><span class="meta">Started Jul 2</span></article>
+        </section>
+        <section class="col" style="--sb:var(--status-applied-bg);--sf:var(--status-applied-fg);--sd:var(--status-applied-dot)"><h2 class="ch">Applied<span class="cnt">3</span></h2>
+          <article class="card"><span class="co">200Apps</span><h3 class="role">Junior Product Manager</h3><span class="meta">Applied Jul 7</span></article>
+          <article class="card"><span class="co">Gorin Systems</span><h3 class="role">Client Project Manager</h3><span class="meta">Applied Jul 6</span></article>
+          <article class="card"><span class="co">Deloitte Israel</span><h3 class="role">IT &amp; Specialized Assurance Consultant</h3><span class="meta">Applied Jul 1</span></article>
+        </section>
+        <section class="col" style="--sb:var(--status-intro-bg);--sf:var(--status-intro-fg);--sd:var(--status-intro-dot)"><h2 class="ch">Intro<span class="cnt">1</span></h2>
+          <article class="card"><span class="co">Medflo</span><h3 class="role">Part-time PM / Project Consultant</h3><span class="meta">Started Jul 7</span></article>
+        </section>
+        <section class="col" style="--sb:var(--status-interviewing-bg);--sf:var(--status-interviewing-fg);--sd:var(--status-interviewing-dot)"><h2 class="ch">Interviewing<span class="cnt">1</span></h2>
+          <article class="card"><span class="co">Fun and Function</span><h3 class="role">AI Integration / Efficiency (no formal title)</h3><span class="meta">Applied Jul 6</span></article>
+        </section>
+        <section class="col" style="--sb:var(--status-offer-bg);--sf:var(--status-offer-fg);--sd:var(--status-offer-dot)"><h2 class="ch">Offer<span class="cnt">0</span></h2>
+          <p class="empty">Nothing here yet</p>
+        </section>
+      </div></div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

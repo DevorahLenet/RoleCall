@@ -1,0 +1,76 @@
+/* Writing Library — shared by Browse, Search and Open piece.
+   FROZEN DESIGN REFERENCE (Claude Design, Oct 21 2026 pass) — not app code.
+   Maps to routes/WritingLibrary.module.css, SearchField, Excerpt, CopyButton, TypeTag.
+   One tile language for both modes: bare type glyph, content first, quiet
+   title line below, copy button on the right. */
+
+.count-line { margin: 0; font: var(--text-meta); color: var(--color-text-muted); }
+
+.list { display: flex; flex-direction: column; gap: 12px; }
+
+/* ---------- Top controls, type pills, tiles ---------- */
+.title { overflow: visible; }
+.top { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-5); }
+.top .srch { flex: 1; min-width: 0; }
+.flt { display: inline-flex; align-items: center; gap: var(--space-2); flex: none; height: 48px; padding: 0 var(--space-4); border: 0; border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-search); color: var(--color-text); font: var(--weight-semibold) 14px/1 var(--font-sans); cursor: pointer; white-space: nowrap; }
+.flt .ico { width: 16px; height: 16px; color: var(--color-text-muted); }
+.flt .ico:last-child { width: 14px; height: 14px; }
+.flt:hover { background: var(--color-surface-hover); }
+@media (max-width: 760px) { .top { flex-wrap: wrap; } .top .srch { flex-basis: 100%; } }
+.srch { position: relative; display: flex; align-items: center; }
+.srch .ico { position: absolute; left: var(--space-4); width: 18px; height: 18px; color: var(--color-text-muted); }
+.srch input { width: 100%; height: 48px; padding: 0 var(--space-4) 0 46px; border: 0; border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-search); font: var(--text-body); color: var(--color-text); }
+.srch input::placeholder { color: var(--color-text-placeholder); }
+.srch .clear { position: absolute; right: 2px; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--color-text-muted); cursor: pointer; }
+.srch .clear .ico { position: static; width: 14px; height: 14px; }
+.lib-filters { display: flex; flex-direction: column; gap: var(--space-3); }
+.pv mark { padding: 0 2px; border-radius: var(--radius-xs); background: var(--highlight-bg); color: var(--highlight-text); }
+.hitrow .pv { display: block; -webkit-line-clamp: unset; }
+.it .ti { align-self: center; }
+.lib { display: flex; flex-direction: column; gap: var(--space-5); }
+/* Type filter — pill row, each pill carrying its type glyph. Active = navy. */
+.types { display: flex; flex-wrap: wrap; gap: 6px; }
+.types a { display: inline-flex; align-items: center; gap: 6px; height: var(--control-height-sm); padding: 0 var(--space-3) 0 10px; border-radius: var(--radius-full); background: var(--color-surface); color: var(--color-text-secondary); box-shadow: inset 0 0 0 1px var(--color-border); font: var(--weight-bold) 12px/1 var(--font-sans); text-decoration: none; white-space: nowrap; cursor: pointer; }
+.types a:hover { background: var(--color-surface-hover); }
+.types a .ico { width: 14px; height: 14px; }
+.types a.on { background: var(--priority-high-bg); color: var(--priority-high-text); box-shadow: none; }
+.it { display: flex; align-items: center; gap: var(--space-3); padding: 9px 12px 9px 10px; background: var(--color-surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs), inset 0 0 0 1px var(--color-border-subtle); cursor: pointer; }
+.it:hover { background: var(--color-surface-hover); }
+/* Identifying icons (writing type) are bare glyphs — never boxed, never
+   hoverable. Action icons (copy, close) sit in a filled square and react on hover. */
+.ti { flex: none; width: 24px; height: 24px; display: grid; place-items: center; align-self: flex-start; background: none; color: var(--color-text-muted); }
+.ti .ico { width: 20px; height: 20px; }
+.it .b { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.it h3 { margin: 0; display: flex; align-items: baseline; gap: var(--space-2); min-width: 0; overflow: hidden; white-space: nowrap; font: var(--weight-semibold) 12.5px/1.25 var(--font-sans); letter-spacing: 0; color: var(--color-text-secondary); }
+.it h3 .ty { flex: none; white-space: nowrap; font: var(--text-eyebrow); font-size: 10px; line-height: 1.25; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--color-text-muted); }
+.pv { margin: 0; font: var(--weight-regular) 15px/1.45 var(--font-task); color: var(--color-text); overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; text-wrap: pretty; }
+/* Company — plain meta text beside the title, not a pill. */
+.it h3 .co { flex: none; padding: 0; background: none; font: inherit; color: var(--color-text-muted); white-space: nowrap; }
+.it h3 .co::before { content: "·"; margin-right: var(--space-2); }
+.dt { flex: none; font: var(--weight-medium) 12px/1 var(--font-sans); color: var(--color-text-placeholder); white-space: nowrap; }
+
+/* ---------- Open piece — side panel over the library ---------- */
+.it.on { background: var(--color-surface); box-shadow: 0 0 0 2px var(--color-accent), var(--shadow-xs); }
+.scrim { position: fixed; inset: 0; z-index: var(--z-overlay); background: var(--scrim-drawer); }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: var(--z-overlay); display: flex; flex-direction: column; width: min(560px, 100%); background: var(--color-surface); box-shadow: var(--shadow-drawer); }
+.dw-h { display: flex; align-items: center; gap: 10px; padding: var(--space-4) var(--space-4) 6px var(--space-5); }
+.dw-h .ti { width: 22px; height: 22px; align-self: center; }
+.dw-h .ti .ico { width: 18px; height: 18px; }
+.dw-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.dw-t .ty { font: var(--text-eyebrow); font-size: 10px; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--color-text-muted); }
+.dw-t h2 { margin: 0; font: var(--weight-extrabold) 15px/1.25 var(--font-display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: var(--tracking-title); color: var(--color-text-heading); }
+.dw-x { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border: 0; border-radius: var(--radius-full); background: var(--color-bg-sunken); color: var(--color-text-secondary); cursor: pointer; }
+.dw-x .ico { width: 14px; height: 14px; }
+.dw-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px var(--space-3); padding: 0 var(--space-4) var(--space-3) calc(var(--space-5) + 40px); border-bottom: 1px solid var(--color-border-subtle); font: var(--weight-medium) 12px/1.2 var(--font-sans); color: var(--color-text-muted); }
+.dw-body { flex: 1; overflow-y: auto; padding: var(--space-3) var(--space-3) var(--space-8); display: flex; flex-direction: column; gap: 2px; }
+.para { position: relative; display: flex; align-items: flex-start; gap: var(--space-2); padding: 10px 12px; border-radius: var(--radius-md); }
+.para:hover { background: var(--color-surface-hover); }
+.para p { flex: 1; margin: 0; font: var(--weight-regular) 15px/1.6 var(--font-task); color: var(--color-text); }
+.pcopy { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--color-text-muted); opacity: 0; cursor: pointer; }
+.para:hover .pcopy, .pcopy:focus-visible { opacity: 1; background: var(--color-surface); box-shadow: var(--shadow-search); }
+.pcopy:hover { color: var(--color-primary); }
+
+/* ---------- Quick copy on each list row ---------- */
+.qc { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border: 0; border-radius: var(--radius-md); background: var(--color-bg-sunken); color: var(--color-text-secondary); cursor: pointer; }
+.qc .ico { width: 15px; height: 15px; }
+.qc:hover { background: var(--color-primary); color: var(--color-on-primary); }

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RoleCall — Today (design reference)</title>
+<!-- FROZEN DESIGN REFERENCE — Claude Design, Oct 21 2026 pass. Not app code.
+     Rebuild in the React app with design-system/tokens.css and Phosphor icons. -->
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="screen-shell.css" />
+<style>
+.title { overflow: visible; }
+.body { max-width: var(--content-max); padding: 0 var(--space-9) var(--space-9); }
+.grp { display: flex; flex-direction: column; gap: var(--task-gap); margin-bottom: var(--group-gap); }
+.grp-h { font: var(--text-eyebrow); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--color-text-heading); padding: 0 4px 2px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font: var(--text-chip); padding: 5px 8px; border-radius: var(--radius-full); white-space: nowrap; }
+.cat { font: var(--text-chip); padding: 4px 8px; border-radius: var(--radius-full); box-shadow: inset 0 0 0 1px var(--color-border); color: var(--color-text-muted); }
+.cmdk[aria-disabled="true"] { cursor: not-allowed; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-today" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="40" y="48" width="176" height="168" rx="16"/><path d="M40 96h176M88 32v32M168 32v32M100 152l20 20 40-40"/></g></symbol>
+  <symbol id="i-jobs" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="32" y="80" width="192" height="128" rx="16"/><path d="M96 80V64a16 16 0 0 1 16-16h32a16 16 0 0 1 16 16v16M32 136h192"/></g></symbol>
+  <symbol id="i-writing" viewBox="0 0 256 256"><g stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M48 200V56a16 16 0 0 1 16-16h128v144H64a16 16 0 0 0-16 16 16 16 0 0 0 16 16h128"/><path d="M96 88h56M96 120h40"/></g></symbol>
+  <symbol id="i-ratings" viewBox="0 0 256 256"><path d="M40 216h176M64 216v-64M112 216V96M160 216v-96M208 216V56" stroke="currentColor" stroke-width="18" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-search" viewBox="0 0 256 256"><circle cx="116" cy="116" r="72" stroke="currentColor" stroke-width="20" fill="none"/><path d="M168 168l48 48" stroke="currentColor" stroke-width="20" stroke-linecap="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 256 256"><path d="M128 40v176M40 128h176" stroke="currentColor" stroke-width="24" stroke-linecap="round" fill="none"/></symbol>
+</svg>
+<div class="app">
+  <aside class="side">
+    <div class="wordmark">RoleCall</div>
+    <nav class="nav">
+      <a class="on"><svg class="ico"><use href="#i-today"/></svg><span>Today</span></a>
+      <a><svg class="ico"><use href="#i-jobs"/></svg><span>Jobs</span></a>
+      <a><svg class="ico"><use href="#i-writing"/></svg><span>Writing Library</span></a>
+      <a><svg class="ico"><use href="#i-ratings"/></svg><span>Ratings</span></a>
+    </nav>
+    <div>
+      <h2 class="side-h">Pipeline</h2>
+      <div class="stage"><span class="dot st-researching"></span>Researching<span class="n">10</span></div>
+      <div class="stage"><span class="dot st-applied"></span>Applied<span class="n">3</span></div>
+      <div class="stage"><span class="dot st-intro"></span>Intro<span class="n">1</span></div>
+      <div class="stage"><span class="dot st-interviewing"></span>Interviewing<span class="n">1</span></div>
+      <div class="stage"><span class="dot st-offer"></span>Offer<span class="n zero">0</span></div>
+    </div>
+  </aside>
+  <main class="pane">
+    <div class="topbar">
+      <button class="cmdk" aria-disabled="true" title="Search is coming soon"><svg class="ico"><use href="#i-search"/></svg><span>Search or jump to…</span><kbd>⌘K</kbd></button>
+      <div class="top-r"><button class="btn primary md"><svg class="ico"><use href="#i-plus"/></svg>New application</button><button class="me" aria-label="Account — Devorah">D</button></div>
+    </div>
+    <div class="page">
+      <header class="bar">
+        <h1 class="title">Step <em>forward</em></h1>
+        <div class="actions"><button class="btn secondary lg">New task</button></div>
+      </header>
+      <div class="body">
+        <section class="grp"><div class="grp-h">In progress</div>
+          <div class="tile"><span class="box"></span><span class="t">Generate the .docx and .pdf of the ops-tailored Rounds resume</span><span class="chip st-researching"><span class="dot"></span>Rounds</span><span class="pri p-high">High</span></div>
+          <div class="tile"><span class="box"></span><span class="t">Finish the RoleCall app</span><span class="cat">Professional development</span><span class="pri p-high">High</span></div>
+        </section>
+        <section class="grp"><div class="grp-h">Waiting</div>
+          <div class="tile"><span class="box"></span><span class="t">Decision from Fun and Function after the interview</span><span class="chip st-interviewing"><span class="dot"></span>Fun and Function · Interviewing</span><span class="pri p-high">High</span></div>
+          <div class="tile"><span class="box"></span><span class="t">Response from Deloitte on the assurance role</span><span class="chip st-applied"><span class="dot"></span>Deloitte Israel</span><span class="pri p-med">Med</span></div>
+        </section>
+        <section class="grp"><div class="grp-h">To do</div>
+          <div class="tile"><span class="box"></span><span class="t">Send the Alteva application — resume and cover blurb are final</span><span class="chip st-researching"><span class="dot"></span>Alteva RCM</span><span class="pri p-high">High</span></div>
+          <div class="tile"><span class="box"></span><span class="t">Schedule the consultant call with Yechiel — scope, timing, compensation</span><span class="chip st-intro"><span class="dot"></span>Medflo · Intro</span><span class="pri p-high">High</span></div>
+          <div class="tile"><span class="box"></span><span class="t">Tailor a resume for the Linear PM role</span><span class="chip st-researching"><span class="dot"></span>Linear</span><span class="pri p-med">Med</span></div>
+          <div class="tile"><span class="box"></span><span class="t">Reach out to Malki Hochman at Mobileye — warm intro first</span><span class="cat">Networking</span><span class="pri p-med">Med</span></div>
+          <div class="tile done"><span class="box"></span><span class="t">Follow up with Avital re: Deloitte role</span><span class="chip st-applied"><span class="dot"></span>Deloitte Israel</span><span class="pri p-med">Med</span></div>
+          <div class="tile"><span class="box"></span><span class="t">Check LinkedIn for a referral connection at Linear</span><span class="chip st-researching"><span class="dot"></span>Linear</span><span class="pri p-low">Low</span></div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

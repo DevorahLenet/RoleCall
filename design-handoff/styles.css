@@ -1,0 +1,16 @@
+/* Design-handoff shim — NOT app code.
+   Lets the reference screens in components/ render with the app's REAL
+   tokens, so they never drift from the code. The app imports
+   design-system/tokens.css directly; never import this file into the app. */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@800&family=Permanent+Marker&family=Public+Sans:wght@400;500;600;700;800&family=Roboto:wght@400;500&display=swap');
+@import url('../design-system/tokens.css');
+
+/* Mirrored from design-system/statuses.json for the reference screens only.
+   The app resolves stage colours from the JSON, never from CSS. */
+:root {
+  --status-researching-dot: #14284f; --status-researching-bg: #d9dfeb; --status-researching-fg: #0c1a38;
+  --status-applied-dot: #3e7bfa; --status-applied-bg: #dce7ff; --status-applied-fg: #1a3d8f;
+  --status-intro-dot: #13a89a; --status-intro-bg: #c8efe9; --status-intro-fg: #0a4f48;
+  --status-interviewing-dot: #7cb518; --status-interviewing-bg: #e4f3c4; --status-interviewing-fg: #3b5a06;
+  --status-offer-dot: #e5482b; --status-offer-bg: #ffe0d6; --status-offer-fg: #8a2a14;
+}
