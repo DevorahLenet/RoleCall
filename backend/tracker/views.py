@@ -7,6 +7,8 @@ MVP; they gain a per-user filter when auth lands.
 
 from __future__ import annotations
 
+from datetime import timedelta
+
 from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404
@@ -18,6 +20,16 @@ from rest_framework.response import Response
 from . import design_system as ds
 from .models import Contact, Job, Note, Question, Task, WritingPassage, WritingPiece
 from .search import search_passages
+
+# "Any time" on the Writing Library: a window in days, sent as `?since=`.
+# Parsed here so the two result modes (pieces and passages) read the same
+# parameter the same way — filters must narrow documents and lines identically.
+def _updated_after(params) -> "timezone.datetime | None":
+    raw = params.get("since") or ""
+    if not raw.isdigit() or int(raw) <= 0:
+        return None
+    return timezone.now() - timedelta(days=int(raw))
+
 from .serializers import (
     ContactSerializer,
     JobDetailSerializer,
@@ -98,6 +110,10 @@ class WritingPieceViewSet(viewsets.ReadOnlyModelViewSet):
                 "passages", "forks"
             )
 
+        # Each index row leads with its first passage, so prefetch them rather
+        # than letting the serializer issue one query per row.
+        qs = qs.prefetch_related("passages")
+
         # The index's filters, applied here rather than in the client so that
         # browsing and searching narrow by exactly the same rules.
         params = self.request.query_params
@@ -107,6 +123,9 @@ class WritingPieceViewSet(viewsets.ReadOnlyModelViewSet):
             qs = qs.filter(type=type_id)
         if company:
             qs = qs.filter(job__company=company)
+        since = _updated_after(params)
+        if since:
+            qs = qs.filter(updated_at__gte=since)
         # "Most used" ranks a piece by how much its passages get reached for.
         if params.get("sort") == "used":
             qs = qs.order_by(Coalesce(Sum("passages__use_count"), Value(0)).desc(), "-updated_at")
@@ -125,6 +144,7 @@ def writing_search(request):
             request.query_params.get("q", ""),
             type_id=request.query_params.get("type") or None,
             company=request.query_params.get("company") or None,
+            since=_updated_after(request.query_params),
             sort=request.query_params.get("sort", "relevance"),
         )
     )

@@ -1,19 +1,22 @@
-/* Company and stage on one line, closed by a rule that separates identity from
-   the work below it. Page layout, so it is plain content — not a card. */
-.header {
+/* Company and stage on one line above the role. Uppercase and small so the
+   title below stays the thing you read first — this qualifies it, it doesn't
+   compete with it. */
+.eyebrow {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--color-border);
+  gap: var(--space-1) 10px;
+  min-width: 0;
 }
 
-/* Set at section size: the role above it in the Toolbar is the page title, and
-   this is the next thing you read. */
 .company {
-  margin: 0;
-  font: var(--text-section);
-  color: var(--color-text);
+  font: var(--weight-extrabold) 13px/1 var(--font-sans);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
   overflow-wrap: anywhere;
 }
+
+/* The stage pill's trigger carries a 44px hit area, so this line is 44px tall.
+   That is deliberate: the touch floor is not negotiable, and in a header there
+   is room for it — the pill is the page's most-used control. */

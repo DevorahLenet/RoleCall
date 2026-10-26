@@ -1,66 +1,85 @@
+/* The button is the 44px TOUCH TARGET and is transparent; the face inside is
+   the 32px control you actually see. Keeping them separate is what lets the
+   design's compact look meet the touch floor without compromise. */
 .button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
+  display: grid;
+  place-items: center;
   flex: none;
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  background: transparent;
-  color: var(--color-text-muted);
-  font: var(--text-button);
-  cursor: pointer;
-  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
-}
-.button:hover {
-  background: var(--color-surface-active);
-  color: var(--color-text);
-}
-
-/* Bare 44px target for a list row, where the label would be noise repeated
-   down the page. */
-.icon {
   width: 44px;
   height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
-/* Labelled, for the one-per-screen "Copy all" — sits in the Toolbar beside the
-   pill Buttons, so it takes their shape. */
-.full {
-  border-radius: var(--radius-full);
-  height: var(--control-height);
-  padding: 0 var(--space-3);
-  border-color: var(--color-border-strong);
+.face {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  transition: background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+}
+
+/* The standing copy control on a library tile or a panel header: a filled
+   square that warms to the primary action colour on hover. */
+.tile .face {
+  background: var(--color-bg-sunken);
+  color: var(--color-text-secondary);
+}
+.tile:hover .face {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* One paragraph of an open piece. Quiet until its block is hovered, because a
+   column of buttons down a letter would compete with the letter.
+   The reveal is driven by --copy-reveal, which the CONTAINING block sets on
+   hover: a cross-module `.para:hover .face` selector can't work across two
+   CSS Module files, and a custom property crosses that boundary cleanly. */
+.paragraph .face {
+  background: transparent;
+  color: var(--color-text-muted);
+  opacity: var(--copy-reveal, 0);
+}
+.paragraph:focus-visible .face,
+.paragraph:hover .face {
+  opacity: 1;
   background: var(--color-surface);
-  color: var(--color-text);
+  box-shadow: var(--shadow-search);
+}
+.paragraph:hover .face {
+  color: var(--color-primary);
 }
 
 /* Confirmation borrows the accent rather than a new colour: this is a success,
    not a pipeline state, and the palette stays reserved. */
-.done {
-  color: var(--color-accent);
-  border-color: transparent;
-}
-.done:hover {
+.done .face {
   color: var(--color-accent);
 }
-
-.failed {
-  color: var(--color-danger-text);
-  border-color: transparent;
+.tile.done:hover .face {
+  background: var(--color-bg-sunken);
+  color: var(--color-accent);
 }
-.failed:hover {
+.failed .face {
+  color: var(--color-danger-text);
+}
+.tile.failed:hover .face {
+  background: var(--color-bg-sunken);
   color: var(--color-danger-text);
 }
 
-/* Fixed width so the button does not resize as the word changes under it. */
-.word {
-  min-width: 5.5rem;
-  text-align: left;
+/* There is no hover on touch, so a revealed-on-hover control would be a
+   control you can never find. */
+@media (pointer: coarse) {
+  .paragraph .face {
+    --copy-reveal: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .button {
+  .face {
     transition: none;
   }
 }

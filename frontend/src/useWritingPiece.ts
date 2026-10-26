@@ -16,7 +16,11 @@ export interface WritingPieceStore {
 
 // One saved piece. Modelled on useJobDetail: keyed on the id rather than on
 // mounting, since navigating between two pieces remounts nothing.
-export function useWritingPiece(id: number): WritingPieceStore {
+//
+// `null` means no piece is open. The hook still runs — the library mounts it
+// unconditionally, as hooks require — it just holds nothing and fetches
+// nothing until an id arrives.
+export function useWritingPiece(id: number | null): WritingPieceStore {
   const [piece, setPiece] = useState<WritingPieceDetail | null>(null)
   const [load, setLoad] = useState<PieceLoad>('loading')
   const [attempt, setAttempt] = useState(0)
@@ -27,6 +31,10 @@ export function useWritingPiece(id: number): WritingPieceStore {
   }, [])
 
   useEffect(() => {
+    if (id === null) {
+      setPiece(null)
+      return
+    }
     let cancelled = false
     setLoad('loading')
     getWritingPiece(id)

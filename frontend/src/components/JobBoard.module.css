@@ -1,8 +1,8 @@
-/* Every active stage is on screen at once — columns flex to share the pane
+/* Every active stage is on screen at once — lanes flex to share the pane
    rather than holding a fixed width, so the board never scrolls sideways. The
    flex basis of 0 is what makes them equal regardless of how full each one is. */
-/* Columns stretch to a common height rather than sitting at their content
-   height. That's a drop-target requirement, not a cosmetic one: a short column
+/* Lanes stretch to a common height rather than sitting at their content
+   height. That's a drop-target requirement, not a cosmetic one: a short lane
    would otherwise end above the pointer carrying a card from a tall one, so the
    drag would pass over board background with nothing to land on. */
 .board {
@@ -11,52 +11,49 @@
   gap: var(--space-3);
 }
 
-/* A column is a well — it sits BACK from the page (--color-bg-sunken), which is
-   what lets the white cards inside read as forward on an all-white ground. */
+/* A lane is TINTED with its own stage: the stage's badgeBg mixed 25% into the
+   page sheet, outlined with the same mix at 55%. --sb/--sf/--sd are set inline
+   from statuses.json (see laneColors) so no stage colour is ever written here.
+   The tint is what keeps the board reading as a pipeline once the lanes stack
+   on a phone and the headers scroll apart. */
 .column {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--task-gap);
   flex: 1 1 0;
   min-width: 0;
-  /* A floor so an all-empty board still presents columns you can drop into. */
+  /* A floor so an all-empty board still presents lanes you can drop into. */
   min-height: var(--space-16);
-  padding: var(--space-3);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-sunken);
+  padding: 3px var(--space-3) var(--space-3);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--sb) 25%, var(--color-bg));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sb) 55%, var(--color-bg));
 }
 
 /* The stage a ?status= link pointed at. Inset ring so the highlight can't shift
-   layout or nudge the columns out of their shared width. */
+   layout or nudge the lanes out of their shared width; it replaces the lane's
+   own faint outline rather than sitting beside it. */
 .columnFocused {
   box-shadow: inset 0 0 0 1.5px var(--color-accent);
 }
 
-/* The column a dragged card is currently over. Reads louder than the focus ring
-   because it's transient and answers "will it land here?" — and it tints the
-   well, which the focus ring deliberately doesn't. */
+/* The lane a dragged card is currently over. Reads louder than the focus ring
+   because it's transient and answers "will it land here?". */
 .columnDropTarget {
   background: var(--color-drop-target);
   box-shadow: inset 0 0 0 2px var(--color-accent);
 }
 
+/* Stage name in the stage's own text colour, sentence case, no dot. */
 .columnHead {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   margin: 0;
-  padding: var(--space-1) var(--space-1) 0;
-  font: var(--text-eyebrow);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: var(--radius-full);
-  flex: none;
+  padding: 0 var(--space-1) 3px;
+  font: var(--weight-semibold) 14px/1.2 var(--font-sans);
+  letter-spacing: 0;
+  color: var(--sf);
 }
 
 .columnLabel {
@@ -65,40 +62,40 @@
   white-space: nowrap;
 }
 
-/* Zero reads as non-text grey, matching the sidebar's empty stage counts. */
-.count,
-.countZero {
-  margin-left: auto;
-  padding-left: var(--space-1);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0;
-  flex: none;
-}
+/* White pill so the count reads off the tint whatever the stage. */
 .count {
-  color: var(--color-text-muted);
+  margin-left: auto;
+  flex: none;
+  padding: 3px 7px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--sf);
+  font: var(--weight-extrabold) 11px/1 var(--font-sans);
+  font-variant-numeric: tabular-nums;
 }
-.countZero {
-  color: var(--color-text-disabled);
+
+/* An empty stage keeps its full lane rather than collapsing — the board is a
+   fixed legend of the pipeline. The dashed edge takes the stage's dot colour,
+   so even an empty lane still says which stage it is. */
+.empty {
+  margin: 0;
+  padding: var(--space-4);
+  border: 1.5px dashed color-mix(in srgb, var(--sd) 40%, transparent);
+  border-radius: var(--radius-lg);
+  font: var(--weight-medium) 13px/1.3 var(--font-sans);
+  color: var(--sf);
+  text-align: center;
 }
 
 .stack {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--task-gap);
 }
 
-/* An empty stage keeps its full column rather than collapsing — the board is a
-   fixed legend of the pipeline, same rule as the band. */
-.empty {
-  margin: 0;
-  padding: var(--space-4) var(--space-1);
-  font: var(--text-meta);
-  color: var(--color-text-muted);
-}
-
-/* Below the sidebar breakpoint there isn't width for five readable columns, so
+/* Below the sidebar breakpoint there isn't width for five readable lanes, so
    they wrap onto a second row at --board-column-min instead of shrinking past
-   legibility. Still no sideways scroll. */
+   legibility. Still no sideways scroll, at any width. */
 @media (max-width: 900px) {
   .board {
     flex-wrap: wrap;

@@ -26,8 +26,9 @@ import styles from './JobDetail.module.css'
 //
 // The page is split by KIND of information, which is what makes it readable:
 // the main column is work you act on (tasks, then the log, then open questions)
-// and the rail is reference you only read (the facts, the people). Three header
-// sizes — 30px role, 16px sections, 12px rail eyebrows — carry the hierarchy.
+// and the rail is reference you only read (the facts, the people). The title
+// carries the role, qualified by a company + stage eyebrow above it; every
+// section below is an eyebrow, so the title is the only large type on the page.
 // No counts anywhere: section headers are labels, not a dashboard.
 export function JobDetail() {
   const params = useParams()
@@ -98,17 +99,20 @@ export function JobDetail() {
 
   return (
     <>
-      {/* Edit details lives here rather than in the page body, leaving the
-          header to the two facts worth reading first. The writing drawer's
-          trigger will join it in this slot when the library lands. */}
+      {/* The header IS the Toolbar now: back button, the company + stage
+          eyebrow, and the role as a title that wraps rather than ellipsising.
+          Edit details sits in the actions slot; the writing drawer's trigger
+          will join it there when job-page authoring lands. */}
       <Toolbar
         title={title}
+        eyebrow={job && <JobHeader job={job} onChangeStatus={changeStatus} />}
         backTo={{ to: '/jobs', label: 'Back to the jobs board' }}
         onOpenNav={onOpenNav}
         actions={
           job && (
             <Button
               variant="secondary"
+              size="lg"
               icon={<PencilSimple size={15} />}
               onClick={() => setEditOpen(true)}
             >
@@ -157,78 +161,74 @@ export function JobDetail() {
         )}
 
         {detail.load === 'ready' && job && (
-          <>
-            <JobHeader job={job} onChangeStatus={changeStatus} />
+          <div className={styles.body}>
+            <div className={styles.main}>
+              {/* Tasks lead: they are the part of the page you act on. The row
+                  is Today's row component, not a second one — two task rows
+                  would drift apart within a month. Its job chip is suppressed
+                  because every row here belongs to the job in the title. */}
+              <JobSection
+                title="Tasks"
+                action={
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    icon={<Plus size={14} weight="bold" />}
+                    onClick={() => setTaskForm({ mode: 'new' })}
+                  >
+                    Add task
+                  </Button>
+                }
+              >
+                {jobTasks.length === 0 ? (
+                  <p className={section.empty}>Nothing outstanding on this one yet.</p>
+                ) : (
+                  <div className={section.tiles}>
+                    {jobTasks.map((task) => (
+                      <TaskRow
+                        key={task.id}
+                        task={task}
+                        showChip={false}
+                        onToggleDone={onToggleDone}
+                        onChangePriority={onChangePriority}
+                        onEdit={(t) => setTaskForm({ mode: 'edit', task: t })}
+                        onDeleteTask={onDeleteTask}
+                      />
+                    ))}
+                  </div>
+                )}
+              </JobSection>
 
-            <div className={styles.body}>
-              <div className={styles.main}>
-                {/* Tasks lead: they are the part of the page you act on. The row
-                    is Today's row component, not a second one — two task rows
-                    would drift apart within a month. Its job chip is suppressed
-                    because every row here belongs to the job in the title. */}
-                <JobSection
-                  title="Tasks"
-                  action={
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      icon={<Plus size={14} weight="bold" />}
-                      onClick={() => setTaskForm({ mode: 'new' })}
-                    >
-                      Add task
-                    </Button>
-                  }
-                >
-                  {jobTasks.length === 0 ? (
-                    <p className={section.empty}>Nothing outstanding on this one yet.</p>
-                  ) : (
-                    <div className={section.tiles}>
-                      {jobTasks.map((task) => (
-                        <TaskRow
-                          key={task.id}
-                          task={task}
-                          showChip={false}
-                          onToggleDone={onToggleDone}
-                          onChangePriority={onChangePriority}
-                          onEdit={(t) => setTaskForm({ mode: 'edit', task: t })}
-                          onDeleteTask={onDeleteTask}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </JobSection>
+              {/* The log comes before the open questions: it is the section
+                  with traffic on it once a job is live, and a question is
+                  usually raised by something that was just logged. */}
+              <NoteList
+                notes={job.notes}
+                onAdd={detail.onAddNote}
+                onEdit={detail.onEditNote}
+                onDelete={detail.onDeleteNote}
+              />
 
-                {/* The log comes before the open questions: it is the section
-                    with traffic on it once a job is live, and a question is
-                    usually raised by something that was just logged. */}
-                <NoteList
-                  notes={job.notes}
-                  onAdd={detail.onAddNote}
-                  onEdit={detail.onEditNote}
-                  onDelete={detail.onDeleteNote}
-                />
-
-                <QuestionList
-                  questions={job.questions}
-                  onAdd={detail.onAddQuestion}
-                  onAnswer={detail.onAnswerQuestion}
-                  onReopen={detail.onReopenQuestion}
-                  onDelete={detail.onDeleteQuestion}
-                />
-              </div>
-
-              <aside className={styles.rail}>
-                <JobFacts job={job} />
-                <ContactList
-                  jobId={id}
-                  contacts={job.contacts}
-                  onSave={detail.onSaveContact}
-                  onLink={detail.onLinkContact}
-                  onUnlink={detail.onUnlinkContact}
-                />
-              </aside>
+              <QuestionList
+                questions={job.questions}
+                onAdd={detail.onAddQuestion}
+                onAnswer={detail.onAnswerQuestion}
+                onReopen={detail.onReopenQuestion}
+                onDelete={detail.onDeleteQuestion}
+              />
             </div>
-          </>
+
+            <aside className={styles.rail}>
+              <JobFacts job={job} />
+              <ContactList
+                jobId={id}
+                contacts={job.contacts}
+                onSave={detail.onSaveContact}
+                onLink={detail.onLinkContact}
+                onUnlink={detail.onUnlinkContact}
+              />
+            </aside>
+          </div>
         )}
       </div>
 

@@ -10,21 +10,27 @@ interface Props {
   /** Fired only after the clipboard write actually succeeded, so a use count
    *  can never be credited for a copy that did not happen. */
   onCopied?: () => void
-  /** `full` carries a visible label; `icon` is a bare 44px target for a row. */
-  variant?: 'icon' | 'full'
+  /** `tile` is the standing control on a library row or a panel header;
+   *  `paragraph` is quiet until its block is hovered. */
+  variant?: 'tile' | 'paragraph'
 }
 
 type State = 'idle' | 'copied' | 'failed'
 
 // Copy is the primary action of the whole Writing Library — the job ends with
 // text on the clipboard, not with a document open. So the affordance sits on
-// every unit of reuse: each passage row, each search hit, and the whole body.
+// every unit of reuse: each tile, each search hit, each paragraph of an open
+// piece, and the piece as a whole.
 //
-// Feedback is a transient label plus an sr-only announcement, matching the
+// Copy is an ACTION, so unlike the bare type glyph it always sits in a filled
+// control: a 32px face inside a transparent 44px button, which is how it keeps
+// the design's look without going under the touch-target floor.
+//
+// Feedback is the icon swapping plus an sr-only announcement, matching the
 // pattern the board and Today already use for changes a sighted user watches
 // happen. There is no toast component in this app and one button did not
 // warrant inventing one.
-export function CopyButton({ text, label, onCopied, variant = 'icon' }: Props) {
+export function CopyButton({ text, label, onCopied, variant = 'tile' }: Props) {
   const [state, setState] = useState<State>('idle')
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
@@ -59,7 +65,7 @@ export function CopyButton({ text, label, onCopied, variant = 'icon' }: Props) {
 
   const classes = [
     styles.button,
-    variant === 'full' ? styles.full : styles.icon,
+    styles[variant],
     state === 'copied' ? styles.done : '',
     state === 'failed' ? styles.failed : '',
   ]
@@ -74,12 +80,11 @@ export function CopyButton({ text, label, onCopied, variant = 'icon' }: Props) {
         aria-label={state === 'idle' ? `Copy ${label}` : `${word} — ${label}`}
         onClick={() => void copy()}
       >
-        {icon}
-        {variant === 'full' && <span className={styles.word}>{word}</span>}
+        <span className={styles.face}>{icon}</span>
       </button>
 
-      {/* Announces what the visible label already says, for anyone who cannot
-          see it change. */}
+      {/* Announces what the icon already shows, for anyone who cannot see it
+          change. */}
       <span className="sr-only" role="status" aria-live="polite">
         {state === 'copied' ? `Copied ${label}` : ''}
         {state === 'failed' ? `Couldn’t copy ${label}` : ''}

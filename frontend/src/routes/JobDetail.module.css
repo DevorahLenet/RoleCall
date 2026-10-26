@@ -11,21 +11,28 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) var(--detail-rail-width);
   gap: var(--space-8);
-  margin-top: var(--space-6);
 }
 
 .main {
   min-width: 0;
 }
 
-/* Sticks under the toolbar, so the facts and the people stay put while a long
-   log scrolls beside them. `align-self: start` is what stops the grid stretching
-   the rail to the row height and defeating the stickiness. */
+/* Sticks under the top bar AND the toolbar, so the facts and the people stay
+   put while a long log scrolls beside them. `align-self: start` is what stops
+   the grid stretching the rail to the row height and defeating the stickiness.
+   Blocks sit --space-5 apart, set here rather than in JobSection because the
+   spacing belongs to the rail, not to a block. */
 .rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
   min-width: 0;
   align-self: start;
   position: sticky;
-  top: calc(var(--toolbar-height) + var(--space-6));
+  /* Deliberately generous: this page's Toolbar runs taller than
+     --toolbar-height because of its eyebrow, and erring long only starts the
+     rail sticking a little lower, while erring short tucks it out of sight. */
+  top: calc(var(--topbar-height) + var(--toolbar-height) + var(--space-8));
 }
 
 .error {

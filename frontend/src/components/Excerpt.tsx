@@ -14,15 +14,16 @@ interface Props {
   text: string
 }
 
-// Renders a search excerpt with its matched terms marked. `<mark>` because that
-// is what it means — the browser and screen readers both already know.
+// Renders a search excerpt with its matched terms marked in highlighter
+// yellow. `<mark>` because that is what it means — the browser and screen
+// readers both already know.
 export function Excerpt({ text }: Props) {
   // Split on the opening sentinel, then each part after the first begins with a
   // match that runs to its closing sentinel.
   const [lead, ...rest] = text.split(OPEN)
 
   return (
-    <span className={styles.excerpt}>
+    <p className={styles.excerpt}>
       {lead}
       {rest.map((chunk, i) => {
         const [match, tail = ''] = chunk.split(CLOSE)
@@ -33,6 +34,6 @@ export function Excerpt({ text }: Props) {
           </Fragment>
         )
       })}
-    </span>
+    </p>
   )
 }

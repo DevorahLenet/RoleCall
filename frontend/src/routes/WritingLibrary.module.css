@@ -12,189 +12,229 @@
   composes: errorBody from './Pane.module.css';
 }
 
-/* The query and its filters sit together above the results, separated from
-   them by a rule — they govern what is below, so they read as one block. */
-.controls {
-  padding-bottom: var(--space-4);
-  margin-bottom: var(--space-2);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.filters {
+/* ---------- Top row: the query and its two filters, as equals ----------
+   All three are 48px and lifted. The query takes the width because it is the
+   primary control on this screen; the filters hold their content. */
+.top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  margin-top: var(--space-3);
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1);
-}
-
-/* A filter chip is a control, so unlike the type TAG it takes a hover and a
-   pressed state. Still no colour: selection reads as fill + weight. */
-.chip {
-  min-height: var(--control-height-sm);
-  padding: 0 var(--space-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xs);
-  background: transparent;
-  color: var(--color-text-muted);
-  font: var(--weight-semibold) 12px/1 var(--font-sans);
-  cursor: pointer;
-  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
-}
-.chip:hover {
-  border-color: var(--color-border-strong);
-  color: var(--color-text);
-}
-
-.chipOn {
-  composes: chip;
-  background: var(--color-surface-active);
-  border-color: var(--color-border-strong);
-  color: var(--color-text);
-}
-
-.selects {
-  display: flex;
   gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+.top > :first-child {
+  flex: 1;
+  min-width: 0;
 }
 
-.select {
-  min-height: var(--control-height-sm);
-  max-width: 12rem;
-  padding: 0 var(--space-2);
-  border: 1.5px solid var(--color-border-strong);
-  border-radius: var(--radius-sm);
+/* The query gets a row to itself before it is squeezed — losing width on the
+   thing the screen exists for is the wrong trade. */
+@media (max-width: 760px) {
+  .top {
+    flex-wrap: wrap;
+  }
+  .top > :first-child {
+    flex-basis: 100%;
+  }
+}
+
+.lib {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.libFilters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ---------- Type pills ----------
+   White with a 1px inset outline; active is a SOLID NAVY fill. Selection
+   reads as fill and weight, never hue: writing types carry no colour. */
+.types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.type {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--control-height-sm);
+  padding: 0 var(--space-3) 0 10px;
+  border: 0;
+  border-radius: var(--radius-full);
   background: var(--color-surface);
-  color: var(--color-text);
-  font: var(--text-body-sm);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+  color: var(--color-text-secondary);
+  font: var(--weight-bold) 12px/1 var(--font-sans);
+  white-space: nowrap;
   cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
 }
-.select:focus {
-  border-color: var(--focus-input-border);
-  box-shadow: 0 0 0 3px var(--focus-input-glow);
+.type:hover {
+  background: var(--color-surface-hover);
 }
 
-/* Flat list rows, per the design system: divider + hover fill, no cards. */
-.rows {
-  border-top: 1px solid var(--color-border-subtle);
+.typeOn {
+  composes: type;
+  background: var(--priority-high-bg);
+  box-shadow: none;
+  color: var(--priority-high-text);
+}
+.typeOn:hover {
+  background: var(--priority-high-bg);
+}
+
+.typeIcon {
+  flex: none;
+}
+
+/* How much the query found. Search only — browsing doesn't need a tally. */
+.countLine {
+  margin: 0;
+  font: var(--text-meta);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Tiles: one language for both result modes ---------- */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Lighter than a task tile and lighter than a board card: a faint lift and a
+   hairline. These are things you choose from, not things you act on. */
+.tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 9px var(--space-3) 9px 10px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-xs), inset 0 0 0 1px var(--color-border-subtle);
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+.tile:hover {
+  background: var(--color-surface-hover);
+}
+
+/* The piece currently open in the panel. A 2px accent ring, so the list still
+   shows you where the panel came from while it covers part of the screen. */
+.tileOpen,
+.tileOpen:hover {
+  background: var(--color-surface);
+  box-shadow: 0 0 0 2px var(--color-accent), var(--shadow-xs);
+}
+
+/* The stretched link, so a click anywhere on the tile opens the piece while
+   the tile keeps a real href for middle-click and copy-link. */
+.tileOpenLink {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: var(--radius-lg);
+}
+
+/* CONTENT FIRST: the writing leads, the title line is the footnote under it.
+   That ordering is the whole point — you are looking for a line, not a file. */
+.tileBody {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Browse: the piece's opening passage, clamped to two lines. (A search hit
+   renders Excerpt instead, which is never clamped — the matched line is the
+   answer, not a teaser.) */
+.preview {
+  margin: 0;
+  font: var(--weight-regular) 15px/1.45 var(--font-task);
+  color: var(--color-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-wrap: pretty;
+}
+
+/* Type eyebrow · piece title · company. One line that truncates: it is
+   context for the preview above, so it gives way before the preview does. */
+.tileTitle {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font: var(--weight-semibold) 12.5px/1.25 var(--font-sans);
+  color: var(--color-text-secondary);
+}
+
+.tileName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Company is plain muted text, never a pill and never a stage colour — the
+   pipeline palette is not on loan to the library. */
+.tileCompany {
+  flex: none;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.tileCompany::before {
+  content: '·';
+  margin-right: var(--space-2);
+}
+
+.tileDate {
+  flex: none;
+  font: var(--weight-medium) 12px/1 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-placeholder);
+  white-space: nowrap;
+}
+
+/* Raised above the stretched link, because copy is a target of its own — it
+   is the action the whole screen exists for. */
+.tileCopy {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex: none;
+  /* The 44px target overhangs the tile's padding instead of inflating it. */
+  margin: -6px 0;
 }
 
 .none {
   margin: 0;
   padding: var(--space-4) 0;
-  border-top: 1px solid var(--color-border-subtle);
   font: var(--text-body-sm);
   color: var(--color-text-muted);
 }
 
-/* ---------- Browse mode: one row per piece ---------- */
-.pieceRow {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto auto;
-  align-items: center;
-  gap: var(--space-3);
-  min-height: 44px;
-  padding: var(--space-2) var(--space-2) var(--space-2) 0;
-  border-bottom: 1px solid var(--color-border-subtle);
-  color: inherit;
-  text-decoration: none;
-  transition: background 0.1s ease;
-}
-.pieceRow:hover {
-  background: var(--color-surface-hover);
-  text-decoration: none;
-}
-
-.pieceTitle {
-  font: var(--text-body);
-  font-weight: var(--weight-medium);
-  color: var(--color-text);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.pieceCompany,
-.pieceDate {
-  font: var(--text-meta);
-  color: var(--color-text-muted);
-  white-space: nowrap;
-}
-.pieceDate {
-  font-variant-numeric: tabular-nums;
-}
-
-/* ---------- Search mode: one row per matching line ---------- */
-.hitRow {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-  min-height: 44px;
-  padding: var(--space-3) 0;
-  border-bottom: 1px solid var(--color-border-subtle);
-  transition: background 0.1s ease;
-}
-.hitRow:hover {
-  background: var(--color-surface-hover);
-}
-
-.hitBody {
-  flex: 1;
-  min-width: 0;
-}
-
-/* The line is the answer; where it came from is the footnote. */
-.hitMeta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin: var(--space-2) 0 0;
-  font: var(--text-meta);
-  color: var(--color-text-muted);
-}
-
-.hitSource {
-  font-weight: var(--weight-medium);
-  color: var(--color-text-secondary);
-}
-.hitSource:hover {
-  color: var(--color-link);
-}
-
-.uses {
-  font-variant-numeric: tabular-nums;
-}
-
+/* The date is the first thing a narrow tile can do without — the preview and
+   the title line are the content. */
 @media (max-width: 600px) {
-  /* The company and date drop off a piece row before the title has to shrink. */
-  .pieceRow {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-  .pieceCompany,
-  .pieceDate {
+  .tileDate {
     display: none;
-  }
-  .selects {
-    flex: 1 1 100%;
-  }
-  .select {
-    flex: 1;
-    max-width: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chip,
-  .pieceRow,
-  .hitRow {
+  .type,
+  .tile {
     transition: none;
   }
 }

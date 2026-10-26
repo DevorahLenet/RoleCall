@@ -35,7 +35,7 @@ export function useWritingLibrary(filters: WritingFilters): WritingLibraryStore 
   // apply at once.
   const query = useDebounced(filters.q).trim()
   const searching = query !== ''
-  const { type, company, sort } = filters
+  const { type, company, since, sort } = filters
 
   const reload = useCallback(() => {
     setLoad('loading')
@@ -49,12 +49,12 @@ export function useWritingLibrary(filters: WritingFilters): WritingLibraryStore 
     setLoad('loading')
 
     const request = searching
-      ? searchPassages({ q: query, type, company, sort }).then((rows) => {
+      ? searchPassages({ q: query, type, company, since, sort }).then((rows) => {
           if (cancelled) return
           setHits(rows)
           setPieces([])
         })
-      : getWritingPieces({ type, company, sort }).then((rows) => {
+      : getWritingPieces({ type, company, since, sort }).then((rows) => {
           if (cancelled) return
           setPieces(rows)
           setHits([])
@@ -71,7 +71,7 @@ export function useWritingLibrary(filters: WritingFilters): WritingLibraryStore 
     return () => {
       cancelled = true
     }
-  }, [query, searching, type, company, sort, attempt])
+  }, [query, searching, type, company, since, sort, attempt])
 
   // The company filter's options come from the writing itself, so it never
   // offers a company with nothing to show. Derived from the browse results,

@@ -1,40 +1,59 @@
-/* Mark gutter, body, actions. The gutter lines up with the notes list's date
-   column, so the two lists share a rhythm while staying tellable apart. */
+/* A question as a QUIET TILE, the same shape as a note: leading square, body,
+   actions. The square sits where the note's date square does, which is what
+   lets the eye sort the two lists apart while they share a rhythm. */
 .row {
-  display: grid;
-  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
-  align-items: start;
+  display: flex;
+  align-items: flex-start;
   gap: var(--space-3);
   min-height: 44px;
-  padding: var(--space-3) 0;
-  border-bottom: 1px solid var(--color-border-subtle);
-  transition: background 0.1s ease;
-}
-.row:hover {
-  background: var(--color-surface-hover);
+  padding: 10px 14px 10px 10px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-xs), inset 0 0 0 1px var(--color-bg-sunken);
 }
 
-/* The mark is the type signal: open question, or answered. It carries no
-   pipeline colour — status colour belongs to the job's stage alone. */
+/* Teal on its OWN tokens, not the Intro stage's: pipeline colour is the only
+   colour in this app allowed to carry meaning, and a question isn't a stage.
+   Resolved questions drop the teal — the mark has done its job. */
 .mark {
-  display: inline-flex;
-  justify-content: flex-end;
-  padding-top: 2px;
-  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background: var(--question-mark-bg);
+  color: var(--question-mark-text);
 }
-.rowResolved .mark {
-  color: var(--color-text-disabled);
+.markResolved {
+  background: var(--color-bg-sunken);
+  color: var(--color-text-secondary);
 }
 
 .body {
+  flex: 1;
   min-width: 0;
+  padding-top: 3px;
 }
 
+/* Roboto — a question is content the user wrote, like a note. */
 .text {
   margin: 0;
-  font: var(--text-body);
-  color: var(--color-text);
+  font: var(--weight-regular) 15px/1.45 var(--font-task);
+  letter-spacing: var(--tracking-task);
+  color: var(--color-text-secondary);
   overflow-wrap: anywhere;
+}
+
+/* When it was raised. The note's date square has no equivalent here, since the
+   "?" owns that slot, so the date hangs under the text instead. */
+.asked {
+  display: block;
+  margin-top: 2px;
+  font: var(--text-meta);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
 }
 
 /* The answer hangs under its question, labelled so a resolved pair reads as
@@ -66,12 +85,15 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Row actions sit together at the trailing edge and never wrap under the text. */
+/* Tile actions sit together at the trailing edge and never wrap under the
+   text. The negative block margin keeps the 44px delete target from inflating
+   the tile. */
 .actions {
   display: flex;
   align-items: center;
   flex: none;
   gap: var(--space-1);
+  margin: -3px calc(var(--space-2) * -1) -3px 0;
 }
 
 /* Two controls in the section header (Show resolved · Add question). */
@@ -154,20 +176,25 @@
   }
 }
 
-/* The gutter costs too much width on a phone: the mark tucks in beside the
-   text and the actions drop below. */
+/* The mark costs too much width on a phone, so it shrinks rather than taking
+   the question's room, and the actions wrap under the text. */
 @media (max-width: 600px) {
   .row {
-    grid-template-columns: 24px minmax(0, 1fr);
+    flex-wrap: wrap;
+    padding: var(--space-2);
+  }
+  .mark {
+    width: 32px;
+    height: 32px;
   }
   .actions {
-    grid-column: 2;
+    width: 100%;
     justify-content: flex-end;
+    margin: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .row,
   .remove {
     transition: none;
   }

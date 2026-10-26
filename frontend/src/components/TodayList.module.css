@@ -1,29 +1,8 @@
-/* No top margin: the pipeline band above owns the --space-8 between them. */
+/* The list opens the page directly under the Toolbar now that the pipeline
+   band is gone and the controls have moved into the bar — nothing sits
+   between the title and the first group. */
 .list {
   margin: 0;
-}
-
-.head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-  margin-bottom: var(--space-2);
-}
-
-/* Toggle + New task sit together at the right; they wrap under the heading
-   rather than crush it on a narrow screen. */
-.controls {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.heading {
-  margin: 0;
-  font: var(--text-section);
-  color: var(--color-text-heading);
 }
 
 /* The padding is always present, not added on hover: it gives the drop-target
@@ -44,11 +23,11 @@
   box-shadow: inset 0 0 0 2px var(--color-accent);
 }
 
-/* Eyebrow header + count. Sticks under the toolbar so the group you're scrolling
-   through stays named. */
+/* Eyebrow header + count. Sticks under the top bar AND the toolbar, so the
+   group you're scrolling through stays named below both. */
 .groupTitle {
   position: sticky;
-  top: var(--toolbar-height);
+  top: calc(var(--topbar-height) + var(--toolbar-height));
   z-index: 1;
   display: flex;
   align-items: center;
@@ -89,10 +68,11 @@
   gap: var(--task-gap);
 }
 
-/* The Toolbar stops being sticky below 600px, so the group headers pin to the
-   top of the viewport instead of a gap where the bar used to be. */
+/* The Toolbar stops being sticky below 600px, so the group headers pin directly
+   under the top bar — which stays sticky at every width — rather than to a gap
+   where the toolbar used to be. */
 @media (max-width: 600px) {
   .groupTitle {
-    top: 0;
+    top: var(--topbar-height);
   }
 }

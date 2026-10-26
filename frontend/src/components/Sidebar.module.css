@@ -22,7 +22,8 @@
   padding: var(--space-2) var(--space-2) 0;
 }
 
-/* Playfair, upright — the wordmark is one of the display face's two jobs. */
+/* Nunito Sans 800, deliberately the same size and weight as a page title —
+   the wordmark is one of the display face's two jobs. */
 .wordmark {
   font: var(--text-wordmark);
   letter-spacing: var(--tracking-title);
@@ -58,6 +59,7 @@
 .navItem {
   display: flex;
   align-items: center;
+  gap: 10px;
   height: var(--nav-item-height);
   padding: 0 var(--space-2);
   border-radius: var(--radius-md);
@@ -70,6 +72,13 @@
   background: var(--sidebar-hover-bg);
   color: var(--sidebar-text-strong);
   text-decoration: none;
+}
+
+/* Decorative: the label beside it already names the destination. */
+.navIcon {
+  flex: none;
+  width: var(--nav-icon-size);
+  height: var(--nav-icon-size);
 }
 
 /* Active view is a pale pill on the dark rail — read by fill and weight, not by
@@ -142,31 +151,6 @@
 .countZero {
   composes: count;
   font-weight: var(--weight-regular);
-}
-
-.account {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin-top: auto;
-  padding: var(--space-2);
-}
-
-/* Pale on dark, like the active nav pill — coral is kept for actions. */
-.avatar {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: var(--radius-full);
-  background: var(--sidebar-active-bg);
-  color: var(--sidebar-active-text);
-  font: var(--text-eyebrow);
-}
-
-.accountName {
-  font: var(--text-body-sm);
-  color: var(--sidebar-text);
 }
 
 /* ---------- Mobile: the rail becomes an overlay drawer ---------- */

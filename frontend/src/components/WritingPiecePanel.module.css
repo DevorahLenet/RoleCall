@@ -1,0 +1,150 @@
+/* Glyph · (type eyebrow over the title) · quick-copy · close. */
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  padding: var(--space-4) var(--space-4) 6px var(--space-5);
+}
+
+/* The glyph sizes itself (see TypeGlyph); this only keeps it from stretching
+   against the two-line heading beside it. */
+.headGlyph {
+  display: inline-flex;
+  flex: none;
+  align-self: center;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Nunito Sans, one line. The piece's title is a label, not prose — it names
+   what you opened, and the body below is the thing you came to read. */
+.title {
+  margin: 0;
+  font: var(--weight-extrabold) 15px/1.25 var(--font-display);
+  letter-spacing: var(--tracking-title);
+  color: var(--color-text-heading);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Close is an ACTION, so it sits in a filled control like the copy button —
+   32px of face inside a 44px target. */
+.close {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.close::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-sunken);
+  transition: background 0.12s ease;
+}
+.close > * {
+  position: relative;
+}
+.close:hover::before {
+  background: var(--color-border);
+}
+
+/* Indented to sit under the heading rather than under the glyph, so the meta
+   reads as a continuation of the title block. */
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px var(--space-3);
+  flex: none;
+  padding: 0 var(--space-4) var(--space-3) calc(var(--space-5) + 40px);
+  border-bottom: 1px solid var(--color-border-subtle);
+  font: var(--weight-medium) 12px/1.2 var(--font-sans);
+  color: var(--color-text-muted);
+}
+
+.copied {
+  font-variant-numeric: tabular-nums;
+}
+
+/* The panel's one scroll region. */
+.body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3) var(--space-3) var(--space-8);
+}
+
+/* One passage. Hovering sets --copy-reveal, which is how the copy button
+   inside it knows to appear — a custom property crosses the CSS Module
+   boundary that a descendant selector can't. */
+.para {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: 10px var(--space-3);
+  border-radius: var(--radius-md);
+}
+.para:hover,
+.para:focus-within {
+  background: var(--color-surface-hover);
+  --copy-reveal: 1;
+}
+
+/* Roboto, generously leaded — this is the writing itself, read in full. */
+.text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font: var(--weight-regular) 15px/1.6 var(--font-task);
+  color: var(--color-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Loading, error and 404 all render where the passages would be. */
+.state {
+  padding: var(--space-3);
+}
+
+.stateTitle {
+  margin: 0 0 var(--space-1);
+  font: var(--text-section);
+  color: var(--color-text);
+}
+
+.stateBody {
+  margin: 0 0 var(--space-4);
+  font: var(--text-body-sm);
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .close::before {
+    transition: none;
+  }
+}

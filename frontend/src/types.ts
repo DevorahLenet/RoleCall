@@ -133,6 +133,13 @@ export interface WritingPiece {
   job: number | null
   /** Resolved from the job, so a filter by company needs no extra column. */
   company: string | null
+  /** The piece's opening passage. A library tile leads with CONTENT, so a row
+   *  needs a line of the writing itself — one passage rather than the body,
+   *  which would put a whole resume in every index row. */
+  preview: string
+  /** Which passage `preview` came from, so copying it from a tile is credited
+   *  like any other copy. `null` only for a piece with no passages at all. */
+  preview_passage: number | null
   created_at: string
   updated_at: string
 }
@@ -177,10 +184,14 @@ export interface PassageHit {
 }
 
 /** The index's filters. They apply to both result modes, so browsing and
- *  searching narrow by exactly the same rules. */
+ *  searching narrow by exactly the same rules — which is why `since` is a
+ *  server-side window in days rather than a client-side date comparison: a
+ *  passage hit carries no date to compare. */
 export interface WritingFilters {
   q: string
   type: string
   company: string
+  /** "Any time" — a window in days ("30", "90", "365"), or '' for all. */
+  since: string
   sort: string
 }

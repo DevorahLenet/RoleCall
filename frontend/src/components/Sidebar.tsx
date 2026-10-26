@@ -1,17 +1,19 @@
 import { NavLink } from 'react-router-dom'
-import { X } from '@phosphor-icons/react'
+import { BookOpen, Briefcase, CalendarCheck, ChartBar, X } from '@phosphor-icons/react'
 import type { Job } from '../types'
 import { activeJobStatuses } from '../design-system/statuses'
 import { TruncatedText } from './TruncatedText'
 import styles from './Sidebar.module.css'
 
-// Nav vocabulary is settled: Today · Jobs · Writing Library. Closed jobs are a
-// filter under Jobs, not a destination — there is no Archive item. Text only:
-// three short labels on a dark rail need no icons to be told apart.
+// Nav vocabulary is settled: Today · Jobs · Writing Library · Ratings. Closed
+// jobs are a filter under Jobs, not a destination — there is no Archive item.
+// Each item carries its Phosphor icon (icons.md), which is what lets the four
+// be told apart at a glance now that the list is long enough to scan.
 const NAV_ITEMS = [
-  { to: '/', label: 'Today', end: true },
-  { to: '/jobs', label: 'Jobs', end: false },
-  { to: '/writing', label: 'Writing Library', end: false },
+  { to: '/', label: 'Today', end: true, Icon: CalendarCheck },
+  { to: '/jobs', label: 'Jobs', end: false, Icon: Briefcase },
+  { to: '/writing', label: 'Writing Library', end: false, Icon: BookOpen },
+  { to: '/ratings', label: 'Ratings', end: false, Icon: ChartBar },
 ]
 
 interface Props {
@@ -21,9 +23,10 @@ interface Props {
   onClose: () => void
 }
 
-// Persistent left rail: brand, primary nav, live pipeline counts that double as
-// Jobs filters, and an account slot pinned to the bottom. Below 900px it becomes
-// an overlay drawer driven by `open` (see AppShell for the trigger).
+// Persistent left rail: brand, primary nav, and live pipeline counts that double
+// as Jobs filters. The account moved to the top bar, so the rail is navigation
+// and nothing else. Below 900px it becomes an overlay drawer driven by `open`
+// (see AppShell for the trigger).
 export function Sidebar({ jobs, open, onClose }: Props) {
   // Count jobs per active stage once, so each stage row can show its own total.
   const countByStatus = jobs.reduce<Record<string, number>>((acc, job) => {
@@ -46,7 +49,7 @@ export function Sidebar({ jobs, open, onClose }: Props) {
       </div>
 
       <nav className={styles.nav} aria-label="Main">
-        {NAV_ITEMS.map(({ to, label, end }) => (
+        {NAV_ITEMS.map(({ to, label, end, Icon }) => (
           <NavLink
             key={to}
             to={to}
@@ -56,7 +59,8 @@ export function Sidebar({ jobs, open, onClose }: Props) {
               isActive ? `${styles.navItem} ${styles.navItemActive}` : styles.navItem
             }
           >
-            {label}
+            <Icon className={styles.navIcon} aria-hidden />
+            <span>{label}</span>
           </NavLink>
         ))}
       </nav>
@@ -81,13 +85,6 @@ export function Sidebar({ jobs, open, onClose }: Props) {
             )
           })}
         </nav>
-      </div>
-
-      <div className={styles.account}>
-        <span className={styles.avatar} aria-hidden>
-          D
-        </span>
-        <span className={styles.accountName}>Devorah</span>
       </div>
     </aside>
   )

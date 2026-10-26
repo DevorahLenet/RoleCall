@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { CheckCircle, Plus, Question, Trash } from '@phosphor-icons/react'
+import { Check, Plus, Question, Trash } from '@phosphor-icons/react'
 import type { Question as QuestionType } from '../types'
 import { formatDate } from '../format'
 import { Button } from './Button'
@@ -17,9 +17,13 @@ interface Props {
 }
 
 // Open questions about this job, with the resolved ones folded away beneath.
-// Each row leads with a mark in the same gutter the notes use for their date —
-// a question mark while open, a tick once answered — so the three lists on the
-// page stay tellable apart without three different row shapes.
+// Each entry is a QUIET TILE, the same shape as a note, led by a square in the
+// same place the note's date square sits — a teal "?" while open, a tick once
+// answered. The leading mark is what tells the three lists apart at a glance.
+//
+// The "?" square owns --question-mark-* rather than borrowing the Intro stage's
+// teal: the pipeline palette is the only colour allowed to carry meaning, and a
+// question is not a stage.
 //
 // Answering and resolving are one action: you write what you found out, and the
 // question closes. A question with an answer but no stamp would be a state
@@ -81,14 +85,28 @@ export function QuestionList({ questions, onAdd, onAnswer, onReopen, onDelete }:
     return (
       <article
         key={question.id}
-        className={isResolved ? `${styles.row} ${styles.rowResolved}` : styles.row}
+        className={styles.row}
       >
-        <span className={styles.mark} aria-hidden>
-          {isResolved ? <CheckCircle size={16} weight="fill" /> : <Question size={16} />}
+        <span
+          className={isResolved ? `${styles.mark} ${styles.markResolved}` : styles.mark}
+          role="img"
+          aria-label={isResolved ? 'Resolved question' : 'Open question'}
+        >
+          {isResolved ? (
+            <Check size={18} weight="bold" aria-hidden />
+          ) : (
+            <Question size={20} aria-hidden />
+          )}
         </span>
 
         <div className={styles.body}>
           <p className={styles.text}>{question.text}</p>
+
+          {/* When it was raised — the counterpart to the note's date square,
+              which has no room inside the "?" mark. */}
+          {!editing && (
+            <span className={styles.asked}>Asked {formatDate(question.created_at)}</span>
+          )}
 
           {/* The answer shows whenever there is one — that is the point of
               keeping resolved questions around at all. */}

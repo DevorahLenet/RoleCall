@@ -1,16 +1,18 @@
-/* Initials in a circle — one of the three places --radius-full is correct
-   (avatars, status dots, count badges). Sized from the type it sits beside. */
+/* Initials in a circle. NAVY, never a stage colour: an avatar stands for a
+   person, and a person isn't at a pipeline stage — the pipeline hues are the
+   only colours in this app allowed to carry meaning. The same --avatar-*
+   tokens the account avatar uses, so the two read as one idea. */
 .avatar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex: none;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-full);
-  background: var(--color-surface-active);
-  color: var(--color-text-secondary);
-  font: var(--weight-semibold) 11px/1 var(--font-sans);
+  background: var(--avatar-bg);
+  color: var(--avatar-text);
+  font: var(--weight-extrabold) 11px/1 var(--font-sans);
   text-transform: uppercase;
   user-select: none;
 }

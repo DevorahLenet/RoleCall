@@ -32,3 +32,12 @@ export function formatDate(value: string): string {
   const stamp = `${MONTHS[month - 1]} ${day}`
   return year === new Date().getFullYear() ? stamp : `${stamp}, ${year}`
 }
+
+/** The same date split into its month and day parts, for the job page's note
+ *  date square (month over day). Shares `formatDate`'s parsing rule exactly —
+ *  a bare `YYYY-MM-DD` is split as text, never passed through `new Date`. */
+export function splitDate(value: string): { month: string; day: string } {
+  const stamp = formatDate(value)
+  const [month, day = ''] = stamp.split(' ')
+  return { month, day: day.replace(',', '') }
+}

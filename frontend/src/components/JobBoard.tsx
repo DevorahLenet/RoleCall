@@ -1,10 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
-import type { DragEvent } from 'react'
+import type { CSSProperties, DragEvent } from 'react'
 import type { Job } from '../types'
+import type { JobStatus } from '../design-system/statuses'
 import { activeJobStatuses, getJobStatus } from '../design-system/statuses'
 import { JobCard } from './JobCard'
 import { TruncatedText } from './TruncatedText'
 import styles from './JobBoard.module.css'
+
+// Each lane is tinted with its own stage colour, which is what keeps the board
+// readable as the pipeline once the columns stack on a phone and the headers
+// scroll apart. The three values come from statuses.json — the one source of
+// stage colour — and are handed to CSS as custom properties so the mixing
+// (25% into the page for the fill, 55% for the outline) stays in the stylesheet.
+function laneColors(status: JobStatus): CSSProperties {
+  return {
+    '--sb': status.badgeBg,
+    '--sf': status.badgeFg,
+    '--sd': status.dot,
+  } as CSSProperties
+}
 
 interface Props {
   jobs: Job[]
@@ -26,9 +40,11 @@ function byRecency(a: Job, b: Job): number {
   return a.created_at < b.created_at ? 1 : -1
 }
 
-// The Jobs board: one column per active stage in statuses.json, all five on
-// screen at once. Cards move between stages by drag-and-drop or by the status
-// pill's menu; either way the change is optimistic and persists via PATCH.
+// The Jobs board: one lane per active stage in statuses.json, all five on
+// screen at once, each tinted with its own stage colour. Cards move between
+// stages by dragging them into another lane — optimistic, persisted by PATCH.
+// The non-drag path is the job page's stage pill: the card carries no pill of
+// its own now that the lane's tint says which stage it is in.
 export function JobBoard({ jobs, focusedStatusId, onChangeJobStatus }: Props) {
   const focusedRef = useRef<HTMLElement | null>(null)
   // The card currently in hand. Its status is kept alongside the id because
@@ -114,29 +130,30 @@ export function JobBoard({ jobs, focusedStatusId, onChangeJobStatus }: Props) {
               key={status.id}
               ref={focused ? focusedRef : undefined}
               className={classes}
+              style={laneColors(status)}
               aria-labelledby={headingId}
               onDragOver={(e) => handleDragOver(e, status.id)}
               onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, status.id)}
             >
+              {/* No dot: the lane's tint already carries the stage, and the
+                  header's own colour is the stage's. The count sits in a white
+                  pill so it reads off the tint. */}
               <h2 id={headingId} className={styles.columnHead}>
-                <span className={styles.dot} style={{ background: status.dot }} aria-hidden />
                 <TruncatedText text={status.label} className={styles.columnLabel} />
-                <span className={items.length ? styles.count : styles.countZero}>
-                  {items.length}
-                </span>
+                <span className={styles.count}>{items.length}</span>
               </h2>
 
               {items.length === 0 ? (
-                <p className={styles.empty}>Nothing yet in this stage</p>
+                <p className={styles.empty}>Nothing here yet</p>
               ) : (
                 <div className={styles.stack}>
                   {items.map((job) => (
                     <JobCard
                       key={job.id}
                       job={job}
+                      stageLabel={status.label}
                       dragging={dragged?.id === job.id}
-                      onChangeStatus={moveJob}
                       onDragStart={(j) => setDragged({ id: j.id, status: j.status })}
                       onDragEnd={clearDrag}
                     />

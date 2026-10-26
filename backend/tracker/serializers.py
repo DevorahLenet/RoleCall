@@ -176,10 +176,50 @@ class WritingPieceSerializer(serializers.ModelSerializer):
     dragging a whole resume's body along with every result."""
 
     company = serializers.CharField(source="job.company", read_only=True, default=None)
+    preview = serializers.SerializerMethodField()
+    preview_passage = serializers.SerializerMethodField()
 
     class Meta:
         model = WritingPiece
-        fields = ["id", "title", "type", "job", "company", "created_at", "updated_at"]
+        fields = [
+            "id",
+            "title",
+            "type",
+            "job",
+            "company",
+            "preview",
+            "preview_passage",
+            "created_at",
+            "updated_at",
+        ]
+
+    def _first_passage(self, piece: WritingPiece):
+        """The piece's opening passage, or None.
+
+        `.all()[:1]` rather than `.first()` so a prefetched `passages` cache is
+        reused; `.first()` would issue a query per row.
+        """
+        first = piece.passages.all()[:1]
+        return first[0] if first else None
+
+    def get_preview(self, piece: WritingPiece) -> str:
+        """The text a library tile leads with.
+
+        A tile shows CONTENT first and its title second, so a row needs a line
+        of the writing itself. One passage rather than the body keeps the index
+        payload slim — the whole point of this serializer — and it is the same
+        chunk the piece panel and search both treat as a unit.
+        """
+        passage = self._first_passage(piece)
+        return passage.text if passage else ""
+
+    def get_preview_passage(self, piece: WritingPiece) -> int | None:
+        """Which passage `preview` came from, so copying it from a tile can be
+        credited like any other copy. Without this, the one copy affordance on
+        the browse list would be the only one that never counts — and "most
+        used" is computed from those counts, not curated."""
+        passage = self._first_passage(piece)
+        return passage.id if passage else None
 
 
 class WritingPieceLineageSerializer(serializers.ModelSerializer):

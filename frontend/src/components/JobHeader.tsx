@@ -7,18 +7,18 @@ interface Props {
   onChangeStatus: (statusId: string) => void
 }
 
-// The job's identity line: who it is with, and where it stands. Two facts, set
-// large, directly under the role in the Toolbar.
+// The job's qualifying line, rendered as the Toolbar's eyebrow: who the
+// application is with, and where it stands — the two facts worth reading
+// before the role itself.
 //
-// Everything else moved out — the dates, fit and posting into the rail's
-// property list, Edit details into the Toolbar. What is left is the pair you
-// want at a glance, and stage is inline because it is the page's most frequent
-// edit by a distance.
+// Everything rarer moved out: the dates, fit and posting into the rail's
+// property list, Edit details into the Toolbar's actions. Stage stays inline
+// because it is the page's most frequent edit by a distance.
 export function JobHeader({ job, onChangeStatus }: Props) {
   return (
-    <header className={styles.header}>
-      <h2 className={styles.company}>{job.company}</h2>
+    <div className={styles.eyebrow}>
+      <span className={styles.company}>{job.company}</span>
       <StatusPill statusId={job.status} onChange={onChangeStatus} />
-    </header>
+    </div>
   )
 }

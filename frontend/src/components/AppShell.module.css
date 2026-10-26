@@ -5,21 +5,43 @@
   min-height: 100vh;
 }
 
+/* The pane carries the TOP BAR's ground, not the page's. The sheet inside it
+   is what holds the content, so the dark rail and the pale bar frame a
+   near-white page rather than butting straight against it. */
 .pane {
   grid-area: pane;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--topbar-bg);
+}
+
+/* The page sheet: inset into the frame by one rounded top-left corner and a
+   hairline, which is the whole of the effect — no border, no shadow. */
+.page {
+  flex: 1;
   min-width: 0;
   background: var(--color-bg);
+  border-top-left-radius: var(--page-corner-radius);
+  box-shadow: inset 1px 1px 0 var(--color-border-subtle);
 }
 
 .scrim {
   display: none;
 }
 
-/* Below 900px the rail leaves the grid and overlays as a drawer. */
+/* Below 900px the rail leaves the grid and overlays as a drawer. With no rail
+   to tuck under, the sheet's left edge is the screen edge, so the corner and
+   its hairline go with it. */
 @media (max-width: 900px) {
   .shell {
     grid-template-areas: 'pane';
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page {
+    border-top-left-radius: 0;
+    box-shadow: inset 0 1px 0 var(--color-border-subtle);
   }
 
   .scrim {

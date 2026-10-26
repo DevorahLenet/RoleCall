@@ -8,6 +8,7 @@ functions Django cannot express.
 from __future__ import annotations
 
 import re
+from datetime import datetime
 
 from django.db import connection
 
@@ -60,13 +61,15 @@ def search_passages(
     *,
     type_id: str | None = None,
     company: str | None = None,
+    since: datetime | None = None,
     sort: str = "relevance",
 ) -> list[dict]:
     """Passages matching `raw_query`, most relevant first by default.
 
-    Filters are the same ones the piece list uses, so narrowing by type or
-    company survives the switch from browsing documents to searching lines.
-    Returns [] for a query with no searchable words rather than everything.
+    Filters are the same ones the piece list uses, so narrowing by type,
+    company or recency survives the switch from browsing documents to
+    searching lines. Returns [] for a query with no searchable words rather
+    than everything.
     """
     match = to_match_query(raw_query)
     if match is None:
@@ -80,6 +83,9 @@ def search_passages(
     if company:
         where.append("j.company = %s")
         params.append(company)
+    if since:
+        where.append("wp.updated_at >= %s")
+        params.append(since)
 
     sql = f"""
         SELECT p.id, p.text, p.position, p.use_count,

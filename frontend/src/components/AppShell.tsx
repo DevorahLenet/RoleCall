@@ -4,6 +4,7 @@ import type { NewJob } from '../types'
 import { getJobStatus } from '../design-system/statuses'
 import { JobForm } from './JobForm'
 import { Sidebar } from './Sidebar'
+import { TopBar } from './TopBar'
 import { useTracker } from '../useTracker'
 import styles from './AppShell.module.css'
 
@@ -69,14 +70,20 @@ export function AppShell() {
         />
       )}
 
+      {/* The pane is the frame's ground; the page sheet is inset into it, so
+          the top bar and the sidebar read as one surface around the content. */}
       <div className={styles.pane}>
-        <Outlet
-          context={{
-            ...tracker,
-            onOpenNav: () => setNavOpen(true),
-            onNewApplication: () => setJobFormOpen(true),
-          }}
-        />
+        <TopBar onNewApplication={() => setJobFormOpen(true)} />
+
+        <div className={styles.page}>
+          <Outlet
+            context={{
+              ...tracker,
+              onOpenNav: () => setNavOpen(true),
+              onNewApplication: () => setJobFormOpen(true),
+            }}
+          />
+        </div>
       </div>
 
       {/* Mounted only while open, so every visit starts on an empty form. */}

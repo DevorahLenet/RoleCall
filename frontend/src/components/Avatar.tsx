@@ -5,9 +5,10 @@ interface Props {
   name: string
 }
 
-// A person, at a glance. Neutral rather than colour-coded: a palette of avatar
-// colours would compete with the pipeline hues, which are the only colours in
-// the app allowed to carry meaning.
+// A person, at a glance. Navy rather than colour-coded: an avatar stands for a
+// person, and a person isn't at a pipeline stage — the pipeline hues are the
+// only colours in the app allowed to carry meaning. Same tokens as the account
+// avatar in the top bar.
 //
 // Decorative by definition — the name it stands for is always rendered next to
 // it, so this is hidden from assistive tech rather than read out twice.

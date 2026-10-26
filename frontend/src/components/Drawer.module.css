@@ -1,0 +1,44 @@
+/* The sheet the panel docks against. It dims the page rather than hiding it,
+   because the point of a drawer is that you can still see what you came from. */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: var(--scrim-drawer);
+  animation: fade 0.12s ease;
+}
+
+/* Right-docked, full height, its own scroll. The default width is the design
+   system's; callers holding prose pass a wider one. */
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(440px, 100%);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-drawer);
+  animation: slide 0.16s ease;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(16px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim,
+  .panel {
+    animation: none;
+  }
+}

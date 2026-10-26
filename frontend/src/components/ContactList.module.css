@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  margin: 0;
+  margin: var(--space-1) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -22,7 +22,7 @@
   gap: var(--space-3);
   flex: 1;
   min-width: 0;
-  min-height: 44px;
+  min-height: 48px;
   padding: var(--space-1) var(--space-2);
   border: 0;
   border-radius: var(--radius-sm);
@@ -30,8 +30,11 @@
   text-align: left;
   cursor: pointer;
 }
+/* Hover LIFTS to white rather than filling: --color-surface-active and
+   --color-bg-sunken are the same value, so the usual active fill is invisible
+   on the sunken rail block this list sits in. */
 .row:hover {
-  background: var(--color-surface-active);
+  background: var(--color-surface);
 }
 
 .body {
@@ -41,8 +44,7 @@
 }
 
 .name {
-  font: var(--text-body-sm);
-  font-weight: var(--weight-medium);
+  font: var(--weight-semibold) 14px/1.3 var(--font-sans);
   color: var(--color-text);
   overflow: hidden;
   text-overflow: ellipsis;

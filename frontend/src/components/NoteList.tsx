@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import { PencilSimple, Plus, Trash } from '@phosphor-icons/react'
 import type { Note } from '../types'
-import { formatDate } from '../format'
+import { formatDate, splitDate } from '../format'
 import { Button } from './Button'
 import { InlineAdd } from './InlineAdd'
 import { JobSection } from './JobSection'
@@ -19,10 +19,12 @@ interface Props {
 // The job's logbook — what happened and when, newest first. The highest-traffic
 // section once a job is live.
 //
-// Each entry leads with its date in a fixed gutter, which is what makes this
-// list legible as a *log* at a glance rather than as more rows like the tasks
-// above it. Notes arrive newest-first from the API (the model orders by
-// -created_at) and new ones are prepended, so no sort is needed here.
+// Each entry is a QUIET TILE led by a date square — month over day — which is
+// what makes this list legible as a *log* at a glance rather than as more rows
+// like the tasks above it. Quiet because a note is reference, not an action
+// item: an outline and a faint lift, never the task tile's shadow. Notes arrive
+// newest-first from the API (the model orders by -created_at) and new ones are
+// prepended, so no sort is needed here.
 //
 // An entry edits in place, in a field shaped like the one that wrote it. The
 // date stays the date it was logged: editing a note corrects the record of what
@@ -127,10 +129,17 @@ export function NoteList({ notes, onAdd, onEdit, onDelete }: Props) {
           {notes.map((note) => {
             const editing = editingId === note.id
             const stamp = formatDate(note.created_at)
+            const { month, day } = splitDate(note.created_at)
 
             return (
               <article key={note.id} className={styles.row}>
-                <span className={styles.stamp}>{stamp}</span>
+                {/* The leading square is the list's signature: a date block
+                    here, a "?" on the questions below. Decorative — every
+                    action already names the date in its label. */}
+                <span className={styles.stamp} aria-hidden>
+                  <i className={styles.stampMonth}>{month}</i>
+                  <b className={styles.stampDay}>{day}</b>
+                </span>
 
                 {editing ? (
                   <div className={styles.editor}>

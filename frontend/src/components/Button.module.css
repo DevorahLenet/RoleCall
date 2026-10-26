@@ -49,14 +49,15 @@
   background: var(--color-primary-hover);
 }
 
+/* White with no border — it separates from the page sheet by lifting, not by
+   an edge. --shadow-search carries both the lift and its 1px inset outline. */
 .secondary {
   background: var(--color-surface);
   color: var(--color-text);
-  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-search);
 }
 .secondary:hover:not(:disabled) {
   background: var(--color-surface-hover);
-  border-color: var(--color-text-disabled);
 }
 
 .ghost {

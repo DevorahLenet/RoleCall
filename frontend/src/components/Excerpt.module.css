@@ -1,15 +1,21 @@
-/* Matched terms inside a search excerpt. A wash rather than a fill: the row is
-   already dense, and a solid highlight would read as a status colour. */
+/* A search excerpt reads as the library's tile PREVIEW does — Roboto, because
+   it is text the user wrote — and is never clamped: the whole matched line is
+   the answer the screen exists to give. */
 .excerpt {
-  font: var(--text-body);
+  display: block;
+  margin: 0;
+  font: var(--weight-regular) 15px/1.45 var(--font-task);
   color: var(--color-text);
   overflow-wrap: anywhere;
+  text-wrap: pretty;
 }
 
+/* Highlighter yellow, and nothing else in the app uses it — it reads as
+   "found here", not as a status. No weight change: bolding the match on top of
+   the fill makes the line jump rather than scan. */
 .mark {
-  padding: 0 1px;
+  padding: 0 2px;
   border-radius: var(--radius-xs);
-  background: var(--wash-accent-hover);
-  color: inherit;
-  font-weight: var(--weight-semibold);
+  background: var(--highlight-bg);
+  color: var(--highlight-text);
 }

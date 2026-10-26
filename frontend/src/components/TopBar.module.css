@@ -1,0 +1,92 @@
+/* The global bar. It shares its ground with the pane behind the page sheet, so
+   bar and frame read as one surface with the sheet inset into them. Sticky at
+   every width: it is the app frame, not a page header. */
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  height: var(--topbar-height);
+  padding: 0 var(--space-9) 0 var(--space-6);
+  background: var(--topbar-bg);
+}
+
+/* The ⌘K field. Shaped as the real control it will become, but inert — the
+   palette isn't designed yet, so it carries aria-disabled and a not-allowed
+   cursor rather than quietly swallowing clicks. */
+.cmdk {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 1 var(--search-max-width);
+  min-width: 150px;
+  height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-placeholder);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+  font: var(--text-search);
+  text-align: left;
+  cursor: not-allowed;
+}
+
+.cmdkIcon {
+  flex: none;
+}
+
+.cmdkLabel {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.key {
+  flex: none;
+  padding: var(--space-1) 6px;
+  border-radius: var(--radius-xs);
+  background: var(--color-bg-sunken);
+  color: var(--color-text);
+  font: var(--text-chip);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Navy, like every avatar in the app — a person is never a pipeline stage. The
+   double ring lifts it off the pale bar without giving it a border. */
+.me {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: var(--radius-full);
+  background: var(--avatar-bg);
+  color: var(--avatar-text);
+  font: var(--weight-extrabold) 13px/1 var(--font-sans);
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 3px var(--color-border);
+  user-select: none;
+}
+
+/* On a phone there isn't room for all three, and the field is the one that
+   earns the least: it is disabled, and ⌘K means nothing on a touch keyboard.
+   So it goes, and New application and the account take the bar. */
+@media (max-width: 600px) {
+  .bar {
+    justify-content: flex-end;
+    padding: 0 var(--space-4);
+  }
+  .cmdk {
+    display: none;
+  }
+}

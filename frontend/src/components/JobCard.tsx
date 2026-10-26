@@ -3,32 +3,34 @@ import type { DragEvent, MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
 import type { Job } from '../types'
 import { formatDate } from '../format'
-import { StatusPill } from './StatusPill'
-import { TruncatedText } from './TruncatedText'
 import styles from './JobCard.module.css'
 
 interface Props {
   job: Job
+  /** The lane's stage, carried for screen readers only — the tint is visual. */
+  stageLabel: string
   /** True while this card is the one being dragged, so it can recede. */
   dragging: boolean
-  onChangeStatus: (job: Job, statusId: string) => void
   onDragStart: (job: Job) => void
   onDragEnd: () => void
 }
 
-// One application on the board: role, company, its pipeline stage, and the date
-// it went out. A card rather than a list row because on the board these really
-// are discrete items floating in a column — the one shape cards are for.
+// One application on the board, at a fixed height so the lanes line up: the
+// company as an eyebrow, the role, and one status line pinned to the bottom.
+//
+// No stage pill and no dot — the lane's tint carries the stage, and repeating
+// it on every card inside that lane was five copies of one fact. The stage
+// still reaches a screen reader, which can't see the tint, via an sr-only line.
+// Changing stage is by drag here, or from the job page's stage pill.
 //
 // The whole card opens the job page, via a link stretched across it rather than
 // a click handler on the article, so it keeps a real href: middle-click, copy
-// link and keyboard focus all work. Exactly two things are raised above that
-// layer, and only because they are targets in their own right: the role's link
-// to the posting, and the status pill. Raising anything inert — an <h3>, the
-// footer — would put dead space over the card and swallow the click.
+// link and keyboard focus all work. Only the role's link to the posting is
+// raised above that layer, and only because it is a target in its own right —
+// raising anything inert would put dead space over the card.
 //
 // The card is also the drag handle for moving between stages.
-export function JobCard({ job, dragging, onChangeStatus, onDragStart, onDragEnd }: Props) {
+export function JobCard({ job, stageLabel, dragging, onDragStart, onDragEnd }: Props) {
   // A drag that ends over the card can be followed by a synthesised click,
   // which would navigate away instead of finishing the move. This marks the
   // moment a drag ended so the very next click can be swallowed.
@@ -57,6 +59,14 @@ export function JobCard({ job, dragging, onChangeStatus, onDragStart, onDragEnd 
     if (Date.now() - draggedAt.current < 100) e.preventDefault()
   }
 
+  // One line, always present, so every card is the same height: the date it
+  // went out, or — for a job that hasn't been applied to yet — the date you
+  // started tracking it. "Not applied yet" is the job page's job to say; here
+  // the line is a timestamp either way.
+  const status = job.applied_on
+    ? `Applied ${formatDate(job.applied_on)}`
+    : `Started ${formatDate(job.created_at)}`
+
   return (
     <article
       className={dragging ? `${styles.card} ${styles.cardDragging}` : styles.card}
@@ -64,6 +74,8 @@ export function JobCard({ job, dragging, onChangeStatus, onDragStart, onDragEnd 
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
+      <span className={styles.company}>{job.company}</span>
+
       {/* The role links to the posting, in a new tab. Without a URL it stays
           plain text, so nothing suggests a target that isn't there.
           `draggable={false}` keeps the browser from dragging the URL instead
@@ -85,40 +97,20 @@ export function JobCard({ job, dragging, onChangeStatus, onDragStart, onDragEnd 
         )}
       </h3>
 
-      <TruncatedText text={job.company} className={styles.company} />
-
-      <div className={styles.foot}>
-        {/* Stage is on the card as well as the column header — the columns stack
-            on a phone, where the header scrolls out of sight. It is raised above
-            the card's link so it keeps its own menu; the date beside it is not,
-            so clicking there opens the job like the rest of the card. */}
-        <span className={styles.raised}>
-          <StatusPill
-            statusId={job.status}
-            onChange={(statusId) => onChangeStatus(job, statusId)}
-          />
-        </span>
-
-        {/* No date, no element — an un-applied job says nothing rather than
-            carrying a placeholder. The label is there only for screen readers,
-            which would otherwise hear a bare "Mar 12". */}
-        {job.applied_on && (
-          <span className={styles.applied}>
-            <span className="sr-only">Applied </span>
-            {formatDate(job.applied_on)}
-          </span>
-        )}
-      </div>
+      <span className={styles.meta}>{status}</span>
 
       {/* Last in the DOM so a screen reader reads the card's content before
-          being offered the link to open it. Visually it covers the whole card. */}
+          being offered the link to open it. Visually it covers the whole card,
+          and it carries the stage the tint shows only to the eye. */}
       <Link
         className={styles.open}
         to={`/jobs/${job.id}`}
         draggable={false}
         onClick={handleOpenClick}
       >
-        <span className="sr-only">{`Open ${job.role} at ${job.company}`}</span>
+        <span className="sr-only">
+          {`Open ${job.role} at ${job.company} — ${stageLabel}`}
+        </span>
       </Link>
     </article>
   )

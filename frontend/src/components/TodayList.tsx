@@ -1,30 +1,27 @@
 import { useState } from 'react'
 import type { DragEvent } from 'react'
 import { ListChecks, Plus } from '@phosphor-icons/react'
-import type { Job, NewTask, Task, TaskPatch } from '../types'
+import type { Task } from '../types'
 import { getTaskStatus, taskStatuses } from '../design-system/taskStatuses'
 import { getPriority } from '../design-system/priorities'
-import { usePersistedBoolean } from '../usePersistedBoolean'
 import { TaskRow } from './TaskRow'
-import { TaskForm } from './TaskForm'
 import { Button } from './Button'
 import { EmptyState } from './EmptyState'
-import { Toggle } from './Toggle'
 import styles from './TodayList.module.css'
 
 interface Props {
-  jobs: Job[]
   tasks: Task[]
-  onCreateTask: (input: NewTask) => Promise<Task>
-  onUpdateTask: (task: Task, patch: TaskPatch) => Promise<Task>
+  /** The Toolbar's view preference — done rows drop out of every group. */
+  showCompleted: boolean
+  /** How many tasks are done, so the all-done empty state can say so. */
+  doneCount: number
+  onNewTask: () => void
+  onEditTask: (task: Task) => void
   onToggleDone: (task: Task) => void
   onChangePriority: (task: Task, priorityId: string) => void
   onChangeTaskStatus: (task: Task, statusId: string) => void
   onDeleteTask: (task: Task) => void
 }
-
-// What the task dialog is open for: a blank new task, or one existing row.
-type FormState = { mode: 'new' } | { mode: 'edit'; task: Task }
 
 // Within a group, priority rank alone decides the order — completion doesn't
 // enter into it, so checking a task off leaves the row exactly where it was
@@ -37,30 +34,25 @@ function sortWithinGroup(a: Task, b: Task): number {
 // The day's tasks, grouped by task status in the order task-statuses.json lists
 // them — In progress, then Waiting, then To do. Groups are separated by an
 // eyebrow header carrying a count; each task is a floating tile, 3px apart.
-// Completed tasks strike through in place and can be hidden from the head, a
-// choice that is remembered across sessions.
+//
+// The list starts straight under the Toolbar: no heading of its own (the page
+// title is the heading) and no control row, since New task and Show completed
+// are page actions and live in the Toolbar.
 //
 // A row moves between statuses by dragging it into another group. The keyboard
 // and touch path to the same change is the row menu's Edit, which opens the task
 // dialog with its Status select — drag is never the only way to do it.
 export function TodayList({
-  jobs,
   tasks,
-  onCreateTask,
-  onUpdateTask,
+  showCompleted,
+  doneCount,
+  onNewTask,
+  onEditTask,
   onToggleDone,
   onChangePriority,
   onChangeTaskStatus,
   onDeleteTask,
 }: Props) {
-  const [form, setForm] = useState<FormState | null>(null)
-  // Persisted: hiding completed rows is a standing preference about how the list
-  // should read, not something worth re-deciding every visit.
-  const [showCompleted, setShowCompleted] = usePersistedBoolean(
-    'today.showCompleted',
-    true,
-  )
-
   // The row currently in hand. Its status rides along with the id because
   // dragover has to decide whether a group is a valid target, and dataTransfer
   // payloads are unreadable until drop.
@@ -69,7 +61,6 @@ export function TodayList({
   // Narrates a move that a sighted user simply watches happen.
   const [announcement, setAnnouncement] = useState('')
 
-  const doneCount = tasks.filter((t) => t.is_done).length
   const visible = showCompleted ? tasks : tasks.filter((t) => !t.is_done)
 
   const groups = taskStatuses.map((status) => ({
@@ -130,36 +121,8 @@ export function TodayList({
     clearDrag()
   }
 
-  // Both the create and the edit save go through the dialog's one onSave. Edit
-  // sends the whole form as a patch, which is also how a task gets re-pointed at
-  // a different job — the saved record comes back with the chip resolved.
-  async function saveTask(input: NewTask) {
-    if (form?.mode === 'edit') await onUpdateTask(form.task, input)
-    else await onCreateTask(input)
-  }
-
   return (
-    <section className={styles.list}>
-      <div className={styles.head}>
-        <h2 className={styles.heading}>Tasks</h2>
-        <div className={styles.controls}>
-          {doneCount > 0 && (
-            <Toggle
-              checked={showCompleted}
-              onChange={setShowCompleted}
-              label="Show completed"
-            />
-          )}
-          <Button
-            size="sm"
-            icon={<Plus size={14} weight="bold" />}
-            onClick={() => setForm({ mode: 'new' })}
-          >
-            New task
-          </Button>
-        </div>
-      </div>
-
+    <section className={styles.list} aria-label="Tasks">
       {shown.map((group) => {
         const isDropTarget = dropTarget === group.status.id
         const classes = [styles.group, isDropTarget ? styles.groupDropTarget : '']
@@ -174,10 +137,10 @@ export function TodayList({
             onDragLeave={handleDragLeave}
             onDrop={(e) => handleDrop(e, group.status.id)}
           >
-            <h3 className={styles.groupTitle}>
+            <h2 className={styles.groupTitle}>
               {group.status.label}
               <span className={styles.count}>{group.items.length}</span>
-            </h3>
+            </h2>
             {group.items.length === 0 ? (
               /* Only reachable mid-drag, which is exactly what it is for: a
                  status with nothing in it still has to be a place to let go. */
@@ -191,7 +154,7 @@ export function TodayList({
                     dragging={dragged?.id === task.id}
                     onToggleDone={onToggleDone}
                     onChangePriority={onChangePriority}
-                    onEdit={(t) => setForm({ mode: 'edit', task: t })}
+                    onEdit={onEditTask}
                     onDeleteTask={onDeleteTask}
                     onDragStart={(t) => setDragged({ id: t.id, status: t.status })}
                     onDragEnd={clearDrag}
@@ -215,7 +178,7 @@ export function TodayList({
               <Button
                 variant="primary"
                 icon={<Plus size={15} weight="bold" />}
-                onClick={() => setForm({ mode: 'new' })}
+                onClick={onNewTask}
               >
                 Add a task
               </Button>
@@ -234,17 +197,6 @@ export function TodayList({
       <p className="sr-only" role="status" aria-live="polite">
         {announcement}
       </p>
-
-      {/* Mounted only while open, so a new task always starts empty and an edit
-          always starts from the row it was opened on. */}
-      {form && (
-        <TaskForm
-          jobs={jobs}
-          task={form.mode === 'edit' ? form.task : undefined}
-          onSave={saveTask}
-          onClose={() => setForm(null)}
-        />
-      )}
     </section>
   )
 }

@@ -21,20 +21,9 @@ export function Jobs() {
 
   return (
     <>
-      <Toolbar
-        title="Jobs"
-        onOpenNav={onOpenNav}
-        actions={
-          <Button
-            variant="primary"
-            size="lg"
-            icon={<Plus size={15} weight="bold" />}
-            onClick={onNewApplication}
-          >
-            New application
-          </Button>
-        }
-      />
+      {/* No page action: New application is a GLOBAL action and lives in the
+          top bar, reachable from every screen rather than only this one. */}
+      <Toolbar title="Jobs in progress" accent="progress" onOpenNav={onOpenNav} />
 
       <div className={styles.pane}>
         {load === 'loading' && (

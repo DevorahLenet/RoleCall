@@ -1,13 +1,24 @@
-/* The design system's general-purpose tag: outline, muted, squared. Not a
-   status badge — no fill, no dot, no colour. */
+/* The type eyebrow that opens a tile's title line. Uppercase, muted, tiny —
+   it identifies, it doesn't label. No fill, no border, no colour. */
 .tag {
-  display: inline-flex;
-  align-items: center;
   flex: none;
-  padding: 2px var(--space-2);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xs);
-  font: var(--weight-semibold) 11px/1.35 var(--font-sans);
+  font: var(--text-eyebrow);
+  font-size: 10px;
+  line-height: 1.25;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
   color: var(--color-text-muted);
   white-space: nowrap;
+}
+
+/* A bare glyph: identifying icons get no box and no hover state. The action
+   icons beside them (copy, close) always do — that contrast is the rule. */
+.glyph {
+  display: grid;
+  place-items: center;
+  flex: none;
+  align-self: center;
+  width: var(--glyph-box, 24px);
+  height: var(--glyph-box, 24px);
+  color: var(--color-text-muted);
 }

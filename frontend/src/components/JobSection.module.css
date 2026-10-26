@@ -1,12 +1,12 @@
 /* One block on the job page, in two registers.
 
-   MAIN sections (Tasks, Notes, Questions) are the work: a 16px heading over a
-   list, separated from each other by space alone. RAIL blocks (Details,
-   Contacts) are reference: a 12px eyebrow on a sunken panel that sits back
-   from the page, the same surface the board's columns use.
+   MAIN sections (Tasks, Notes, Questions) are the work: an eyebrow over a list,
+   separated from each other by space alone. RAIL blocks (Details, Contacts) are
+   reference: the same eyebrow on a sunken panel that sits back from the page.
 
-   Three header sizes across the page — 30px Playfair toolbar title, 16px
-   section, 12px rail eyebrow — are what let the eye sort the page at a glance. */
+   Both titles are eyebrows since the Oct 21 pass. The page's hierarchy is now
+   carried by the 25px Toolbar title alone — four 16px headings under it read
+   as four competing pages rather than as one page's parts. */
 .section {
   margin-top: var(--space-8);
 }
@@ -18,9 +18,6 @@
   padding: var(--space-4);
   border-radius: var(--radius-md);
   background: var(--color-bg-sunken);
-}
-.rail + .rail {
-  margin-top: var(--space-4);
 }
 
 /* Label left, optional control right. No count badge: a section header here is
@@ -34,12 +31,7 @@
   margin-bottom: var(--space-2);
 }
 
-.title {
-  margin: 0;
-  font: var(--text-section);
-  color: var(--color-text-heading);
-}
-
+.title,
 .titleRail {
   margin: 0;
   font: var(--text-eyebrow);
@@ -48,10 +40,13 @@
   color: var(--color-text-heading);
 }
 
-/* Notes and questions are reference: flat rows directly against each other,
-   the container carrying the top rule and each row its own bottom one. */
+/* Notes and questions are QUIET TILES — lighter than the task tiles above
+   them, because they're reference rather than action items. Same --task-gap,
+   so the three lists share one rhythm. */
 .rows {
-  border-top: 1px solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--task-gap);
 }
 
 /* Tasks are the work, so they float — the same tiles, the same --task-gap, as
@@ -66,8 +61,7 @@
    rather than broken: one quiet line where the rows would be, not a card. */
 .empty {
   margin: 0;
-  padding: var(--space-3) 0;
-  border-top: 1px solid var(--color-border-subtle);
+  padding: var(--space-2) var(--space-1);
   font: var(--text-body-sm);
   color: var(--color-text-muted);
 }

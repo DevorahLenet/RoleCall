@@ -282,7 +282,7 @@
      only the width below which they wrap rather than shrink any further. */
   --board-column-min: 200px;
   /* Properties rail on the job detail page. */
-  --detail-rail-width: 280px;
+  --detail-rail-width: 300px;
 
   /* ---------- Control heights ----------
      General buttons and menu items run compact on a mouse and grow to the

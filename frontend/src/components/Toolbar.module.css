@@ -1,8 +1,12 @@
-/* On the page ground with no bottom edge — the 30px title does the separating.
-   The fill is still the page colour so content scrolls cleanly under it. */
+/* On the page sheet with no bottom edge — the 25px title does the separating.
+   Sticks under the global top bar, which owns the very top of the viewport.
+   It carries the SHEET's top-left corner: an opaque bar at the top of the page
+   would otherwise square off the corner AppShell just rounded. The bar sticks
+   exactly where the sheet begins, so the corner stays right at any scroll. */
 .bar {
   position: sticky;
-  top: 0;
+  top: var(--topbar-height);
+  border-top-left-radius: var(--page-corner-radius);
   z-index: var(--z-nav);
   display: flex;
   align-items: center;
@@ -22,8 +26,27 @@
   min-width: 0;
 }
 
-/* Playfair, never wrapping. A drilled-into screen's title is data (a job's role)
-   and can be long, so it ellipsises rather than pushing the actions off. */
+/* With an eyebrow the lead is two lines tall, so the back button aligns to the
+   top of the stack rather than floating in the middle of it. */
+.leadStacked {
+  align-items: flex-start;
+}
+
+.headPlain {
+  min-width: 0;
+}
+
+/* A qualified title stacks its eyebrow above it, and the cluster aligns to the
+   top so the back button sits beside the eyebrow rather than floating. */
+.headStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+/* Nunito Sans 800, never wrapping. A top-level screen's title is fixed copy, so
+   it ellipsises rather than pushing the actions off. */
 .title {
   min-width: 0;
   margin: 0;
@@ -35,36 +58,59 @@
   white-space: nowrap;
 }
 
-/* The one italic accent word. Brand coral is allowed here only because 30px is
-   large text (3:1); it never appears at body size. */
+/* A detail screen's title is data (a job's role) and can be long, so it wraps
+   onto a second line rather than losing its tail to an ellipsis. */
+.titleWrapping {
+  composes: title;
+  overflow: visible;
+  white-space: normal;
+  text-wrap: balance;
+}
+
+/* The one accent word, upright in the marker face. Brand coral is allowed here
+   only because 25px/800 is large text (3:1); it never appears at body size. */
 .accent {
-  font-style: italic;
+  font-family: var(--font-accent);
+  font-weight: var(--weight-regular);
+  font-style: normal;
+  letter-spacing: 0;
   color: var(--color-title-accent);
 }
 
-/* Same 44px icon-button shape as the hamburger, but always present — it is the
-   way back out of a detail screen, at every width. */
+/* The way back out of a detail screen, at every width: a white disc that lifts
+   off the sheet, 40px of visual inside a 44px target. */
 .back {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex: none;
+  width: 40px;
+  height: 40px;
+  margin: 2px var(--space-1) 0 calc(var(--space-2) * -1);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-search);
+}
+/* Keeps the 44px touch target around the 40px disc without growing the disc. */
+.back::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 44px;
   height: 44px;
-  margin-left: calc(var(--space-3) * -1);
-  border-radius: var(--radius-md);
-  color: var(--color-text-secondary);
+  transform: translate(-50%, -50%);
 }
 .back:hover {
-  background: var(--color-surface-active);
+  background: var(--color-surface-hover);
   color: var(--color-text);
   text-decoration: none;
 }
 
-/* Actions grow into the remaining width and right-align, which is the room left
-   for the future ⌘K search field: it will sit first in this row and shrink to
-   its floor before the primary button gives. They never shrink below their own
-   content — a right-aligned row that shrinks overflows leftward over the title. */
+/* Page actions right-align and never shrink below their own content — a
+   right-aligned row that shrinks overflows leftward over the title. */
 .actions {
   display: flex;
   align-items: center;
@@ -98,17 +144,22 @@
   .navToggle {
     display: inline-flex;
   }
-  /* With the hamburger leading, the back link no longer hangs into the gutter —
-     it just closes up the gap so the two icons read as one cluster. */
+  /* The sheet loses its corner once the sidebar is a drawer, so the bar does
+     too — see AppShell.module.css. */
+  .bar {
+    border-top-left-radius: 0;
+  }
+  /* With the hamburger leading, the back disc no longer hangs into the gutter —
+     it just closes up the gap so the two read as one cluster. */
   .back {
-    margin-left: calc(var(--space-2) * -1);
+    margin-left: 0;
   }
 }
 
 /* The title keeps its size on a phone — the gutter gives instead, and the
    actions wrap to their own row rather than squeeze the title to a few letters.
-   Two rows make the bar too tall to pin over a phone screen, so it scrolls away
-   with the page here (TodayList re-anchors its sticky group headers to match). */
+   Two rows make the bar too tall to pin, so it scrolls away with the page here;
+   TodayList re-anchors its sticky group headers to the top bar to match. */
 @media (max-width: 600px) {
   .bar {
     position: static;
